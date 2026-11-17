@@ -1,0 +1,1420 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>ប្រព័ន្ធគ្រប់គ្រងសាលា ALE Academy</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Khmer:wght@400;500;600;700&family=Hanuman:wght@400;700&display=swap">
+<style>
+/* Layout: fixed left navigation + wide work area; tables for records, modal forms for entry; paper-white A5 documents for receipts/reports */
+:root{
+  --bg:#f2f5fa; --surface:#ffffff; --ink:#142038; --muted:#58667f; --line:#dbe2ee;
+  --accent:#2447a6; --accent-ink:#ffffff; --accent-soft:#e5ecfb;
+  --input:#fffbe6; --calc:#eef1f6;
+  --good:#17784a; --good-soft:#e1f4ea; --warn:#a85a07; --warn-soft:#fdf0d9; --bad:#b3261e; --bad-soft:#fbe5e3;
+  --f-body:'Inter','Noto Sans Khmer','Khmer OS Battambang','Leelawadee UI',system-ui,sans-serif;
+  --f-head:'Hanuman','Noto Sans Khmer','Khmer OS Muol Light',serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c1222; --surface:#141c31; --ink:#e7ecf8; --muted:#97a3bd; --line:#26314d;
+  --accent:#7d9bf0; --accent-ink:#0c1222; --accent-soft:#1c2a52;
+  --input:#2a2713; --calc:#1b243b;
+  --good:#58c88e; --good-soft:#12301f; --warn:#f0b35a; --warn-soft:#38290f; --bad:#f08a82; --bad-soft:#3a1714; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1222; --surface:#141c31; --ink:#e7ecf8; --muted:#97a3bd; --line:#26314d;
+  --accent:#7d9bf0; --accent-ink:#0c1222; --accent-soft:#1c2a52;
+  --input:#2a2713; --calc:#1b243b;
+  --good:#58c88e; --good-soft:#12301f; --warn:#f0b35a; --warn-soft:#38290f; --bad:#f08a82; --bad-soft:#3a1714; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.55;padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-head);font-weight:700;margin:0;text-wrap:balance;line-height:1.35}
+button,input,select,textarea{font:inherit;color:inherit}
+.app{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:100vh}
+.side{background:var(--surface);border-right:1px solid var(--line);padding:16px 10px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.brand{padding:4px 10px 14px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.brand b{display:block;font-family:var(--f-head);font-size:17px;color:var(--accent)}
+.brand span{font-size:12px;color:var(--muted)}
+.nav a{display:block;padding:8px 12px;border-radius:8px;color:var(--ink);text-decoration:none;font-weight:500}
+.nav a:hover{background:var(--calc)}
+.nav a.on{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.nav h4{margin:14px 12px 4px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.main{padding:20px max(16px,env(safe-area-inset-right,0px)) 60px 24px;min-width:0}
+.top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.top h1{font-size:22px;flex:1;min-width:200px}
+.btn{border:1px solid var(--line);background:var(--surface);padding:7px 14px;border-radius:8px;cursor:pointer;font-weight:600;white-space:nowrap}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.bad{color:var(--bad)}
+.btn.sm{padding:3px 9px;font-size:12px;font-weight:500}
+.btn:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.grid{display:grid;gap:12px}
+.tiles{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.tile small{color:var(--muted);display:block}
+.tile b{font-size:24px;font-variant-numeric:tabular-nums;display:block;line-height:1.3}
+.tile em{font-style:normal;font-size:12px;color:var(--muted)}
+.tile.warn b{color:var(--warn)} .tile.bad b{color:var(--bad)} .tile.good b{color:var(--good)}
+.cols2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th{background:var(--accent);color:var(--accent-ink);text-align:left;padding:8px 10px;font-weight:600;font-size:13px;white-space:nowrap;position:sticky;top:0}
+td{padding:7px 10px;border-top:1px solid var(--line);vertical-align:middle}
+tr:hover td{background:var(--calc)}
+td.r,th.r{text-align:right}
+.pill{display:inline-block;padding:1px 9px;border-radius:99px;font-size:12px;font-weight:600;background:var(--calc);color:var(--muted);white-space:nowrap}
+.pill.good{background:var(--good-soft);color:var(--good)} .pill.warn{background:var(--warn-soft);color:var(--warn)} .pill.bad{background:var(--bad-soft);color:var(--bad)} .pill.acc{background:var(--accent-soft);color:var(--accent)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.bar input,.bar select,.f input,.f select,.f textarea{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 10px;min-width:0}
+.bar input[type=search]{flex:1;min-width:180px}
+.f{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 14px}
+.f label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted);font-weight:600}
+.f label.wide{grid-column:1/-1}
+.f input,.f select,.f textarea{width:100%;background:var(--input);color:var(--ink);font-weight:400;font-size:14px}
+.f input[readonly],.f .calc{background:var(--calc)}
+.calcbox{background:var(--calc);border-radius:10px;padding:10px 14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px 14px;margin-top:6px}
+.calcbox small{color:var(--muted);display:block;font-size:12px} .calcbox b{font-variant-numeric:tabular-nums}
+.ov{position:fixed;inset:0;background:rgba(8,12,24,.55);z-index:50;display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:24px 12px}
+.modal{background:var(--surface);border-radius:14px;width:min(860px,100%);padding:20px;border:1px solid var(--line);margin:auto}
+.modal.wide{width:min(1000px,100%)}
+.modal h2{font-size:19px;margin-bottom:14px}
+.mfoot{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.err{background:var(--bad-soft);color:var(--bad);padding:8px 12px;border-radius:8px;margin-top:10px;font-weight:600}
+.note{background:var(--warn-soft);color:var(--warn);padding:10px 14px;border-radius:10px;margin-bottom:12px}
+.hint{color:var(--muted);font-size:12px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:9px 18px;border-radius:99px;z-index:90;font-weight:600;max-width:90vw}
+.sec{margin:20px 0 8px;font-size:16px}
+.chart{width:100%;height:auto}
+.chart text{fill:var(--muted);font-size:11px;font-family:var(--f-body)}
+.menu-btn{display:none}
+.photo{width:96px;height:128px;border:1px dashed var(--line);border-radius:8px;background:var(--calc);display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--muted);font-size:12px;text-align:center}
+.photo img{width:100%;height:100%;object-fit:cover}
+.welcome{max-width:640px;margin:8vh auto;text-align:center}
+.welcome h1{font-size:26px;margin-bottom:10px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:3px 14px}
+.kv span:nth-child(odd){color:var(--muted)}
+@media (max-width:820px){
+  .app{grid-template-columns:1fr}
+  .side{position:fixed;left:0;top:0;bottom:0;width:240px;z-index:40;transform:translateX(-102%);transition:transform .2s;height:auto}
+  body.nav-open .side{transform:none}
+  .menu-btn{display:inline-block}
+  .main{padding-left:max(16px,env(safe-area-inset-left,0px))}
+}
+@media (prefers-reduced-motion:reduce){.side{transition:none}}
+.previewbox{overflow:auto;background:var(--calc);padding:12px;border-radius:10px}
+
+/* dashboard v2 */
+.hero{position:relative;overflow:hidden;border-radius:20px;padding:24px 26px;color:#fff;background:linear-gradient(135deg,#1d3b94 0%,#2f6fd6 55%,#18a58a 120%);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;align-items:center}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:#ffffff14;pointer-events:none}
+.hero:before{width:260px;height:260px;right:-60px;top:-110px}.hero:after{width:170px;height:170px;left:36%;bottom:-100px}
+.hero>*{position:relative}
+.hero h2{font-size:22px;color:#fff}.hero p{margin:4px 0 0;opacity:.85;font-size:13px}
+.hero .big{font-size:38px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2;margin-top:12px}
+.hero .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.hero .chips span{background:#ffffff26;border-radius:99px;padding:3px 12px;font-size:12px;backdrop-filter:blur(4px)}
+.ringbox{display:flex;align-items:center;gap:16px;justify-content:center}
+.ring{width:120px;height:120px;flex:none}.ring text{fill:#fff;font-family:var(--f-body)}
+.ringbox small{display:block;opacity:.85;font-size:12px}.ringbox b{font-size:15px;display:block}
+.kt{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}@media(max-width:900px){.kt{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:420px){.kc{padding:12px;gap:9px}.kc i{width:36px;height:36px;font-size:17px}.kc b{font-size:17px}}
+.kc{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;gap:12px;align-items:center;transition:transform .15s,box-shadow .15s}
+.kc:hover{transform:translateY(-2px);box-shadow:0 8px 20px #1a2a5a1a}
+.kc i{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;font-style:normal;font-size:21px;flex:none;background:var(--accent-soft)}
+.kc.good i{background:var(--good-soft)}.kc.warn i{background:var(--warn-soft)}.kc.bad i{background:var(--bad-soft)}
+.kc small{color:var(--muted);display:block;font-size:12px}.kc b{font-size:21px;font-variant-numeric:tabular-nums;line-height:1.25;display:block}.kc em{font-style:normal;font-size:11.5px;color:var(--muted)}
+.dc{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.dc h3{font-size:15px;margin:0 0 10px;display:flex;align-items:center;gap:8px}.dc h3 u{text-decoration:none;width:8px;height:18px;border-radius:4px;background:var(--accent)}
+.dc.g h3 u{background:var(--good)}.dc.w h3 u{background:var(--warn)}.dc.b h3 u{background:var(--bad)}
+.pr{display:grid;gap:9px}.pr div{display:grid;grid-template-columns:minmax(80px,1fr) 2fr 34px;gap:8px;align-items:center;font-size:13px}
+.pr span.t{height:9px;border-radius:9px;background:var(--calc);overflow:hidden}.pr span.t i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--accent),#18a58a)}
+.pr b{text-align:right;font-variant-numeric:tabular-nums}
+.li{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}.li:first-of-type{border-top:0}
+.li .av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;color:#fff;flex:none}
+.li .nm{flex:1;min-width:0;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.li .nm small{display:block;color:var(--muted);font-size:11px}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin-top:14px}
+.dgrid .span2{grid-column:1/-1}
+.empty{color:var(--muted);text-align:center;padding:14px;font-size:13px}
+.bars rect{transition:opacity .15s}.bars g:hover rect{opacity:.75}
+@media(max-width:700px){.hero{grid-template-columns:1fr;padding:18px}.hero .big{font-size:30px}}
+</style>
+<style id="docstyle"></style>
+
+<div class="app" id="app" hidden>
+  <aside class="side" id="side">
+    <div class="brand"><b id="brandName">ALE Academy</b><span id="whoami">ប្រព័ន្ធគ្រប់គ្រងសាលា</span></div>
+    <nav class="nav" id="nav"></nav>
+  </aside>
+  <main class="main">
+    <div class="top"><button class="btn menu-btn" data-act="menu" aria-label="ម៉ឺនុយ">☰ ម៉ឺនុយ</button><h1 id="pageTitle"></h1><div id="topActions" class="bar" style="margin:0"></div></div>
+    <div id="view"></div>
+  </main>
+</div>
+<div id="boot" class="welcome"><h1>កំពុងបើកប្រព័ន្ធ…</h1></div>
+<div id="modalRoot"></div>
+<div id="offscreen" style="position:fixed;left:-12000px;top:0"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+'use strict';
+/* ====================== SEED (from Excel) ====================== */
+const SEED={"settings":{"fees":[{"level":"មត្តេយ្យកម្រិតទាប","program":"ចំណេះទូទៅភាសាខ្មែរ","fee":30.0},{"level":"មត្តេយ្យកម្រិតមធ្យម","program":"ចំណេះទូទៅភាសាខ្មែរ","fee":30.0},{"level":"មត្តេយ្យកម្រិតខ្ពស់","program":"ចំណេះទូទៅភាសាខ្មែរ","fee":30.0},{"level":"ថ្នាក់ទី១","program":"ចំណេះទូទៅភាសាខ្មែរ","fee":35.0},{"level":"ថ្នាក់ទី២","program":"ចំណេះទូទៅភាសាខ្មែរ","fee":35.0},{"level":"ថ្នាក់ទី៣","program":"ចំណេះទូទៅភាសាខ្មែរ","fee":40.0},{"level":"ថ្នាក់ទី៤","program":"ចំណេះទូទៅភាសាខ្មែរ","fee":40.0},{"level":"ថ្នាក់ទី៥","program":"ចំណេះទូទៅភាសាខ្មែរ","fee":45.0},{"level":"ថ្នាក់ទី៦","program":"ចំណេះទូទៅភាសាខ្មែរ","fee":45.0},{"level":"ថ្នាក់ទី៧","program":"ចំណេះទូទៅភាសាខ្មែរ","fee":50.0},{"level":"ថ្នាក់ទី៨","program":"ចំណេះទូទៅភាសាខ្មែរ","fee":55.0},{"level":"ថ្នាក់ទី៩","program":"ចំណេះទូទៅភាសាខ្មែរ","fee":70.0},{"level":"ថ្នាក់ទី១០","program":"ចំណេះទូទៅភាសាខ្មែរ","fee":78.3333},{"level":"ថ្នាក់ទី១១","program":"ចំណេះទូទៅភាសាខ្មែរ","fee":88.3333},{"level":"ថ្នាក់ទី១២","program":"ចំណេះទូទៅភាសាខ្មែរ","fee":98.3333},{"level":"N1","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":25.0},{"level":"N2","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":25.0},{"level":"N3","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":25.0},{"level":"N4","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":25.0},{"level":"K1A","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":30.0},{"level":"K1B","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":30.0},{"level":"K2A","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":30.0},{"level":"K2B","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":30.0},{"level":"K3A","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":35.0},{"level":"K3B","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":35.0},{"level":"K4A","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":35.0},{"level":"K4B","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":35.0},{"level":"YL1A","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":40.0},{"level":"YL1B","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":40.0},{"level":"YL2A","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":40.0},{"level":"YL2B","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":40.0},{"level":"YL3A","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":40.0},{"level":"YL3B","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":40.0},{"level":"YL4A","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":45.0},{"level":"YL4B","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":45.0},{"level":"YL5A","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":45.0},{"level":"YL5B","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":45.0},{"level":"YL6A","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":45.0},{"level":"YL6B","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":45.0},{"level":"L1A","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":50.0},{"level":"L1B","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":50.0},{"level":"L2A","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":50.0},{"level":"L2B","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":50.0},{"level":"L3A","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":55.0},{"level":"L3B","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":55.0},{"level":"L4A","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":55.0},{"level":"L4B","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":55.0},{"level":"Special Course","program":"ភាសាអង់គ្លេសពេញម៉ោង","fee":60.0},{"level":"BC1","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":12.0},{"level":"BC2","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":12.0},{"level":"BC3","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":15.0},{"level":"BC4","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":15.0},{"level":"BC5","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":18.0},{"level":"BC6","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":18.0},{"level":"YL1 A","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":22.0},{"level":"YL1 B","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":22.0},{"level":"YL2 A","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":22.0},{"level":"YL2 B","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":22.0},{"level":"YL3 A","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":24.0},{"level":"YL3 B","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":24.0},{"level":"L1 A","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":26.0},{"level":"L1 B","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":26.0},{"level":"L2 A","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":26.0},{"level":"L2 B","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":26.0},{"level":"L3 A","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":28.0},{"level":"L3 B","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":28.0},{"level":"L4 A","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":28.0},{"level":"L4 B","program":"ភាសាអង់គ្លេសក្រៅម៉ោង","fee":28.0}],"programs":[{"kh":"ចំណេះទូទៅភាសាខ្មែរ","en":"Khmer General Education","code":"KGE","s1":"ព្រឹក","s2":"រសៀល"},{"kh":"ភាសាអង់គ្លេសពេញម៉ោង","en":"English Full Time","code":"EFP","s1":"ព្រឹក","s2":"រសៀល"},{"kh":"ភាសាអង់គ្លេសក្រៅម៉ោង","en":"English Part Time","code":"EPP","s1":"ល្ងាច","s2":"យប់"}],"packages":[{"name":"1 ខែ","months":1},{"name":"1 ត្រីមាស","months":3},{"name":"1 ឆមាស","months":6},{"name":"1 ឆ្នាំ","months":12},{"name":"សង","months":0}],"shifts":[{"kh":"ព្រឹក","en":"Morning"},{"kh":"រសៀល","en":"Afternoon"},{"kh":"ល្ងាច","en":"Evening"},{"kh":"យប់","en":"Night"}],"rooms":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],"cats":[{"kh":"ឯកសណ្ឋាន","en":"Uniform"},{"kh":"សម្ភារៈ","en":"Supplies"},{"kh":"សៀវភៅ","en":"Books"},{"kh":"Student ID Card","en":"Student ID Card"}],"info":{"nameKh":"សាលារៀន អេ អិល អ៊ី","nameEn":"ALE ACADEMY","nameEn2":"(Academy of Lifelong Education)","vat":0.0,"rate":4100.0,"n1":"- ទឹកប្រាក់បង់រួចមិនប្រគល់ជូនវិញបានទេ/Non-refundable","n2":"- សូមពិនិត្យអោយបានត្រឹមត្រូវមុនពេលចាកចេញ","n3":"- តម្លៃសិក្សាខាងលើនេះសម្រាប់ការផ្តល់សេវាកម្មអប់រំតែប៉ុណ្ណោះ ចំពោះគ្រោះថ្នាក់ជាយថាហេតុជាបន្ទុករបស់អាណាព្យាបាលសិស្ស។","addr":"","contact":""}},"items":[{"code":"IVTO-001","prog":"KGE","cat":"សៀវភៅ","type":"សៀវភៅតាមដាន","name":"សៀវភៅតាមដានមត្តេយ្យ","unit":"ក្បាល","price":2.5,"open":50,"low":5},{"code":"IVTO-002","prog":"KGE","cat":"សៀវភៅ","type":"សៀវភៅតាមដាន","name":"សៀវភៅតាមដានបឋម","unit":"ក្បាល","price":2.5,"open":40,"low":5},{"code":"IVTO-003","prog":"KGE","cat":"សៀវភៅ","type":"មត្តេយ្យកម្រិតមធ្យម","name":"បុរេសំណេរកម្រិតមធ្យម","unit":"ក្បាល","price":4,"open":30,"low":5},{"code":"IVTO-004","prog":"KGE","cat":"សៀវភៅ","type":"មត្តេយ្យកម្រិតមធ្យម","name":"បុរេគណិតកម្រិត មធ្យម","unit":"ក្បាល","price":4,"open":30,"low":5},{"code":"IVTO-005","prog":"KGE","cat":"សៀវភៅ","type":"មត្តេយ្យកម្រិតទាប","name":"បុរេសំណេរកម្រិតទាប (ភាគ២)","unit":"ក្បាល","price":3,"open":30,"low":5},{"code":"IVTO-006","prog":"KGE","cat":"សៀវភៅ","type":"មត្តេយ្យកម្រិតទាប","name":"បុរេសំណេរកម្រិតទាប","unit":"ក្បាល","price":3,"open":30,"low":5},{"code":"IVTO-007","prog":"KGE","cat":"សៀវភៅ","type":"មត្តេយ្យកម្រិតទាប","name":"បុរេគណិតកម្រិតទាប (ភាគ២)","unit":"ក្បាល","price":5,"open":30,"low":5},{"code":"IVTO-008","prog":"KGE","cat":"សៀវភៅ","type":"មត្តេយ្យកម្រិតទាប","name":"បុរេគណិតកម្រិតទាប","unit":"ក្បាល","price":5,"open":30,"low":5},{"code":"IVTO-009","prog":"KGE","cat":"សៀវភៅ","type":"មត្តេយ្យកម្រិតខ្ពស់","name":"បុរេសំណេរកម្រិតខ្ពស់ ឆមាស២","unit":"ក្បាល","price":5,"open":30,"low":5},{"code":"IVTO-010","prog":"KGE","cat":"សៀវភៅ","type":"មត្តេយ្យកម្រិតខ្ពស់","name":"បុរេសំណេរកម្រិតខ្ពស់","unit":"ក្បាល","price":4,"open":30,"low":5},{"code":"IVTO-011","prog":"KGE","cat":"សៀវភៅ","type":"មត្តេយ្យកម្រិតខ្ពស់","name":"បុរេគណិតកម្រិតខ្ពស់ ឆមាស២","unit":"ក្បាល","price":5,"open":30,"low":5},{"code":"IVTO-012","prog":"KGE","cat":"សៀវភៅ","type":"មត្តេយ្យកម្រិតខ្ពស់","name":"បុរេគណិតកម្រិតខ្ពស់","unit":"ក្បាល","price":4,"open":30,"low":5},{"code":"IVTO-013","prog":"KGE","cat":"សៀវភៅ","type":"បឋមសិក្សា","name":"សៀវភៅគណិត ថ្នាក់ទី៣","unit":"ក្បាល","price":4,"open":30,"low":5},{"code":"IVTO-014","prog":"KGE","cat":"សៀវភៅ","type":"បឋមសិក្សា","name":"សៀវភៅគណិត ថ្នាក់ទី២","unit":"ក្បាល","price":4,"open":30,"low":5},{"code":"IVTO-015","prog":"KGE","cat":"សៀវភៅ","type":"បឋមសិក្សា","name":"សៀវភៅគណិត ថ្នាក់ទី១","unit":"ក្បាល","price":4,"open":30,"low":5},{"code":"IVTO-016","prog":"EPP","cat":"សៀវភៅ","type":"TOEFL Grammar","name":"TOEFL Grammar","unit":"ក្បាល","price":10,"open":30,"low":5},{"code":"IVTO-017","prog":"EPP","cat":"សៀវភៅ","type":"TOEFL Grammar","name":"Reading Skills","unit":"ក្បាល","price":4,"open":30,"low":5},{"code":"IVTO-018","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"T-Shirt","name":"T-Shirt 4","unit":"អាវ","price":8,"open":20,"low":5},{"code":"IVTO-019","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"T-Shirt","name":"T-Shirt 6","unit":"អាវ","price":8,"open":20,"low":5},{"code":"IVTO-020","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"T-Shirt","name":"T-Shirt 8","unit":"អាវ","price":8,"open":20,"low":5},{"code":"IVTO-021","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"T-Shirt","name":"T-Shirt 10","unit":"អាវ","price":8,"open":20,"low":5},{"code":"IVTO-022","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"T-Shirt","name":"T-Shirt 12","unit":"អាវ","price":8,"open":20,"low":5},{"code":"IVTO-023","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"T-Shirt","name":"T-Shirt Xs","unit":"អាវ","price":8,"open":20,"low":5},{"code":"IVTO-024","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"T-Shirt","name":"T-Shirt S","unit":"អាវ","price":8,"open":20,"low":5},{"code":"IVTO-025","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"T-Shirt","name":"T-Shirt L","unit":"អាវ","price":8,"open":20,"low":5},{"code":"IVTO-026","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"T-Shirt","name":"T-Shirt XL","unit":"អាវ","price":8,"open":20,"low":5},{"code":"IVTO-027","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"T-Shirt","name":"T-Shirt M","unit":"អាវ","price":8,"open":20,"low":5},{"code":"IVTO-028","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Skirt","name":"សំពត់-30","unit":"សំពត់","price":5,"open":20,"low":5},{"code":"IVTO-029","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Skirt","name":"សំពត់-29","unit":"សំពត់","price":5,"open":20,"low":5},{"code":"IVTO-030","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Skirt","name":"សំពត់-28","unit":"សំពត់","price":5,"open":20,"low":5},{"code":"IVTO-031","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Skirt","name":"សំពត់-27","unit":"សំពត់","price":5,"open":20,"low":5},{"code":"IVTO-032","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Skirt","name":"សំពត់-26","unit":"សំពត់","price":5,"open":20,"low":5},{"code":"IVTO-033","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Skirt","name":"សំពត់-25","unit":"សំពត់","price":5,"open":20,"low":5},{"code":"IVTO-034","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Skirt","name":"សំពត់-24","unit":"សំពត់","price":5,"open":20,"low":5},{"code":"IVTO-035","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Skirt","name":"សំពត់-23","unit":"សំពត់","price":5,"open":20,"low":5},{"code":"IVTO-036","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Skirt","name":"សំពត់-22","unit":"សំពត់","price":5,"open":20,"low":5},{"code":"IVTO-037","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Skirt","name":"សំពត់-21","unit":"សំពត់","price":5,"open":20,"low":5},{"code":"IVTO-038","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Skirt","name":"សំពត់-20","unit":"សំពត់","price":5,"open":20,"low":5},{"code":"IVTO-039","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Skirt","name":"សំពត់-Xs (19)","unit":"សំពត់","price":5,"open":20,"low":5},{"code":"IVTO-040","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Pants","name":"ខោ-30","unit":"ខោ","price":5,"open":20,"low":5},{"code":"IVTO-041","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Pants","name":"ខោ-29","unit":"ខោ","price":5,"open":20,"low":5},{"code":"IVTO-042","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Pants","name":"ខោ-28","unit":"ខោ","price":5,"open":20,"low":5},{"code":"IVTO-043","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Pants","name":"ខោ-27","unit":"ខោ","price":5,"open":20,"low":5},{"code":"IVTO-044","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Pants","name":"ខោ-26","unit":"ខោ","price":5,"open":20,"low":5},{"code":"IVTO-045","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Pants","name":"ខោ-25","unit":"ខោ","price":5,"open":20,"low":5},{"code":"IVTO-046","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Pants","name":"ខោ-24","unit":"ខោ","price":5,"open":20,"low":5},{"code":"IVTO-047","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Pants","name":"ខោ-23","unit":"ខោ","price":5,"open":20,"low":5},{"code":"IVTO-048","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Pants","name":"ខោ-22","unit":"ខោ","price":5,"open":20,"low":5},{"code":"IVTO-049","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Pants","name":"ខោ-21","unit":"ខោ","price":5,"open":20,"low":5},{"code":"IVTO-050","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Pants","name":"ខោ-20","unit":"ខោ","price":5,"open":20,"low":5},{"code":"IVTO-051","prog":"EFP","cat":"ឯកសណ្ឋាន","type":"Pants","name":"ខោ-Xs (19)","unit":"ខោ","price":5,"open":20,"low":5},{"code":"IVTO-052","prog":"EFP","cat":"សៀវភៅ","type":"Primary","name":"Speak Time 2","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-053","prog":"EFP","cat":"សៀវភៅ","type":"Primary","name":"Speak Time 1","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-054","prog":"EFP","cat":"សៀវភៅ","type":"Kindergarten K1-K4","name":"Speak Beginner 1","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-055","prog":"EFP","cat":"សៀវភៅ","type":"Kindergarten K1-K4","name":"Speak Kid 2","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-056","prog":"EFP","cat":"សៀវភៅ","type":"Kindergarten K1-K4","name":"Speak Kid 1","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-057","prog":"EFP","cat":"សៀវភៅ","type":"Primary","name":"Come On Everyone 1 (WB-Copy)","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-058","prog":"EFP","cat":"សៀវភៅ","type":"Primary","name":"Come On Everyone 1 (Ori)","unit":"ក្បាល","price":8,"open":20,"low":5},{"code":"IVTO-059","prog":"EFP","cat":"សៀវភៅ","type":"Primary","name":"Basic Reading800 (2)","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-060","prog":"EFP","cat":"សៀវភៅ","type":"Primary","name":"Basic Reading800 (1)","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-061","prog":"EFP","cat":"សៀវភៅ","type":"Nursery","name":"Little Phonics 2","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-062","prog":"EFP","cat":"សៀវភៅ","type":"Nursery","name":"Little Phonics 1","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-063","prog":"EFP","cat":"សៀវភៅ","type":"Nursery","name":"Little Phoncs 1 (Copy)","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-064","prog":"EFP","cat":"សៀវភៅ","type":"Nursery","name":"Coloring 2","unit":"ក្បាល","price":5,"open":20,"low":5},{"code":"IVTO-065","prog":"EFP","cat":"សៀវភៅ","type":"Nursery","name":"Coloring 1","unit":"ក្បាល","price":5,"open":20,"low":5},{"code":"IVTO-066","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 6","name":"Reading Success 6","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-067","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 6","name":"New Frontier 6B (O+W)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-068","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 6","name":"New Frontier 6A (O+W)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-069","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 6","name":"WB New Frontier 6","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-070","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 6","name":"New Frontier 6 ( Original)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-071","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 5","name":"Reading Success 5","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-072","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 5","name":"New Frontier 5B (O+W)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-073","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 5","name":"New Frontier 5A (O+W)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-074","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 5","name":"WB New Frontier 5","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-075","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 5","name":"New Frontier 5 ( Original)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-076","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 4","name":"Reading Success 4","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-077","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 4","name":"New Frontier 4B (O+W)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-078","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 4","name":"New Frontier 4A (O+W)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-079","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 4","name":"WB New Frontier 4","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-080","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 4","name":"New Frontier 4 ( Original)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-081","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 3","name":"Reading Success 3","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-082","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 3","name":"New Frontier 3B (O+W)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-083","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 3","name":"New Frontier 3A (O+W)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-084","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 3","name":"WB New Frontier 3","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-085","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 3","name":"New Frontier 3 (Original)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-086","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 2","name":"Reading Success 2","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-087","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 2","name":"New Frontier 2B (O+W)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-088","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 2","name":"New Frontier 2A (O+W)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-089","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 2","name":"WB New Frontier 2","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-090","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 2","name":"New Frontier 2 (Original)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-091","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 1","name":"Reading Success 1","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-092","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 1","name":"New Frontier 1B (O+W)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-093","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 1","name":"New Frontier 1A (O+W)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-094","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 1","name":"WB New Frontier 1","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-095","prog":"EPP","cat":"សៀវភៅ","type":"New Frontier 1","name":"New Frontier 1 (Original)","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-096","prog":"EPP","cat":"សៀវភៅ","type":"MY Phonics 5","name":"My Phonics 5(Original)","unit":"ក្បាល","price":7,"open":20,"low":5},{"code":"IVTO-097","prog":"EPP","cat":"សៀវភៅ","type":"MY Phonics 5","name":"Basic Grammar 2","unit":"ក្បាល","price":5,"open":20,"low":5},{"code":"IVTO-098","prog":"EPP","cat":"សៀវភៅ","type":"MY Phonics 4","name":"My Phonics 4( Original)","unit":"ក្បាល","price":7,"open":20,"low":5},{"code":"IVTO-099","prog":"EPP","cat":"សៀវភៅ","type":"MY Phonics 4","name":"Basic Grammar 1","unit":"ក្បាល","price":5,"open":20,"low":5},{"code":"IVTO-100","prog":"EPP","cat":"សៀវភៅ","type":"MY Phonics 3","name":"My Phonics3 (Original)","unit":"ក្បាល","price":7,"open":20,"low":5},{"code":"IVTO-101","prog":"EPP","cat":"សៀវភៅ","type":"MY Phonics 3","name":"Sight Word Mastery 3","unit":"ក្បាល","price":5,"open":20,"low":5},{"code":"IVTO-102","prog":"EPP","cat":"សៀវភៅ","type":"MY Phonics 2","name":"Sight Word Mastery 2","unit":"ក្បាល","price":5,"open":20,"low":5},{"code":"IVTO-103","prog":"EPP","cat":"សៀវភៅ","type":"MY Phonics 2","name":"My Phonics 2(Original)","unit":"ក្បាល","price":7,"open":20,"low":5},{"code":"IVTO-104","prog":"EPP","cat":"សៀវភៅ","type":"MY Phonics 1","name":"Sight Word Mastery 1","unit":"ក្បាល","price":5,"open":20,"low":5},{"code":"IVTO-105","prog":"EPP","cat":"សៀវភៅ","type":"MY Phonics 1","name":"My Phonics 1(Original)","unit":"ក្បាល","price":7,"open":20,"low":5},{"code":"IVTO-106","prog":"EFP","cat":"សៀវភៅ","type":"Kindergarten K1-K4","name":"Speak Kid 3","unit":"ក្បាល","price":10,"open":20,"low":5},{"code":"IVTO-107","prog":"EFP","cat":"សៀវភៅ","type":"Kindergarten K1-K4","name":"My Phonics 4 (Activity)","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-108","prog":"EFP","cat":"សៀវភៅ","type":"Kindergarten K1-K4","name":"My Phonics 3 (Activity)","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-109","prog":"EFP","cat":"សៀវភៅ","type":"Kindergarten K1-K4","name":"My Phonics 2 (Activity)","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-110","prog":"EFP","cat":"សៀវភៅ","type":"Kindergarten K1-K4","name":"My Phonics 1 Copy","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-111","prog":"EFP","cat":"សៀវភៅ","type":"Kindergarten K1-K4","name":"My Phonics 1 (WB-Copy)","unit":"ក្បាល","price":3,"open":20,"low":5},{"code":"IVTO-112","prog":"EFP","cat":"សៀវភៅ","type":"Kindergarten K1-K4","name":"My Phonics 1 (Activity)","unit":"ក្បាល","price":4,"open":20,"low":5},{"code":"IVTO-113","prog":"EFP","cat":"សៀវភៅ","type":"Kindergarten K1-K4","name":"My Pals are Here 1A","unit":"ក្បាល","price":7,"open":20,"low":5},{"code":"IVTO-114","prog":"EFP","cat":"សៀវភៅ","type":"Kindergarten K1-K4","name":"Get Ready Math K2 For K3","unit":"ក្បាល","price":3,"open":20,"low":5},{"code":"IVTO-115","prog":"EFP","cat":"សៀវភៅ","type":"Kindergarten K1-K4","name":"Get Ready Math Nursery For K1","unit":"ក្បាល","price":3,"open":20,"low":5},{"code":"IVTO-116","prog":"EFP","cat":"សៀវភៅ","type":"Kindergarten K1-K4","name":"Get Ready Math K1 For K2","unit":"ក្បាល","price":3,"open":20,"low":5},{"code":"IVTO-117","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Boy Uniform","name":"Boy-20","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-118","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Boy Uniform","name":"Boy-21","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-119","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Boy Uniform","name":"Boy-22","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-120","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Boy Uniform","name":"Boy-23","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-121","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Boy Uniform","name":"Boy-24","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-122","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Boy Uniform","name":"Boy-25","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-123","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Boy Uniform","name":"Boy-26","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-124","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Boy Uniform","name":"Boy-27","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-125","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Boy Uniform","name":"Boy-28","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-126","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Boy Uniform","name":"Boy-29","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-127","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Boy Uniform","name":"Boy-30","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-128","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Girl Unform","name":"Girl-19","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-129","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Girl Unform","name":"Girl-20","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-130","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Girl Unform","name":"Girl-21","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-131","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Girl Unform","name":"Girl-22","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-132","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Girl Unform","name":"Girl-23","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-133","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Girl Unform","name":"Girl-24","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-134","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Girl Unform","name":"Girl-25","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-135","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Girl Unform","name":"Girl-26","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-136","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Girl Unform","name":"Girl-27","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-137","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Girl Unform","name":"Girl-28","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-138","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Girl Unform","name":"Girl-29","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-139","prog":"KGE","cat":"ឯកសណ្ឋាន","type":"Girl Unform","name":"Girl-30","unit":"ឈុត","price":13,"open":20,"low":5},{"code":"IVTO-160","prog":"","cat":"Student ID Card","type":"កាតសិស្ស","name":"កាតសិស្ស (រឹង)","unit":"pcs","price":1,"open":20,"low":5},{"code":"IVTO-161","prog":"","cat":"Student ID Card","type":"កាតសិស្ស","name":"សម្បកកាត","unit":"pcs","price":1,"open":20,"low":5},{"code":"IVTO-162","prog":"","cat":"Student ID Card","type":"កាតសិស្ស","name":"ខ្សែកាត","unit":"pcs","price":1,"open":20,"low":5}],"students":[{"id":"S001","name":"សុខ សោភា","en":"Sok Sophea","sex":"ស្រី","dob":"2016-05-12","prog":"ចំណេះទូទៅភាសាខ្មែរ","level":"ថ្នាក់ទី៣","shift":"ព្រឹក","room":"1","guardian":"សុខ វិបុល","rel":"ឪពុក","phone":"012 345 678","reg":"2026-11-02","status":"កំពុងរៀន","dropDate":"","dropWhy":"","addr":"","phone2":""},{"id":"S002","name":"សុខ មាន","en":"Sok Mean","sex":"ប្រុស","dob":"2016-05-12","prog":"ចំណេះទូទៅភាសាខ្មែរ","level":"ថ្នាក់ទី៣","shift":"ព្រឹក","room":"1","guardian":"សុខ វិបុល","rel":"ឪពុក","phone":"012 345 678","reg":"2026-11-02","status":"កំពុងរៀន","dropDate":"","dropWhy":"","addr":"","phone2":""},{"id":"S003","name":"ចាប ចាន់","en":"Chab Chan","sex":"ប្រុស","dob":"2012-09-12","prog":"ភាសាអង់គ្លេសពេញម៉ោង","level":"N1","shift":"រសៀល","room":"2","guardian":"ចាប ងោ","rel":"ឪពុក","phone":"011 345 678","reg":"2026-11-10","status":"កំពុងរៀន","dropDate":"","dropWhy":"","addr":"","phone2":""}],"payments":[{"inv":"RC0001","date":"2026-11-02","sid":"S001","pack":"1 ត្រីមាស","dtype":"ភាគរយ","dval":10,"dwhy":"បងប្អូនរៀនជាមួយគ្នា","paid":50,"method":"សាច់ប្រាក់","note":"","settles":"","receipt":"000001"},{"inv":"RC0002","date":"2026-11-02","sid":"S002","pack":"1 ត្រីមាស","dtype":"","dval":null,"dwhy":"","paid":120,"method":"សាច់ប្រាក់","note":"","settles":"","receipt":"000002"},{"inv":"RC0003","date":"2026-11-10","sid":"S003","pack":"1 ឆ្នាំ","dtype":"ភាគរយ","dval":15,"dwhy":"ប្រមូលសិចប្រចាំឆ្នាំ","paid":255,"method":"ABA","note":"","settles":"","receipt":"000003"},{"inv":"RC0004","date":"2026-11-10","sid":"S001","pack":"សង","dtype":"","dval":null,"dwhy":"","paid":58,"method":"សាច់ប្រាក់","note":"","settles":"RC0001","receipt":"000004"}],"sales":[{"inv":"SL0001","date":"2026-11-02","sid":"S001","other":"","code":"IVTO-129","qty":2,"dtype":"","dval":null,"paid":26,"method":"សាច់ប្រាក់","note":""},{"inv":"SL0001","date":"2026-11-02","sid":"S001","other":"","code":"IVTO-001","qty":1,"dtype":"","dval":null,"paid":2.5,"method":"សាច់ប្រាក់","note":""},{"inv":"SL0001","date":"2026-11-02","sid":"S001","other":"","code":"IVTO-005","qty":1,"dtype":"","dval":null,"paid":3,"method":"","note":""},{"inv":"SL0001","date":"2026-11-02","sid":"S001","other":"","code":"IVTO-161","qty":1,"dtype":"","dval":null,"paid":1,"method":"","note":""}],"teachers":[{"id":"T001","name":"សុខ ចាន់ណា","sex":"ស្រី","phone":"012 111 222","subject":"ចំណេះទូទៅភាសាខ្មែរ","role":"គ្រូបន្ទុកថ្នាក់","join":"2026-10-01","status":"កំពុងបង្រៀន","en":"Sok Channa"}],"classes":[{"id":"C001","prog":"ចំណេះទូទៅភាសាខ្មែរ","level":"ថ្នាក់ទី៣","shift":"ព្រឹក","room":"1","teacher":"សុខ ចាន់ណា","cap":30}]};
+
+/* ====================== helpers ====================== */
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=(n,l=2)=>String(n).padStart(l,'0');
+const round2=n=>Math.round((+n||0)*100+ (n<0?-1e-9:1e-9))/100;
+const sum=(a,f)=>round2(a.reduce((t,x)=>t+(+f(x)||0),0));
+const money=n=>'$'+(round2(n)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const num=n=>round2(n).toLocaleString('en-US',{maximumFractionDigits:2});
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today=()=>iso(new Date());
+const parseD=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+function addMonths(s,n){const[y,m,d]=s.split('-').map(Number);const t=new Date(y,m-1+n,1);const last=new Date(t.getFullYear(),t.getMonth()+1,0).getDate();t.setDate(Math.min(d,last));return iso(t)}
+function addDays(s,n){const d=parseD(s);d.setDate(d.getDate()+n);return iso(d)}
+const fd=s=>s?s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(0,4):'';
+const age=s=>{if(!s)return'';const d=parseD(s),n=new Date();let a=n.getFullYear()-d.getFullYear();if(n<new Date(n.getFullYear(),d.getMonth(),d.getDate()))a--;return a+' ឆ្នាំ'};
+const clean=s=>String(s||'').replace(/​/g,'').replace(/\s+/g,' ').trim();
+const SETTLE='សង';
+const MOVES=['ទិញចូល (Stock In)','ត្រឡប់ចូល (Return)','ចេញផ្សេង (Stock Out)','បាត់ (Lost)','ខូច (Damaged)','កែតម្រូវ + (Adjust +)','កែតម្រូវ - (Adjust -)'];
+const MOVE_SIGN={0:1,1:1,2:-1,3:-1,4:-1,5:1,6:-1};
+const METHODS=['សាច់ប្រាក់','ផ្ទេរប្រាក់','ABA','Wing','ផ្សេងៗ'];
+const MONTHS_KH=['មករា','កុម្ភៈ','មីនា','មេសា','ឧសភា','មិថុនា','កក្កដា','សីហា','កញ្ញា','តុលា','វិច្ឆិកា','ធ្នូ'];
+
+/* ====================== storage ====================== */
+const COLLS=['students','payments','sales','items','moves','teachers','classes','voids','voidreqs','leaves','scores'];
+let S={settings:null,students:[],payments:[],sales:[],items:[],moves:[],teachers:[],classes:[],voids:[],voidreqs:[],leaves:[],scores:[]};
+let DB=null,STORE='local',ver=0;
+const LS_KEY='ale-school-v1';
+function lsGet(){try{return JSON.parse(localStorage.getItem(LS_KEY)||'null')}catch(e){return null}}
+function lsSave(){try{localStorage.setItem(LS_KEY,JSON.stringify(S))}catch(e){}}
+async function initStore(){
+  try{const c=window.claude&&await window.claude.use('db');if(c){DB=c;STORE='db'}}catch(e){}
+  if(STORE==='db'){
+    try{
+      const meta=await DB.doc('meta/settings').get();
+      if(!meta.exists)return false;
+      S.settings=meta.data().v;
+      for(const c of COLLS){const q=await DB.collection(c).limit(20000).get();S[c]=q.docs.map(d=>d.data())}
+      try{const r=await DB.doc('meta/roles').get();ROLES=r.exists?r.data().v:{assign:{}}}catch(e){ROLES={assign:{}}}
+      ensureDefaults();return true;
+    }catch(e){console.error(e);STORE='local'}
+  }
+  const l=lsGet();if(!l)return false;S=l;ensureDefaults();return true;
+}
+let saveQ=Promise.resolve();
+function put(coll,rec){
+  bump();const a=S[coll];const i=a.findIndex(x=>x.id===rec.id);if(i<0)a.push(rec);else a[i]=rec;
+  persist(()=>DB.collection(coll).doc(rec.id).set(rec));
+}
+function del(coll,id){bump();S[coll]=S[coll].filter(x=>x.id!==id);persist(()=>DB.collection(coll).doc(id).delete())}
+function putSettings(){bump();persist(()=>DB.doc('meta/settings').set({v:S.settings}))}
+function persist(fn){
+  if(STORE==='db'){saveQ=saveQ.then(fn).catch(e=>{console.error(e);toast('រក្សាទុកមិនបាន៖ '+(e&&e.message||'កំហុស'))})}
+  else lsSave();
+}
+async function seedAll(){
+  const sd=JSON.parse(JSON.stringify(SEED));
+  S={settings:{...sd.settings,logo:''},students:[],payments:[],sales:[],items:[],moves:[],teachers:[],classes:[],voids:[],voidreqs:[],leaves:[],scores:[]};
+  S.items=sd.items.map(x=>({...x,id:x.code,sample:false}));
+  S.students=sd.students.map(x=>({...x,sample:true}));
+  S.teachers=sd.teachers.map(x=>({...x,sample:true}));
+  S.classes=sd.classes.map(x=>({...x,sample:true}));
+  for(const p of sd.payments){
+    const settle=p.pack===SETTLE;const st=S.students.find(s=>s.id===p.sid);
+    const r={id:p.inv,date:p.date,sid:p.sid,pack:p.pack,dtype:p.dtype,dval:p.dval,dwhy:p.dwhy,method:p.method,note:p.note,settles:p.settles,receipt:p.receipt,sample:true};
+    if(settle)Object.assign(r,{months:0,fee:0,gross:0,disc:0,due:0,paidAmt:p.paid});
+    else Object.assign(r,calcPay(st.level,p.pack,p.dtype,p.dval,p.paid));
+    S.payments.push(r);
+  }
+  const by={};for(const l of sd.sales){(by[l.inv]=by[l.inv]||[]).push(l)}
+  for(const inv in by){const ls=by[inv];const f=ls[0];
+    const lines=ls.map(l=>{const it=S.items.find(i=>i.code===l.code);return{code:l.code,qty:l.qty,price:it.price,dtype:l.dtype,dval:l.dval}});
+    S.sales.push({id:inv,date:f.date,sid:f.sid,other:f.other,lines,method:ls.map(l=>l.method).find(Boolean)||'សាច់ប្រាក់',paidAmt:round2(ls.reduce((t,l)=>t+l.paid,0)),note:'',sample:true});}
+  S.moves=[];ensureDefaults();bump();
+  if(STORE==='db'){
+    const ops=[];
+    for(const c of COLLS)for(const r of S[c])ops.push(()=>DB.collection(c).doc(r.id).set(r));
+    ops.push(()=>DB.doc('meta/settings').set({v:S.settings}));
+    for(let i=0;i<ops.length;i+=10){await Promise.all(ops.slice(i,i+10).map(f=>f()))}
+  }else lsSave();
+}
+async function wipeAll(){
+  if(STORE==='db'){for(const c of COLLS)for(const r of S[c])await DB.collection(c).doc(r.id).delete();await DB.doc('meta/settings').delete()}
+  else{try{localStorage.removeItem(LS_KEY)}catch(e){}}
+}
+
+/* ====================== caches / derived data ====================== */
+function bump(){ver++}
+let cacheVer=-1,C={};
+function cache(){
+  if(cacheVer===ver)return C;cacheVer=ver;
+  const byId=new Map(S.students.map(s=>[s.id,s]));
+  const pBy=new Map();
+  const sorted=[...S.payments].sort((a,b)=>(a.date+a.id).localeCompare(b.date+b.id));
+  for(const p of sorted){if(!pBy.has(p.sid))pBy.set(p.sid,[]);pBy.get(p.sid).push(p)}
+  const setl=new Map();
+  for(const p of sorted)if(p.pack===SETTLE&&p.settles){if(!setl.has(p.settles))setl.set(p.settles,[]);setl.get(p.settles).push(p)}
+  const pById=new Map(S.payments.map(p=>[p.id,p]));
+  // per-payment derived
+  const der=new Map();
+  for(const [sid,list] of pBy){
+    let m=0,first=true;const st=byId.get(sid);
+    for(const p of list){
+      if(p.pack===SETTLE){der.set(p.id,{kind:'សងបំណុល'});continue}
+      const start=st&&st.reg?addMonths(st.reg,m):'';const end=start?addDays(addMonths(start,p.months),-1):'';
+      const kind=st&&st.status==='ឈប់រៀន'?'សិស្សឈប់រៀន':first?'សិស្សថ្មី':'សិស្សចាស់';
+      const paidSet=(setl.get(p.id)||[]).reduce((t,x)=>t+x.paidAmt,0);
+      der.set(p.id,{start,end,kind,remaining:round2(p.due-p.paidAmt-paidSet)});
+      m+=p.months;first=false;
+    }
+  }
+  for(const [orig,list] of setl){const o=pById.get(orig);let run=o?o.due-o.paidAmt:0;for(const s of list){run=round2(run-s.paidAmt);der.get(s.id).after=run}}
+  const sold=new Map();for(const s of S.sales)for(const l of s.lines)sold.set(l.code,(sold.get(l.code)||0)+(+l.qty||0));
+  const mv=new Map();for(const x of S.moves){const k=x.code;if(!mv.has(k))mv.set(k,[0,0,0,0,0,0,0]);mv.get(k)[MOVES.indexOf(x.type)]+=+x.qty||0}
+  C={byId,pBy,setl,pById,der,sold,mv,itemById:new Map(S.items.map(i=>[i.code,i]))};
+  return C;
+}
+function feeFor(level){const f=S.settings.fees.find(x=>x.level===level);return f?f.fee:0}
+function calcPay(level,pack,dtype,dval,paidIn){
+  const pk=S.settings.packages.find(x=>x.name===pack);const months=pk?pk.months:0;const fee=feeFor(level);
+  const gross=round2(months*fee);let disc=0;
+  if(dtype==='ភាគរយ')disc=gross*(+dval||0)/100;else if(dtype==='សាច់ប្រាក់')disc=+dval||0;
+  disc=round2(Math.min(gross,Math.max(0,disc)));const due=round2(gross-disc);
+  const paidAmt=(paidIn===''||paidIn==null)?due:round2(+paidIn);
+  return{months,fee,gross,disc,due,paidAmt};
+}
+function sInfo(s){
+  const c=cache();const ps=c.pBy.get(s.id)||[];const reg=ps.filter(p=>p.pack!==SETTLE);
+  const due=sum(reg,p=>p.due),paid=sum(ps,p=>p.paidAmt),months=sum(reg,p=>p.months),owe=round2(due-paid);
+  const through=months&&s.reg?addDays(addMonths(s.reg,months),-1):'';
+  let st;
+  if(s.status==='ឈប់រៀន')st=owe>0?'ឈប់រៀន (នៅជំពាក់)':'ឈប់រៀន';
+  else if(!months)st='មិនទាន់បង់';
+  else if(owe>0)st='នៅជំពាក់';
+  else if(through&&through<today())st='ត្រូវបន្តបង់';
+  else st='បង់គ្រប់';
+  return{due,paid,months,owe,through,st,last:ps.length?ps[ps.length-1].date:''};
+}
+const stPill=st=>({'បង់គ្រប់':'good','នៅជំពាក់':'bad','ឈប់រៀន (នៅជំពាក់)':'bad','ត្រូវបន្តបង់':'warn','មិនទាន់បង់':'warn','ឈប់រៀន':''}[st]??'');
+function itemStock(it){
+  const c=cache();const m=c.mv.get(it.code)||[0,0,0,0,0,0,0];const sold=c.sold.get(it.code)||0;
+  const left=(+it.open||0)+m[0]+m[1]-sold-m[2]-m[3]-m[4]+m[5]-m[6];
+  const st=left<0?'ស្តុកអវិជ្ជមាន':left===0?'អស់ស្តុក':left<=(+it.low||0)?'ជិតអស់':'មាន';
+  return{sold,left,st,value:round2(Math.max(0,left)*(+it.price||0)),m};
+}
+const stockPill=st=>({'មាន':'good','ជិតអស់':'warn','អស់ស្តុក':'bad','ស្តុកអវិជ្ជមាន':'bad'}[st]);
+function saleCalc(sale){
+  let gross=0,disc=0;
+  const lines=sale.lines.map(l=>{
+    const g=round2((+l.qty||0)*(+l.price||0));let d=0;
+    if(l.dtype==='ភាគរយ')d=g*(+l.dval||0)/100;else if(l.dtype==='សាច់ប្រាក់')d=+l.dval||0;
+    d=round2(Math.min(g,Math.max(0,d)));gross+=g;disc+=d;
+    const it=cache().itemById.get(l.code);
+    return{...l,gross:g,disc:d,net:round2(g-d),name:it?(it.name+(it.unit?', '+it.unit:'')):l.code,cat:it?it.cat:''};
+  });
+  const net=round2(gross-disc);const paid=sale.paidAmt==null||sale.paidAmt===''?net:+sale.paidAmt;
+  return{lines,gross:round2(gross),disc:round2(disc),net,paid:round2(paid),left:round2(net-paid)};
+}
+function buyerName(s){if(s.sid){const st=cache().byId.get(s.sid);return st?st.name:s.sid}return s.other||''}
+const progByName=n=>S.settings.programs.find(p=>p.kh===n);
+const shiftEn=k=>{const s=S.settings.shifts.find(x=>x.kh===k);return s?s.en:k};
+function nextId(coll,prefix,len){let m=0;for(const r of S[coll]){const n=parseInt(String(r.id).replace(/\D/g,''),10);if(n>m)m=n}const vk={payments:'payment',sales:'sale'}[coll];if(vk)for(const v of S.voids||[])if(v.kind===vk){const n=parseInt(String(v.recId).replace(/\D/g,''),10);if(n>m)m=n}return prefix+pad(m+1,len)}
+function nextReceipt(date){
+  const y=date.slice(0,4);let m=0;
+  for(const p of S.payments)if(p.date.slice(0,4)===y){const n=parseInt(p.receipt,10);if(n>m)m=n}
+  for(const v of S.voids||[])if(v.kind==='payment'&&v.rec.date.slice(0,4)===y){const n=parseInt(v.rec.receipt,10);if(n>m)m=n}
+  return pad(m+1,6);
+}
+
+/* ====================== UI plumbing ====================== */
+let toastT;
+function toast(t){let e=$('.toast');if(e)e.remove();e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);clearTimeout(toastT);toastT=setTimeout(()=>e.remove(),2600)}
+function modal(html,{wide=false,onMount}={}){
+  const root=$('#modalRoot');const ov=document.createElement('div');ov.className='ov';
+  ov.innerHTML=`<div class="modal${wide?' wide':''}" role="dialog" aria-modal="true">${html}</div>`;
+  root.appendChild(ov);ov.addEventListener('mousedown',e=>{if(e.target===ov&&ov.dataset.lock!=='1')closeModal(ov)});
+  ov.close=()=>closeModal(ov);if(onMount)onMount(ov);return ov;
+}
+function closeModal(ov){(ov||$('#modalRoot').lastElementChild)?.remove()}
+function ask(msg,okLabel='បាទ/ចាស'){
+  return new Promise(res=>{
+    const ov=modal(`<h2>${esc(msg)}</h2><div class="mfoot"><button class="btn" id="n">បោះបង់</button><button class="btn pri" id="y">${okLabel}</button></div>`);
+    $('#y',ov).onclick=()=>{ov.remove();res(true)};$('#n',ov).onclick=()=>{ov.remove();res(false)};
+  });
+}
+const opts=(list,sel,blank)=>(blank!=null?`<option value="">${esc(blank)}</option>`:'')+list.map(x=>{const v=typeof x==='object'?x.v:x,l=typeof x==='object'?x.l:x;return`<option value="${esc(v)}"${String(v)===String(sel)?' selected':''}>${esc(l)}</option>`}).join('');
+const val=(ov,id)=>{const e=$('#'+id,ov);return e?e.value:''};
+function dl(filename,data){
+  return window.claude.use('downloads').then(d=>{
+    if(!d){toast('មិនអាចទាញយកបានទេ');return}
+    return d.save({filename,data}).then(()=>toast('បានរក្សាទុក'),e=>{if(e&&e.code!=='declined')toast('ទាញយកមិនបាន')});
+  }).catch(()=>toast('មិនអាចទាញយកបានទេ'));
+}
+function csvOf(rows){return '﻿'+rows.map(r=>r.map(c=>{c=c==null?'':String(c);return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c}).join(',')).join('\r\n')}
+
+/* ---- PDF / HTML export of paper documents ---- */
+async function exportPdf(html,{land,filename}){
+  if(!window.html2canvas||!window.jspdf){toast('មិនទាន់ផ្ទុកឧបករណ៍ PDF');return}
+  const off=$('#offscreen');off.innerHTML=html;const el=off.firstElementChild;
+  try{
+    if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+    const cv=await html2canvas(el,{scale:2.5,backgroundColor:'#ffffff',useCORS:true});
+    const {jsPDF}=window.jspdf;
+    const doc=new jsPDF({orientation:land?'landscape':'portrait',unit:'mm',format:'a5'});
+    const W=land?210:148,H=land?148:210;
+    const pxPerMm=cv.width/W;const pageH=Math.floor(H*pxPerMm);
+    let y=0,first=true;
+    while(y<cv.height-2){
+      const h=Math.min(pageH,cv.height-y);const sl=document.createElement('canvas');sl.width=cv.width;sl.height=h;
+      const g=sl.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,sl.width,h);g.drawImage(cv,0,y,cv.width,h,0,0,cv.width,h);
+      if(!first)doc.addPage();doc.addImage(sl.toDataURL('image/jpeg',.92),'JPEG',0,0,W,h/pxPerMm);
+      y+=pageH;first=false;
+    }
+    await dl(filename,doc.output('arraybuffer'));
+  }catch(e){console.error(e);toast('បង្កើត PDF មិនបាន')}
+  finally{off.innerHTML=''}
+}
+function exportHtml(html,{land,filename}){
+  const page=`<!doctype html><html lang="km"><head><meta charset="utf-8"><title>${esc(filename)}</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@400;600;700&family=Inter:wght@400;600&display=swap"><style>@page{size:A5 ${land?'landscape':'portrait'};margin:0}body{margin:0;background:#ddd}${DOC_CSS}@media print{body{background:#fff}.doc{box-shadow:none!important;margin:0!important}}.doc{margin:10px auto;box-shadow:0 0 6px #0004}</style></head><body>${html}<p style="text-align:center;font:13px sans-serif;color:#555" class="noprint">ចុច Ctrl+P ដើម្បីព្រីន (ជ្រើស A5 · Margins: None)</p><style>@media print{.noprint{display:none}}</style></body></html>`;
+  return dl(filename,page);
+}
+function docModal(title,html,{land,name}){
+  const ov=modal(`<h2>${esc(title)}</h2><div class="previewbox">${html}</div>
+  <p class="hint">PDF ទំហំ A5 ${land?'(ផ្ដេក)':'(បញ្ឈរ)'} · ឬទាញយកជា HTML រួចចុច Ctrl+P ដើម្បីព្រីនដោយផ្ទាល់។</p>
+  <div class="mfoot"><button class="btn" id="dh">ទាញយក HTML (ព្រីន)</button><button class="btn pri" id="dp">ទាញយក PDF</button><button class="btn" id="dc">បិទ</button></div>`,{wide:true});
+  $('#dc',ov).onclick=()=>ov.close();
+  $('#dp',ov).onclick=e=>{e.target.disabled=true;exportPdf(html,{land,filename:name+'.pdf'}).finally(()=>e.target.disabled=false)};
+  $('#dh',ov).onclick=()=>exportHtml(html,{land,filename:name+'.html'});
+}
+
+/* ====================== paper documents ====================== */
+const DOC_CSS=`
+.doc{background:#fff;color:#111;font-family:'Inter','Noto Sans Khmer','Khmer OS Battambang',sans-serif;font-size:11px;line-height:1.45;padding:20px 26px;box-sizing:border-box;text-align:left}
+.doc *{box-sizing:border-box}
+.doc.land{width:794px;min-height:559px}.doc.port{width:559px;min-height:794px}
+.doc table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.doc th{background:#1f3a8a;color:#fff;padding:4px 6px;font-size:10.5px;text-align:left;position:static}
+.doc td{font-size:11px;padding:3px 6px;border:0;border-bottom:1px solid #d5d9e4;background:#fff!important;color:#111}
+.doc tr:hover td{background:#fff}
+.doc .r{text-align:right}
+.rc-head{display:grid;grid-template-columns:78px 1fr 220px;gap:12px;align-items:center;border-bottom:2px solid #1f3a8a;padding-bottom:8px;margin-bottom:8px}
+.rc-logo{width:72px;height:72px;border-radius:50%;background:#1f3a8a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;overflow:hidden}
+.rc-logo img{width:100%;height:100%;object-fit:contain;background:#fff}
+.rc-sch b{display:block;font-size:15px;color:#1f3a8a}.rc-sch span{display:block}.rc-sch small{display:block;color:#444;font-size:10px}
+.rc-ttl{text-align:right}.rc-ttl b{display:block;font-size:14px}.rc-ttl .no{display:inline-block;margin-top:2px;border:1.5px solid #1f3a8a;padding:1px 10px;font-weight:700;font-size:13px;color:#1f3a8a}
+.rc-info{display:grid;grid-template-columns:1.2fr 1fr 1.2fr;gap:2px 18px;margin-bottom:8px}
+.rc-info div{display:flex;gap:4px}.rc-info div span{min-width:78px;color:#444}.rc-info div b{font-weight:600}
+.rc-bot{display:grid;grid-template-columns:1fr 230px;gap:16px;margin-top:8px}
+.rc-notes{font-size:9.5px;color:#333;white-space:pre-line}
+.rc-tot div{display:flex;justify-content:space-between;padding:1.5px 0}
+.rc-tot .g{font-weight:700;border-top:1px solid #111;margin-top:2px;padding-top:3px}
+.rc-tot .d{font-weight:700;color:#b3261e}
+.rc-sign{display:flex;justify-content:space-between;margin-top:14px;font-size:10px;color:#333}
+.doc h3{font-size:14px;margin:0 0 2px;font-family:'Noto Sans Khmer','Hanuman',sans-serif;color:#1f3a8a}
+.doc h4{margin:10px 0 3px;font-size:12px;border-bottom:1.5px solid #1f3a8a;color:#1f3a8a;padding-bottom:1px}
+.doc .sub{color:#444;margin-bottom:6px}
+.doc .tot td{font-weight:700;border-top:1.5px solid #111}
+
+.idc{display:inline-block;width:204px;height:324px;border:1px solid #bbb;border-radius:8px;overflow:hidden;vertical-align:top;margin:6px;position:relative;background:#fff;text-align:center;color:#222}
+.idc .ch{display:flex;align-items:center;gap:6px;padding:8px 8px 4px;border-bottom:1px solid var(--cc)}
+.idc .cl{width:34px;height:34px;border-radius:50%;background:var(--cc);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;overflow:hidden;flex:none}.idc .cl img{width:100%;height:100%;object-fit:contain;background:#fff}
+.idc .cn{text-align:left;line-height:1.25}.idc .cn b{display:block;font-size:10px;color:var(--cc)}.idc .cn span{font-size:8px;color:#444}
+.idc .ct{margin-top:6px;font-weight:700;font-size:13px;color:var(--cc)}
+.idc .cb{display:inline-block;margin-top:2px;background:var(--cc);color:#fff;font-weight:700;font-size:10px;padding:1px 14px;border-radius:5px}
+.idc .ci{margin-top:4px;color:#d00;font-weight:700;font-size:10px}
+.idc .cp{width:80px;height:100px;margin:4px auto 0;border:2px solid var(--cc);border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:9px;color:#888;background:#f2f2f2}.idc .cp img{width:100%;height:100%;object-fit:cover}
+.idc .cx{margin-top:4px;font-size:8.5px;line-height:1.4;padding:0 6px}.idc .cx b{color:var(--cc);font-size:10px}
+.idc .cf{position:absolute;left:0;right:0;bottom:0;background:var(--cc);color:#fff;font-size:9px;padding:5px;font-weight:600}
+.doc.cards{padding:0;width:559px;min-height:0}.doc .cpage{width:559px;height:794px;padding:24px 20px;display:grid;grid-template-columns:204px 204px;grid-auto-rows:324px;gap:20px 30px;justify-content:center;align-content:start;box-sizing:border-box}.doc .cpage .idc{margin:0}
+`;
+$('#docstyle').textContent=DOC_CSS;
+
+const TYPE_EN={'សិស្សថ្មី':'New','សិស្សចាស់':'Old','សងបំណុល':'Settlement','សិស្សឈប់រៀន':'Dropped'};
+function schoolHead(titleKh,titleEn,noText){
+  const inf=S.settings.info,lg=S.settings.logo;
+  const init=(inf.nameEn||'ALE').split(' ').map(w=>w[0]).join('').slice(0,3);
+  return `<div class="rc-head"><div class="rc-logo">${lg?`<img src="${lg}" alt="">`:esc(init)}</div>
+  <div class="rc-sch"><b>${esc(inf.nameKh)}</b><b>${esc(inf.nameEn)}</b><span>${esc(inf.nameEn2)}</span>
+  ${inf.addr||inf.contact?`<small>${esc(inf.addr)}${inf.addr&&inf.contact?' · ':''}${esc(inf.contact)}</small>`:''}</div>
+  <div class="rc-ttl"><b>${titleKh}</b><b>${titleEn}</b>${noText?`<span class="no">${esc(noText)}</span>`:''}</div></div>`;
+}
+function receiptDoc(p,sale){
+  const c=cache(),inf=S.settings.info;
+  const sid=p?p.sid:sale.sid;const s=sid?c.byId.get(sid):null;
+  const d=p?c.der.get(p.id):null;const sc=sale?saleCalc(sale):null;const settle=p&&p.pack===SETTLE;
+  const rows=[];
+  if(p){
+    const dt=p.dtype==='ភាគរយ'?(p.dval||0)+'%':p.dtype==='សាច់ប្រាក់'?money(p.dval):'';
+    rows.push([settle?'- Settlement':'- Tuition Fee',settle?'- សងបំណុលវិក្កយបត្រ '+p.settles:'- '+(s?s.level:''),settle?'':p.months+' month',settle?'':money(p.fee),settle?'':(p.disc?dt:''),settle?p.paidAmt:p.due,settle?'':fd(d.start),settle?'':fd(d.end)]);
+  }
+  if(sc)for(const l of sc.lines){
+    const dt=l.dtype==='ភាគរយ'?(l.dval||0)+'%':l.dtype==='សាច់ប្រាក់'?money(l.dval):'';
+    rows.push(['- '+l.cat,'- '+l.name,l.qty+' pcs',money(l.price),l.disc?dt:'',l.net,'','']);
+  }
+  const sub=round2((p?(settle?p.paidAmt:p.due):0)+(sc?sc.net:0));
+  const vat=round2(sub*(inf.vat||0)/100),grand=round2(sub+vat);
+  const paid=round2((p?p.paidAmt:0)+(sc?sc.paid:0));
+  const settledAfter=p&&!settle?sum(c.setl.get(p.id)||[],x=>x.paidAmt):0;
+  const dueAmt=settle?round2((d.after||0)+grand-paid):round2(grand-paid-settledAfter);
+  const date=p?p.date:sale.date;
+  const method=p?p.method:sale.method;
+  const typ=p?d.kind:'';
+  let note='';
+  if(settle){const o=c.pById.get(p.settles);note='សងវិក្កយបត្រលេខ '+(o?o.receipt:p.settles)+(o?' ថ្ងៃ '+fd(o.date):'')}
+  else if(p&&p.dwhy)note='បញ្ចុះតម្លៃ៖ '+p.dwhy;
+  const extra=[note,p&&p.note,sale&&sale.note].filter(Boolean).join(' · ');
+  const noText=p?'N°: '+p.receipt:'N°: '+sale.id;
+  const prog=s?progByName(s.prog):null;
+  return `<div class="doc land rc">${schoolHead('បង្កាន់ដៃទទួលប្រាក់','OFFICIAL RECEIPT',noText)}
+  <div class="rc-info">
+   <div><span>Student Name:</span><b>${esc(s?s.name:(sale?sale.other:''))}</b></div><div><span>Sex:</span><b>${s?(s.sex==='ប្រុស'?'Male':s.sex==='ស្រី'?'Female':''):''}</b></div><div><span>Program:</span><b>${esc(prog?prog.en:'')}</b></div>
+   <div><span>Student ID:</span><b>${esc(sid||'')}</b></div><div><span>Type:</span><b>${esc(TYPE_EN[typ]||'')}</b></div><div><span>Grade:</span><b>${esc(s?s.level:'')}</b></div>
+   <div><span>Contact:</span><b>${esc(s?s.phone:'')}</b></div><div><span>Time:</span><b>${esc(s?shiftEn(s.shift):'')}</b></div><div><span>Room:</span><b>${esc(s?s.room:'')}</b></div>
+   <div><span>Payment:</span><b>${esc(method||'')}</b></div><div></div><div><span>Invoice No:</span><b>${esc((p?p.id:'')+(p&&sale?' + ':'')+(sale?sale.id:''))}</b></div>
+   <div></div><div></div><div><span>Invoice Date:</span><b>${fd(date)}</b></div>
+  </div>
+  <table><thead><tr><th>ល.រ</th><th>ប្រភេទ Fee Type</th><th>បរិយាយ Description</th><th>ចំនួន Qty</th><th class="r">តម្លៃឯកតា Unit</th><th>បញ្ចុះ Disc.</th><th class="r">ទឹកប្រាក់ Amount</th><th>ចាប់ផ្តើម Start</th><th>ផុត End</th></tr></thead>
+  <tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td class="r">${esc(r[3])}</td><td>${esc(r[4])}</td><td class="r">${money(r[5])}</td><td>${r[6]}</td><td>${r[7]}</td></tr>`).join('')}</tbody></table>
+  <div class="rc-bot"><div class="rc-notes">*បញ្ជាក់:\n${esc(inf.n1)}\n${esc(inf.n2)}\n${esc(inf.n3)}${extra?`\n<b>ចំណាំ: ${esc(extra)}</b>`:''}</div>
+   <div class="rc-tot"><div><span>សរុប/Sub-Total</span><span>${money(sub)}</span></div><div><span>VAT (${inf.vat||0}%)</span><span>${money(vat)}</span></div>
+   <div class="g"><span>សរុបរួម/Grand Total</span><span>${money(grand)}</span></div><div><span>ទឹកប្រាក់បានបង់/Paid</span><span>${money(paid)}</span></div>
+   <div class="d"><span>ទឹកប្រាក់ជំពាក់/Due</span><span>${money(dueAmt)}</span></div>
+   <div><span>ប្រាក់រៀល/Riel</span><span>${num(paid*inf.rate)} ៛</span></div><div style="font-size:9px;color:#555"><span>Exchange Rate</span><span>1$ = ${num(inf.rate)}៛</span></div></div></div>
+  <div class="rc-sign"><span>ហត្ថលេខានិងឈ្មោះបេឡាករ/Cashier's Signature and Name${(p&&p.byName)||(sale&&sale.byName)?': '+esc((p&&p.byName)||sale.byName):''}</span><span>Printed: ${fd(today())}</span></div></div>`;
+}
+function idDoc(s){
+  const inf=S.settings.info,i=sInfo(s);
+  return `<div class="doc land" style="min-height:260px;text-align:center">
+  <div class="idc"><div class="hd">${esc(inf.nameKh)}<br>${esc(inf.nameEn)} · STUDENT ID CARD</div>
+   <div class="bd"><div class="ph">${s.photo?`<img src="${s.photo}" alt="">`:'រូបថត 3×4'}</div>
+   <div class="tx"><b>${esc(s.name)}</b><b style="font-size:11px">${esc(s.en)}</b>ID: ${esc(s.id)} · ${esc(s.sex)}<br>${esc(s.prog)}<br>${esc(s.level)} · ${esc(s.shift)} · បន្ទប់ ${esc(s.room)}<br>កំណើត: ${fd(s.dob)}<br>ផុតកំណត់: ${fd(i.through)}</div></div>
+   <div class="ft">កាតនេះជាកម្មសិទ្ធិរបស់សាលា។ បើរកឃើញ សូមប្រគល់មកសាលាវិញ។</div></div>
+  <div class="idc"><div class="hd">ព័ត៌មានទំនាក់ទំនង (Contact)</div>
+   <div class="bd"><div class="tx" style="text-align:left;line-height:1.8"><b>${esc(s.rel)}៖ ${esc(s.guardian)}</b>ទូរស័ព្ទ: ${esc(s.phone)}<br>${s.phone2?'ទូរស័ព្ទបន្ទាន់: '+esc(s.phone2)+'<br>':''}អាសយដ្ឋាន: ${esc(s.addr)}</div></div>
+   <div class="ft">សូមទាក់ទង៖ ${esc(inf.contact)} · If found, please return to the school.</div></div></div>`;
+}
+
+/* ====================== reports ====================== */
+function repData(from,to){
+  const c=cache();const inR=d=>d>=from&&d<=to;
+  const mine=ME.role==='clerk'&&STORE==='db';const pays=S.payments.filter(p=>inR(p.date)&&(!mine||p.by===ME.id)),reg=pays.filter(p=>p.pack!==SETTLE),setl=pays.filter(p=>p.pack===SETTLE);
+  const sales=S.sales.filter(s=>inR(s.date)&&(!mine||s.by===ME.id)).map(s=>({s,c:saleCalc(s)}));
+  const R={from,to,pays,reg,setl,sales};
+  R.voids=S.voids.filter(v=>inR(v.date)&&(!mine||(v.rec&&v.rec.by===ME.id)));
+  R.tu={n:reg.length,ns:setl.length,gross:sum(reg,p=>p.gross),disc:sum(reg,p=>p.disc),due:sum(reg,p=>p.due),paid:sum(pays,p=>p.paidAmt),left:sum(reg,p=>c.der.get(p.id).remaining)};
+  R.sa={n:sales.length,qty:sum(sales,x=>x.c.lines.reduce((t,l)=>t+(+l.qty||0),0)),gross:sum(sales,x=>x.c.gross),disc:sum(sales,x=>x.c.disc),due:sum(sales,x=>x.c.net),paid:sum(sales,x=>x.c.paid),left:sum(sales,x=>x.c.left)};
+  R.income=round2(R.tu.paid+R.sa.paid);
+  const mvs=S.moves.filter(m=>inR(m.date));
+  R.stockCost=sum(mvs.filter(m=>m.type===MOVES[0]),m=>(+m.qty||0)*(+m.cost||0));
+  R.mvs=mvs;
+  R.byMethod=METHODS.map(m=>({m,t:sum(pays.filter(p=>p.method===m),p=>p.paidAmt),s:sum(sales.filter(x=>x.s.method===m),x=>x.c.paid)}));
+  R.byProg=S.settings.programs.map(pr=>{const l=pays.filter(p=>{const st=c.byId.get(p.sid);return st&&st.prog===pr.kh});const r2=l.filter(p=>p.pack!==SETTLE);return{n:pr.kh,cnt:r2.length,due:sum(r2,p=>p.due),paid:sum(l,p=>p.paidAmt)}});
+  R.byPack=S.settings.packages.map(pk=>{const l=pays.filter(p=>p.pack===pk.name);return{n:pk.name,cnt:l.length,paid:sum(l,p=>p.paidAmt),disc:sum(l,p=>p.disc)}});
+  R.stu={reg:S.students.filter(s=>s.reg&&inR(s.reg)).length,first:reg.filter(p=>c.der.get(p.id).kind==='សិស្សថ្មី').length,renew:reg.filter(p=>c.der.get(p.id).kind==='សិស្សចាស់').length,drop:S.students.filter(s=>s.status==='ឈប់រៀន'&&s.dropDate&&inR(s.dropDate)).length};
+  R.mvT=MOVES.map(t=>{const l=mvs.filter(m=>m.type===t);return{t,n:l.length,q:sum(l,m=>m.qty),v:sum(l,m=>(+m.qty||0)*(+m.cost||0))}});
+  const sl=S.sales.filter(s=>inR(s.date)&&(!mine||s.by===ME.id));R.mvT.push({t:'លក់ (តាមវិក្កយបត្រលក់)',n:sl.length,q:sum(sl,s=>s.lines.reduce((t,l)=>t+(+l.qty||0),0)),v:sum(sales,x=>x.c.net)});
+  return R;
+}
+function repDoc(mode,from,to,title){
+  const R=repData(from,to);const c=cache();
+  const row=(a,b,cls)=>`<tr${cls?` class="${cls}"`:''}><td>${a}</td><td class="r">${b}</td></tr>`;
+  let h=`<div class="doc port">${schoolHead('របាយការណ៍','REPORT','')}<h3>${esc(title)}</h3><div class="sub">${fd(from)}${from!==to?' – '+fd(to):''}</div>
+  <h4>១. ថ្លៃសិក្សា (Tuition)</h4><table>${row('ចំនួនវិក្កយបត្របង់ប្រាក់ / ការសង',R.tu.n+' / '+R.tu.ns)}${row('ថ្លៃមុនបញ្ចុះ',money(R.tu.gross))}${row('ការបញ្ចុះតម្លៃ',money(R.tu.disc))}${row('ត្រូវបង់ក្រោយបញ្ចុះ',money(R.tu.due))}${row('បានបង់',money(R.tu.paid))}${row('នៅសល់ (ជំពាក់)',money(R.tu.left))}</table>
+  <h4>២. លក់ឯកសណ្ឋាន និងសម្ភារៈ</h4><table>${row('ចំនួនវិក្កយបត្រលក់',R.sa.n)}${row('ចំនួនទំនិញ (ឯកតា)',num(R.sa.qty))}${row('ថ្លៃមុនបញ្ចុះ',money(R.sa.gross))}${row('ការបញ្ចុះតម្លៃ',money(R.sa.disc))}${row('ត្រូវបង់ក្រោយបញ្ចុះ',money(R.sa.due))}${row('បានបង់',money(R.sa.paid))}${row('នៅសល់ (ជំពាក់)',money(R.sa.left))}</table>
+  <h4>៣. ចំណូលសរុប (បានទទួលពិតប្រាកដ)</h4><table>${row('ថ្លៃសិក្សា + ការលក់','<b>'+money(R.income)+'</b>')}${row('ចំណាយទិញស្តុកចូល',money(R.stockCost))}</table>
+  <h4>៤. តាមវិធីបង់ប្រាក់</h4><table><tr><th>វិធីបង់</th><th class="r">ថ្លៃសិក្សា</th><th class="r">ការលក់</th><th class="r">សរុប</th></tr>${R.byMethod.map(x=>`<tr><td>${x.m}</td><td class="r">${money(x.t)}</td><td class="r">${money(x.s)}</td><td class="r">${money(x.t+x.s)}</td></tr>`).join('')}<tr class="tot"><td>សរុប</td><td class="r">${money(sum(R.byMethod,x=>x.t))}</td><td class="r">${money(sum(R.byMethod,x=>x.s))}</td><td class="r">${money(R.income)}</td></tr></table>
+  <h4>៥. ថ្លៃសិក្សា តាមកម្មវិធី</h4><table><tr><th>កម្មវិធី</th><th class="r">វិក្កយបត្រ</th><th class="r">ត្រូវបង់</th><th class="r">បានបង់</th></tr>${R.byProg.map(x=>`<tr><td>${esc(x.n)}</td><td class="r">${x.cnt}</td><td class="r">${money(x.due)}</td><td class="r">${money(x.paid)}</td></tr>`).join('')}</table>
+  <h4>៦. ថ្លៃសិក្សា តាមកញ្ចប់</h4><table><tr><th>កញ្ចប់</th><th class="r">ចំនួន</th><th class="r">បានបង់</th><th class="r">បញ្ចុះ</th></tr>${R.byPack.map(x=>`<tr><td>${esc(x.n)}</td><td class="r">${x.cnt}</td><td class="r">${money(x.paid)}</td><td class="r">${money(x.disc)}</td></tr>`).join('')}</table>
+  <h4>៧. សិស្ស</h4><table>${row('ចុះឈ្មោះថ្មី',R.stu.reg)}${row('បង់ប្រាក់លើកដំបូង (សិស្សថ្មី)',R.stu.first)}${row('បង់ប្រាក់បន្ត (សិស្សចាស់)',R.stu.renew)}${row('ឈប់រៀន',R.stu.drop)}</table>
+  <h4>៨. ចលនាស្តុក</h4><table><tr><th>ប្រភេទ</th><th class="r">ដង</th><th class="r">ចំនួន</th><th class="r">តម្លៃ</th></tr>${R.mvT.map(x=>`<tr><td>${x.t}</td><td class="r">${x.n}</td><td class="r">${num(x.q)}</td><td class="r">${money(x.v)}</td></tr>`).join('')}</table>`;
+  if(mode==='day'){
+    h+=`<h4>៩. បញ្ជីបង្កាន់ដៃ</h4><table><tr><th>បង្កាន់ដៃ</th><th>សិស្ស</th><th>កញ្ចប់</th><th class="r">បានបង់</th><th>វិធី</th></tr>${R.pays.map(p=>{const st=c.byId.get(p.sid);return`<tr><td>${p.receipt} (${p.id})</td><td>${esc(st?st.name:p.sid)}</td><td>${esc(p.pack)}</td><td class="r">${money(p.paidAmt)}</td><td>${esc(p.method)}</td></tr>`}).join('')||'<tr><td colspan="5">គ្មាន</td></tr>'}</table>
+    <table style="margin-top:6px"><tr><th>វិក្កយបត្រលក់</th><th>អ្នកទិញ</th><th class="r">បានបង់</th><th>វិធី</th></tr>${R.sales.map(x=>`<tr><td>${x.s.id}</td><td>${esc(buyerName(x.s))}</td><td class="r">${money(x.c.paid)}</td><td>${esc(x.s.method)}</td></tr>`).join('')||'<tr><td colspan="4">គ្មាន</td></tr>'}</table>`;
+  }
+  if(mode==='month'){
+    const days=new Date(+from.slice(0,4),+from.slice(5,7),0).getDate();let rr='';
+    for(let i=1;i<=days;i++){const d=from.slice(0,8)+pad(i);const r=repData(d,d);rr+=`<tr><td>${fd(d)}</td><td class="r">${r.reg.length+r.setl.length}</td><td class="r">${money(r.tu.paid)}</td><td class="r">${r.sa.n}</td><td class="r">${money(r.sa.paid)}</td><td class="r">${money(r.income)}</td></tr>`}
+    h+=`<h4>៩. តារាងប្រចាំថ្ងៃក្នុងខែនេះ</h4><table><tr><th>ថ្ងៃ</th><th class="r">វិក្កយបត្រ</th><th class="r">ថ្លៃសិក្សា</th><th class="r">លក់</th><th class="r">ការលក់</th><th class="r">សរុប</th></tr>${rr}</table>`;
+  }
+  if(mode==='year'){
+    let rr='';for(let m=1;m<=12;m++){const f=from.slice(0,5)+pad(m)+'-01';const t=from.slice(0,5)+pad(m)+'-'+pad(new Date(+from.slice(0,4),m,0).getDate());const r=repData(f,t);rr+=`<tr><td>${MONTHS_KH[m-1]}</td><td class="r">${r.reg.length+r.setl.length}</td><td class="r">${money(r.tu.paid)}</td><td class="r">${r.sa.n}</td><td class="r">${money(r.sa.paid)}</td><td class="r">${money(r.income)}</td></tr>`}
+    h+=`<h4>៩. តារាងប្រចាំខែក្នុងឆ្នាំនេះ</h4><table><tr><th>ខែ</th><th class="r">វិក្កយបត្រ</th><th class="r">ថ្លៃសិក្សា</th><th class="r">លក់</th><th class="r">ការលក់</th><th class="r">សរុប</th></tr>${rr}</table>`;
+  }
+  h+=`<h4>វិក្កយបត្រដែលបានលុប (Void) · មិនរាប់ក្នុងសរុប</h4><table><tr><th>វិក្កយបត្រ</th><th class="r">ចំនួន</th><th>មូលហេតុ</th><th>អ្នកស្នើ</th><th>អនុញ្ញាត</th></tr>${R.voids.map(v=>`<tr><td>${v.kind==='payment'?v.rec.receipt+' · ':''}${v.recId}</td><td class="r">${money(v.amount)}</td><td>${esc(v.reason)}</td><td>${esc(v.reqBy)}</td><td>${esc(v.approvedBy)}</td></tr>`).join('')||'<tr><td colspan="5">គ្មាន</td></tr>'}</table>`;
+  return h+`<div class="rc-sign"><span>ត្រួតពិនិត្យដោយ / Checked by</span><span>Printed: ${fd(today())}</span></div></div>`;
+}
+function rosterDoc(f){
+  const list=rosterList(f);
+  const m=list.filter(s=>s.sex==='ប្រុស').length;
+  const teacher=S.classes.filter(k=>(!f.prog||k.prog===f.prog)&&(!f.level||!k.level||k.level===f.level)&&(!f.shift||k.shift===f.shift)&&(!f.room||String(k.room)===String(f.room))).map(k=>k.teacher).filter(Boolean)[0]||'';
+  return `<div class="doc port">${schoolHead('បញ្ជីសិស្សតាមថ្នាក់','Class Roster','')}
+  <div class="sub">${[f.prog,f.level,f.shift,f.room?'បន្ទប់ '+f.room:''].filter(Boolean).map(esc).join(' · ')||'ទាំងអស់'} ${teacher?' · គ្រូ៖ '+esc(teacher):''} · សរុប ${list.length} (ប្រុស ${m} · ស្រី ${list.length-m})</div>
+  <table><thead><tr><th>ល.រ</th><th>លេខសម្គាល់</th><th>ឈ្មោះសិស្ស</th><th>Name</th><th>ភេទ</th><th>ថ្នាក់</th><th>ទូរស័ព្ទ</th>${money_ok()?'<th>បង់</th>':''}</tr></thead><tbody>
+  ${list.map((s,i)=>`<tr><td>${i+1}</td><td>${s.id}</td><td>${esc(s.name)}</td><td>${esc(s.en)}</td><td>${esc(s.sex)}</td><td>${esc(s.level)}</td><td>${esc(s.phone)}</td>${money_ok()?`<td>${esc(sInfo(s).st)}</td>`:''}</tr>`).join('')}</tbody></table>
+  <div class="rc-sign"><span>គ្រូបន្ទុក / Teacher</span><span>Printed: ${fd(today())}</span></div></div>`;
+}
+function rosterList(f){return scopeStudents().filter(s=>s.status!=='ឈប់រៀន'&&(!f.prog||s.prog===f.prog)&&(!f.level||s.level===f.level)&&(!f.shift||s.shift===f.shift)&&(!f.room||String(s.room)===String(f.room))).sort((a,b)=>a.name.localeCompare(b.name,'km'))}
+
+/* ====================== router / shell ====================== */
+const V={stu:{q:'',prog:'',status:'',pay:'',lim:60},pay:{q:'',lim:60},sale:{q:'',lim:60},item:{q:'',prog:'',st:'',lim:80},mv:{q:'',type:'',lim:80},rep:{tab:'money',mode:'day',date:today(),y:new Date().getFullYear(),m:new Date().getMonth()+1},ros:{prog:'',level:'',shift:'',room:''}};
+const PG={};
+const NAV=[['ប្រចាំថ្ងៃ',[['dash','សង្ខេប'],['students','សិស្ស'],['pay','ការបង់ប្រាក់'],['sales','ការលក់'],['requests','សំណើលុបវិក្កយបត្រ']]],['ស្តុក',[['items','ទំនិញ'],['moves','ចលនាស្តុក']]],['សាលា',[['teachers','គ្រូបង្រៀន'],['classes','ថ្នាក់រៀន'],['roster','បញ្ជីថ្នាក់'],['leaves','សុំច្បាប់']]],['ការសិក្សា',[['scores','បញ្ចូលពិន្ទុ'],['results','លទ្ធផល និងកិត្តិយស']]],['របាយការណ៍',[['rep','របាយការណ៍']]],['ប្រព័ន្ធ',[['settings','ការកំណត់'],['guide','ណែនាំ']]]];
+function curPage(){const h=location.hash.replace('#','');return PG[h]?h:homePage()}
+function render(){
+  let p=curPage();if(!pageOk(p)){p=homePage();if(location.hash!=='#'+p)location.hash='#'+p}const pg=PG[p];
+  if(ME.role==='head')V.rep.tab='people';
+  $('#whoami').textContent=ROLE_NAMES[ME.role]+(ME.name&&STORE==='db'?' · '+ME.name:'');
+  $('#nav').innerHTML=NAV.map(([h,l])=>{const ls=l.filter(([k])=>pageOk(k));return ls.length?`<h4>${h}</h4>`+ls.map(([k,n])=>`<a href="#${k}" class="${k===p?'on':''}">${n}</a>`).join(''):''}).join('');
+  $('#brandName').textContent=S.settings.info.nameEn;
+  $('#pageTitle').textContent=pg.title;
+  $('#topActions').innerHTML=pg.actions?pg.actions():'';
+  $('#view').innerHTML=pg.html();
+  document.body.classList.remove('nav-open');
+  if(p==='settings')fillUsers();
+}
+function relist(){const pg=PG[curPage()];const el=$('#list');if(el&&pg.list)el.innerHTML=pg.list();else render()}
+window.addEventListener('hashchange',()=>{if(S.settings){render();window.scrollTo(0,0)}});
+const ACT={menu(){document.body.classList.toggle('nav-open')}};
+document.addEventListener('click',e=>{const a=e.target.closest('[data-act]');if(!a)return;const f=ACT[a.dataset.act];if(f){e.preventDefault();const g=GUARD[a.dataset.act];if(g&&!can(g)){toast('អ្នកមិនមានសិទ្ធិធ្វើសកម្មភាពនេះទេ');return}f(a.dataset,a)}});
+document.addEventListener('input',e=>{const t=e.target;if(!t.dataset||!t.dataset.f||t.dataset.f==='rep.y')return;const[g,k]=t.dataset.f.split('.');V[g][k]=t.value;if(V[g].lim)V[g].lim=g==='item'||g==='mv'?80:60;if(t.tagName==='SELECT'||t.type==='date'||t.type==='number'||t.dataset.full)render();else relist()});
+
+/* ====================== dashboard ====================== */
+PG.dash={title:'ផ្ទាំងសង្ខេប',
+ actions:()=>can('admin')&&S.students.some(s=>s.sample)?`<button class="btn bad" data-act="clearSample">លុបទិន្នន័យគំរូ</button>`:'',
+ html(){
+  const c=cache();const act=S.students.filter(s=>s.status!=='ឈប់រៀន');
+  const infos=S.students.map(s=>({s,i:sInfo(s)}));
+  const due=sum(S.payments.filter(p=>p.pack!==SETTLE),p=>p.due),paid=sum(S.payments,p=>p.paidAmt);
+  const salesPaid=sum(S.sales,s=>saleCalc(s).paid),salesNet=sum(S.sales,s=>saleCalc(s).net);
+  const owing=infos.filter(x=>x.i.owe>0);const renew=infos.filter(x=>x.i.st==='ត្រូវបន្តបង់');
+  const low=S.items.map(it=>({it,k:itemStock(it)})).filter(x=>['ជិតអស់','អស់ស្តុក','ស្តុកអវិជ្ជមាន'].includes(x.k.st));
+  const byProg=S.settings.programs.map(pr=>({n:pr.kh,c:act.filter(s=>s.prog===pr.kh).length}));
+  const byShift=S.settings.shifts.map(sh=>({n:sh.kh,c:act.filter(s=>s.shift===sh.kh).length}));
+  // last 6 months income
+  const now=new Date();const bars=[];
+  for(let k=5;k>=0;k--){const d=new Date(now.getFullYear(),now.getMonth()-k,1);const f=iso(d);const t=iso(new Date(d.getFullYear(),d.getMonth()+1,0));const r=repData(f,t);bars.push({l:MONTHS_KH[d.getMonth()],v:r.income})}
+  const mx=Math.max(1,...bars.map(b=>b.v));
+  const svg=`<svg class="chart" viewBox="0 0 420 190" role="img" aria-label="ចំណូល ៦ ខែចុងក្រោយ">${[0,.5,1].map(t=>`<line x1="40" x2="410" y1="${150-t*120}" y2="${150-t*120}" stroke="var(--line)"/><text x="34" y="${154-t*120}" text-anchor="end">${num(mx*t)}</text>`).join('')}
+  ${bars.map((b,i)=>{const h=b.v/mx*120;const x=56+i*58;return`<rect x="${x}" y="${150-h}" width="34" height="${h}" rx="3" fill="var(--accent)"/><text x="${x+17}" y="168" text-anchor="middle">${b.l}</text>${b.v?`<text x="${x+17}" y="${144-h}" text-anchor="middle" style="fill:var(--ink)">${num(b.v)}</text>`:''}`}).join('')}</svg>`;
+  const pal=['#2f6fd6','#18a58a','#e08a1e','#8b5cf6','#d9467a','#0ea5c6'];
+  const li=(arr,f,emptyMsg)=>arr.length?arr.slice(0,6).map(f).join(''):`<div class="empty">${emptyMsg}</div>`;
+  const av=(n,i)=>`<span class="av" style="background:${pal[i%pal.length]}">${esc((n||'?').trim().charAt(0))}</span>`;
+  const total=paid+salesPaid;const pct=due?Math.min(100,Math.round(paid/due*100)):0;
+  const R=46,C=2*Math.PI*R;
+  const ring=`<svg class="ring" viewBox="0 0 120 120" role="img" aria-label="អត្រាប្រមូលបាន ${pct}%"><circle cx="60" cy="60" r="${R}" fill="none" stroke="#ffffff30" stroke-width="12"/><circle cx="60" cy="60" r="${R}" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C*pct/100} ${C}" transform="rotate(-90 60 60)"/><text x="60" y="66" text-anchor="middle" font-size="24" font-weight="700">${pct}%</text></svg>`;
+  const hr=new Date().getHours();const hi=hr<12?'អរុណសួស្តី':hr<17?'ទិវាសួស្តី':'សាយណ្ហសួស្តី';
+  const mxP=Math.max(1,...byProg.map(x=>x.c)),mxS=Math.max(1,...byShift.map(x=>x.c));
+  const prog=a=>a.map(x=>`<div><span>${esc(x.n)}</span><span class="t"><i style="width:${x.c/(a===byProg?mxP:mxS)*100}%"></i></span><b>${x.c}</b></div>`).join('')||'<div class="empty">គ្មាន</div>';
+  const W=420,H=200,bw=34;
+  const svg2=`<svg class="chart bars" viewBox="0 0 ${W} ${H}" role="img" aria-label="ចំណូល ៦ ខែចុងក្រោយ"><defs><linearGradient id="bg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f6fd6"/><stop offset="1" stop-color="#18a58a"/></linearGradient></defs>${[0,.5,1].map(t=>`<line x1="44" x2="412" y1="${160-t*130}" y2="${160-t*130}" stroke="var(--line)" stroke-dasharray="3 4"/><text x="38" y="${164-t*130}" text-anchor="end">${num(mx*t)}</text>`).join('')}${bars.map((b,i)=>{const h=Math.max(b.v?4:0,b.v/mx*130);const x=58+i*58;return`<g><rect x="${x}" y="${160-h}" width="${bw}" height="${h}" rx="9" fill="url(#bg1)"/><text x="${x+bw/2}" y="182" text-anchor="middle">${b.l}</text>${b.v?`<text x="${x+bw/2}" y="${153-h}" text-anchor="middle" style="fill:var(--ink);font-weight:600">${num(b.v)}</text>`:''}</g>`}).join('')}</svg>`;
+  const kc=(cls,ic,l,v,e)=>`<div class="kc ${cls}"><i>${ic}</i><div><small>${l}</small><b>${v}</b><em>${e}</em></div></div>`;
+  return `${S.students.some(s=>s.sample)?'<div class="note">ទិន្នន័យសិស្ស/ការបង់ប្រាក់ ខ្លះជាគំរូពី Excel។ ពេលចាប់ផ្តើមប្រើពិតប្រាកដ សូមចុច «លុបទិន្នន័យគំរូ» (បញ្ជីទំនិញ និងថ្លៃសិក្សានៅរក្សា)។</div>':''}
+  <div class="hero">
+   <div><h2>${hi} 👋</h2><p>${[S.settings.info&&S.settings.info.branch,fd(iso(new Date()))].filter(Boolean).map(esc).join(' · ')}</p>
+    <div class="big">${money(total)}</div><p>ចំណូលបានទទួលសរុប (ថ្លៃសិក្សា + ការលក់)</p>
+    <div class="chips"><span>🎓 សិស្សកំពុងរៀន ${act.length}</span><span>⏳ ត្រូវបន្តបង់ ${renew.length}</span><span>💳 ជំពាក់ ${owing.length} នាក់</span></div></div>
+   <div class="ringbox">${ring}<div><small>អត្រាប្រមូលថ្លៃសិក្សា</small><b>${money(paid)}</b><small>ពី ${money(due)}</small></div></div>
+  </div>
+  <div class="kt">
+   ${kc('','🎓','សិស្សសរុប',S.students.length,`កំពុងរៀន ${act.length} · ឈប់ ${S.students.length-act.length}`)}
+   ${kc('good','💰','ថ្លៃសិក្សាបានបង់',money(paid),`${pct}% នៃត្រូវបង់`)}
+   ${kc('bad','⚠️','នៅជំពាក់',money(sum(owing,x=>x.i.owe)),`${owing.length} សិស្ស`)}
+   ${kc('','👕','លក់ឯកសណ្ឋាន/សម្ភារៈ',money(salesNet),`បានបង់ ${money(salesPaid)} · ${S.sales.length} វិក្កយបត្រ`)}
+   ${kc('warn','🔔','ត្រូវបន្តបង់',renew.length,'សិស្សផុតកំណត់បង់')}
+   ${kc(low.length?'warn':'good','📦','ទំនិញជិតអស់ស្តុក',low.length,`ក្នុងបញ្ជី ${S.items.length} មុខ`)}
+  </div>
+  <div class="dgrid">
+   <div class="dc span2"><h3><u></u>ចំណូល ៦ ខែចុងក្រោយ (USD)</h3>${svg2}</div>
+   <div class="dc"><h3><u></u>សិស្សតាមកម្មវិធី</h3><div class="pr">${prog(byProg)}</div></div>
+   <div class="dc"><h3><u></u>សិស្សតាមវេន</h3><div class="pr">${prog(byShift)}</div></div>
+   <div class="dc b"><h3><u></u>សិស្សនៅជំពាក់</h3>${li(owing.sort((a,b)=>b.i.owe-a.i.owe),(x,i)=>`<div class="li">${av(x.s.name,i)}<div class="nm">${esc(x.s.name)}<small>${x.s.id}</small></div><span class="pill bad">${money(x.i.owe)}</span></div>`,'🎉 គ្មានសិស្សជំពាក់')}</div>
+   <div class="dc w"><h3><u></u>ត្រូវបន្តបង់</h3>${li(renew,(x,i)=>`<div class="li">${av(x.s.name,i+2)}<div class="nm">${esc(x.s.name)}<small>${x.s.id}</small></div><span class="pill warn">ដល់ ${fd(x.i.through)}</span></div>`,'✅ គ្មានសិស្សត្រូវបន្តបង់')}</div>
+   <div class="dc g"><h3><u></u>ទំនិញជិតអស់ស្តុក</h3>${li(low,(x,i)=>`<div class="li">${av(x.it.name,i+4)}<div class="nm">${esc(x.it.name)}</div><span class="pill ${stockPill(x.k.st)}">${x.k.left} · ${x.k.st}</span></div>`,'✅ ស្តុកគ្រប់គ្រាន់')}</div>
+  </div>`;
+ }};
+ACT.clearSample=async()=>{
+  if(!await ask('លុបទិន្នន័យគំរូ (សិស្ស ការបង់ប្រាក់ ការលក់ គ្រូ ថ្នាក់)?','លុប'))return;
+  for(const c of ['students','payments','sales','teachers','classes'])for(const r of [...S[c]])if(r.sample)del(c,r.id);
+  render();toast('បានលុបទិន្នន័យគំរូ');
+};
+
+/* ====================== students ====================== */
+function studentRows(){
+  const v=V.stu,q=clean(v.q).toLowerCase();
+  return scopeStudents().map(s=>({s,i:sInfo(s)})).filter(({s,i})=>
+    (!q||(s.id+' '+s.name+' '+s.en+' '+s.phone+' '+s.guardian).toLowerCase().includes(q))&&(!v.prog||s.prog===v.prog)&&(!v.status||s.status===v.status)&&(!v.pay||i.st===v.pay));
+}
+PG.students={title:'សិស្ស',
+ actions:()=>can('stu.edit')?`<button class="btn" data-act="stuImport">នាំចូលពី CSV</button><button class="btn pri" data-act="stuNew">+ ចុះឈ្មោះសិស្សថ្មី</button>`:'',
+ html(){const v=V.stu;return `<div class="bar"><input type="search" id="q1" placeholder="ស្វែងរក ឈ្មោះ / លេខសម្គាល់ / ទូរស័ព្ទ" value="${esc(v.q)}" data-f="stu.q">
+  <select data-f="stu.prog">${opts(S.settings.programs.map(p=>p.kh),v.prog,'គ្រប់កម្មវិធី')}</select>
+  <select data-f="stu.status">${opts(['កំពុងរៀន','ឈប់រៀន'],v.status,'គ្រប់ស្ថានភាព')}</select>
+  ${money_ok()?`<select data-f="stu.pay">${opts(['បង់គ្រប់','នៅជំពាក់','ត្រូវបន្តបង់','មិនទាន់បង់','ឈប់រៀន (នៅជំពាក់)'],v.pay,'គ្រប់ការបង់')}</select>`:''}</div><div id="list">${this.list()}</div>`},
+ list(){
+  const rows=studentRows(),lim=V.stu.lim,M=money_ok();
+  return `<div class="hint" style="margin-bottom:6px">ឃើញ ${rows.length} សិស្ស</div><div class="tbl"><table><thead><tr><th>លេខ</th><th>ឈ្មោះ</th><th>ភេទ</th><th>កម្មវិធី · ថ្នាក់</th><th>វេន/បន្ទប់</th><th>ទូរស័ព្ទ</th>${M?'<th class="r">ត្រូវបង់</th><th class="r">ជំពាក់</th><th>ការបង់</th>':''}<th></th></tr></thead><tbody>
+  ${rows.slice(0,lim).map(({s,i})=>`<tr><td>${s.id}</td><td><b>${esc(s.name)}</b><div class="hint">${esc(s.en)}</div></td><td>${esc(s.sex)}</td><td>${esc(s.prog)}<div class="hint">${esc(s.level)}</div></td><td>${esc(s.shift)} · ${esc(s.room)}</td><td>${esc(s.phone)}</td>${M?`<td class="r">${money(i.due)}</td><td class="r">${i.owe>0?`<b style="color:var(--bad)">${money(i.owe)}</b>`:money(0)}</td><td><span class="pill ${stPill(i.st)}">${i.st}</span></td>`:''}
+  <td style="white-space:nowrap"><button class="btn sm" data-act="stuView" data-id="${s.id}">មើល</button> ${can('stu.edit')?`<button class="btn sm" data-act="stuEdit" data-id="${s.id}">កែ</button>`:''} ${can('pay.add')?`<button class="btn sm pri" data-act="payNew" data-sid="${s.id}">បង់</button>`:''}</td></tr>`).join('')||'<tr><td colspan="10" class="hint">មិនទាន់មានសិស្ស។ ចុច «+ ចុះឈ្មោះសិស្សថ្មី»។</td></tr>'}</tbody></table></div>
+  ${rows.length>lim?`<div style="text-align:center;margin-top:10px"><button class="btn" data-act="more" data-k="stu">បង្ហាញបន្ថែម (${rows.length-lim})</button></div>`:''}`;
+ }};
+
+/* ---- import students from CSV ---- */
+const IMP_HEAD=['ឈ្មោះ','English','ភេទ','ថ្ងៃកំណើត','កម្មវិធី','ថ្នាក់','វេន','បន្ទប់','អាណាព្យាបាល','ទំនាក់ទំនង','ទូរស័ព្ទ','ទូរស័ព្ទបន្ទាន់','អាសយដ្ឋាន','ថ្ងៃចុះឈ្មោះ'];
+function parseCsv(t){t=t.replace(/^\ufeff/,'');const rows=[];let r=[],c='',q=false;for(let i=0;i<t.length;i++){const ch=t[i];if(q){if(ch==='"'){if(t[i+1]==='"'){c+='"';i++}else q=false}else c+=ch}else if(ch==='"')q=true;else if(ch===','){r.push(c);c=''}else if(ch==='\n'||ch==='\r'){if(ch==='\r'&&t[i+1]==='\n')i++;r.push(c);c='';if(r.some(x=>x!==''))rows.push(r);r=[]}else c+=ch}r.push(c);if(r.some(x=>x!==''))rows.push(r);return rows}
+function normDate(x){x=clean(x);if(!x)return'';let m=x.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);if(m)return m[1]+'-'+pad(m[2])+'-'+pad(m[3]);m=x.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/);if(m)return m[3]+'-'+pad(m[2])+'-'+pad(m[1]);return null}
+ACT.stuImport=()=>{
+  const ov=modal(`<h2>នាំចូលសិស្សពី CSV</h2><ol style="padding-left:20px;margin:0 0 10px;display:grid;gap:4px"><li>ទាញយកគំរូ CSV រួចបំពេញក្នុង Excel (១ ជួរ = ១ សិស្ស)។</li><li>រក្សាទុកជា <b>CSV UTF-8</b> (File → Save As → CSV UTF-8)។</li><li>ជ្រើសឯកសារនេះខាងក្រោម។ ប្រព័ន្ធនឹងពិនិត្យមុននាំចូល។</li></ol>
+  <div class="hint">កម្មវិធី៖ វាយឈ្មោះខ្មែរ ឬកូដ KGE / EFP / EPP · ថ្នាក់ និងវេនត្រូវតាមការកំណត់ · ថ្ងៃ៖ ០២/១១/២០២៦ ជាទម្រង់ 02/11/2026 ឬ 2026-11-02</div>
+  <div class="bar" style="margin-top:10px"><button class="btn" id="tpl">ទាញយកគំរូ CSV</button><label class="btn pri" style="cursor:pointer">ជ្រើសឯកសារ CSV<input type="file" id="csvf" accept=".csv,text/csv" hidden></label></div><div id="res"></div><div class="mfoot"><button class="btn" id="c">បិទ</button></div>`,{wide:true});
+  $('#c',ov).onclick=()=>ov.close();
+  $('#tpl',ov).onclick=()=>{const p=S.settings.programs[0],lv=stuLevels(p.kh)[0]||'';dl('student-import-template.csv',csvOf([IMP_HEAD,['សុខ ចាន់','Sok Chan','ប្រុស','2016-05-12',p.code,lv,p.s1,'1','សុខ វិបុល','ឪពុក','012 345 678','','ភ្នំពេញ',today()]]))};
+  $('#csvf',ov).onchange=async e=>{
+    const f=e.target.files[0];if(!f)return;const rows=parseCsv(await f.text());const h=rows.shift()||[];
+    const ix=k=>h.findIndex(x=>clean(x)===k);const col={};for(const k of IMP_HEAD)col[k]=ix(k);
+    if(col['ឈ្មោះ']<0||col['កម្មវិធី']<0){$('#res',ov).innerHTML='<div class="err">ក្បាលតារាងមិនត្រឹមត្រូវ។ សូមប្រើគំរូ CSV។</div>';return}
+    const good=[],bad=[];let n=0;for(const k of S.students){const m=parseInt(String(k.id).replace(/\D/g,''),10);if(m>n)n=m}
+    rows.forEach((r,i)=>{
+      const g=k=>col[k]<0?'':clean(r[col[k]]);const pr=S.settings.programs.find(p=>p.kh===g('កម្មវិធី')||p.code===g('កម្មវិធី').toUpperCase());let err='';
+      const dob=normDate(g('ថ្ងៃកំណើត')),reg=normDate(g('ថ្ងៃចុះឈ្មោះ'))||today();
+      if(!g('ឈ្មោះ'))err='គ្មានឈ្មោះ';else if(!pr)err='កម្មវិធីមិនត្រូវ';else if(!stuLevels(pr.kh).includes(g('ថ្នាក់')))err='ថ្នាក់មិនត្រូវតាមកម្មវិធី';else if(![pr.s1,pr.s2].includes(g('វេន')))err='វេនមិនត្រូវតាមកម្មវិធី';else if(dob===null||normDate(g('ថ្ងៃចុះឈ្មោះ'))===null)err='ទម្រង់ថ្ងៃមិនត្រូវ';
+      else if(S.students.some(s=>s.name===g('ឈ្មោះ')&&dob&&s.dob===dob)||good.some(s=>s.name===g('ឈ្មោះ')&&dob&&s.dob===dob))err='ស្ទួន (ឈ្មោះ+ថ្ងៃកំណើត)';
+      if(err)bad.push(`ជួរ ${i+2}៖ ${esc(g('ឈ្មោះ'))} · ${err}`);
+      else good.push({id:'S'+pad(++n,3),name:g('ឈ្មោះ'),en:g('English'),sex:g('ភេទ'),dob:dob||'',prog:pr.kh,level:g('ថ្នាក់'),shift:g('វេន'),room:g('បន្ទប់'),guardian:g('អាណាព្យាបាល'),rel:g('ទំនាក់ទំនង')||'ឪពុក',phone:g('ទូរស័ព្ទ'),phone2:g('ទូរស័ព្ទបន្ទាន់'),addr:g('អាសយដ្ឋាន'),reg,status:'កំពុងរៀន',dropDate:'',dropWhy:''});
+    });
+    $('#res',ov).innerHTML=`<div class="calcbox"><div><small>ត្រឹមត្រូវ</small><b style="color:var(--good)">${good.length}</b></div><div><small>មានកំហុស (នឹងរំលង)</small><b style="color:var(--bad)">${bad.length}</b></div></div>${bad.length?`<div class="err" style="max-height:160px;overflow:auto;font-weight:400">${bad.slice(0,40).join('<br>')}${bad.length>40?'<br>…':''}</div>`:''}${good.length?`<div class="mfoot"><button class="btn pri" id="doimp">នាំចូល ${good.length} សិស្ស</button></div>`:''}`;
+    const b=$('#doimp',ov);if(b)b.onclick=()=>{b.disabled=true;for(const s of good)put('students',s);ov.close();render();toast('បាននាំចូល '+good.length+' សិស្ស')};
+  };
+};
+ACT.more=d=>{V[d.k].lim+=80;relist()};
+function stuLevels(prog){return S.settings.fees.filter(f=>f.program===prog).map(f=>f.level)}
+ACT.stuNew=()=>stuForm();
+ACT.stuEdit=d=>stuForm(d.id);
+function stuForm(id){
+  const ed=id?S.students.find(s=>s.id===id):null;
+  const s=ed||{name:'',en:'',sex:'',dob:'',prog:'',level:'',shift:'',room:'',guardian:'',rel:'ឪពុក',phone:'',phone2:'',addr:'',reg:today(),status:'កំពុងរៀន',dropDate:'',dropWhy:''};
+  const ov=modal(`<h2>${ed?'កែប្រែសិស្ស '+ed.id:'ចុះឈ្មោះសិស្សថ្មី'}</h2><div class="f">
+  <label>ឈ្មោះសិស្ស *<input id="name" value="${esc(s.name)}"></label><label>ឈ្មោះអង់គ្លេស<input id="en" value="${esc(s.en)}"></label>
+  <label>ភេទ<select id="sex">${opts(['ប្រុស','ស្រី'],s.sex,'—')}</select></label><label>ថ្ងៃកំណើត<input type="date" id="dob" value="${s.dob}"></label>
+  <label>កម្មវិធី *<select id="prog">${opts(S.settings.programs.map(p=>p.kh),s.prog,'ជ្រើសកម្មវិធី')}</select></label>
+  <label>កម្រិត / ថ្នាក់ *<select id="level"></select></label><label>វេន *<select id="shift"></select></label>
+  <label>លេខបន្ទប់<select id="room">${opts(S.settings.rooms,s.room,'—')}</select></label>
+  <label>ឈ្មោះមាតាបិតា / អាណាព្យាបាល<input id="guardian" value="${esc(s.guardian)}"></label><label>អាណាព្យាបាល<select id="rel">${opts(['ឪពុក','ម្តាយ','អ្នកអាណាព្យាបាល'],s.rel)}</select></label>
+  <label>លេខទូរស័ព្ទ<input id="phone" value="${esc(s.phone)}"></label><label>ទូរស័ព្ទបន្ទាន់ (ផ្សេង)<input id="phone2" value="${esc(s.phone2)}"></label>
+  <label class="wide">អាសយដ្ឋាន<input id="addr" value="${esc(s.addr)}"></label>
+  <label>ថ្ងៃចុះឈ្មោះ<input type="date" id="reg" value="${s.reg}"></label><label>ស្ថានភាពសិស្ស<select id="status">${opts(['កំពុងរៀន','ឈប់រៀន'],s.status)}</select></label>
+  <label>ថ្ងៃឈប់រៀន<input type="date" id="dropDate" value="${s.dropDate}"></label><label>មូលហេតុឈប់<input id="dropWhy" value="${esc(s.dropWhy)}"></label></div>
+  <div id="err"></div><div class="mfoot"><button class="btn" id="c">បោះបង់</button><button class="btn pri" id="ok">រក្សាទុក</button></div>`,{wide:true,onMount(ov){
+    const fill=(lv,sh)=>{const pr=val(ov,'prog');$('#level',ov).innerHTML=opts(stuLevels(pr),lv,'ជ្រើសកម្រិត');const p=progByName(pr);$('#shift',ov).innerHTML=opts(p?[p.s1,p.s2]:[],sh,'ជ្រើសវេន')};
+    fill(s.level,s.shift);$('#prog',ov).onchange=()=>fill('','');
+  }});
+  $('#c',ov).onclick=()=>ov.close();
+  $('#ok',ov).onclick=()=>{
+    const r={...(ed||{}),id:ed?ed.id:nextId('students','S',3)};
+    for(const k of ['name','en','sex','dob','prog','level','shift','room','guardian','rel','phone','phone2','addr','reg','status','dropDate','dropWhy'])r[k]=k==='name'||k==='en'||k==='guardian'?clean(val(ov,k)):val(ov,k);
+    r.room=String(r.room);
+    const err=!r.name?'សូមបំពេញឈ្មោះសិស្ស':!r.prog?'សូមជ្រើសកម្មវិធី':!r.level?'សូមជ្រើសកម្រិត / ថ្នាក់':!r.shift?'សូមជ្រើសវេន':r.status==='ឈប់រៀន'&&!r.dropDate?'សូមបំពេញថ្ងៃឈប់រៀន':'';
+    if(err){$('#err',ov).innerHTML=`<div class="err">${err}</div>`;return}
+    if(!ed&&S.students.some(x=>x.name===r.name&&x.dob&&x.dob===r.dob)&&!ov.dataset.dup){ov.dataset.dup='1';$('#err',ov).innerHTML='<div class="err">មានសិស្សឈ្មោះ និងថ្ងៃកំណើតដូចគ្នាហើយ។ ចុច «រក្សាទុក» ម្តងទៀត ប្រសិនបើជាសិស្សផ្សេង។</div>';return}
+    delete r.sample;put('students',r);ov.close();render();toast('បានរក្សាទុក '+r.id);
+  };
+}
+ACT.stuView=d=>stuView(d.id);
+function stuView(id){
+  const s=S.students.find(x=>x.id===id),i=sInfo(s),c=cache();const ps=c.pBy.get(id)||[];
+  const prog=progByName(s.prog);
+  const ov=modal(`<h2>${esc(s.name)} ${money_ok()?`<span class="pill ${stPill(i.st)}">${i.st}</span>`:''}</h2>
+  <div style="display:flex;gap:18px;flex-wrap:wrap"><div><div class="photo">${s.photo?`<img src="${s.photo}" alt="">`:'រូបថត 3×4'}</div>${can('stu.edit')?'<label class="btn sm" style="display:block;margin-top:6px;text-align:center;cursor:pointer">ដាក់រូបថត<input type="file" accept="image/*" id="ph" hidden></label>':''}</div>
+  <div class="kv" style="flex:1;min-width:260px"><span>លេខសម្គាល់</span><b>${s.id}</b><span>ឈ្មោះអង់គ្លេស</span><b>${esc(s.en)}</b><span>ភេទ · អាយុ</span><b>${esc(s.sex)} · ${age(s.dob)}</b><span>កម្មវិធី</span><b>${esc(s.prog)}${prog?' ('+prog.code+')':''}</b><span>ថ្នាក់ · វេន · បន្ទប់</span><b>${esc(s.level)} · ${esc(s.shift)} · ${esc(s.room)}</b><span>${esc(s.rel)}</span><b>${esc(s.guardian)} · ${esc(s.phone)}</b><span>ថ្ងៃចុះឈ្មោះ</span><b>${fd(s.reg)}</b><span>បង់ដល់ថ្ងៃ</span><b>${fd(i.through)||'—'}</b>${money_ok()?`<span>ត្រូវបង់ / បានបង់ / ជំពាក់</span><b>${money(i.due)} / ${money(i.paid)} / ${money(i.owe)}</b>`:''}${s.status==='ឈប់រៀន'?`<span>ឈប់រៀន</span><b>${fd(s.dropDate)} · ${esc(s.dropWhy)}</b>`:''}</div></div>
+  ${money_ok()?`<h3 class="sec">ប្រវត្តិបង់ប្រាក់</h3><div class="tbl"><table><tr><th>ថ្ងៃ</th><th>បង្កាន់ដៃ</th><th>កញ្ចប់</th><th class="r">បានបង់</th><th></th></tr>${ps.map(p=>`<tr><td>${fd(p.date)}</td><td>${p.receipt} · ${p.id}</td><td>${esc(p.pack)}</td><td class="r">${money(p.paidAmt)}</td><td><button class="btn sm" data-act="payReceipt" data-id="${p.id}">បង្កាន់ដៃ</button></td></tr>`).join('')||'<tr><td colspan="5" class="hint">មិនទាន់បង់</td></tr>'}</table></div>`:''}
+  <div class="mfoot"><button class="btn" id="rp">របាយការណ៍ពិន្ទុ</button><button class="btn" id="idc">ប័ណ្ណសិស្ស (ID)</button>${can('stu.edit')?'<button class="btn" id="ed">កែប្រែ</button>':''}${can('pay.add')?'<button class="btn pri" id="py">បង់ប្រាក់</button>':''}<button class="btn" id="cl">បិទ</button></div>`,{wide:true});
+  $('#cl',ov).onclick=()=>ov.close();
+  if($('#ed',ov))$('#ed',ov).onclick=()=>{ov.close();stuForm(id)};
+  if($('#py',ov))$('#py',ov).onclick=()=>{ov.close();payForm({sid:id})};
+  $('#rp',ov).onclick=()=>docModal('របាយការណ៍សិស្ស '+s.name,studentReportDoc(s),{land:false,name:'Report-'+s.id});
+  $('#idc',ov).onclick=()=>docModal('ប័ណ្ណសិស្ស '+id,idDoc(s),{land:true,name:'ID-'+id});
+  if($('#ph',ov))$('#ph',ov).onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,320/Math.max(im.width,im.height)),cv=document.createElement('canvas');cv.width=Math.round(im.width*k);cv.height=Math.round(im.height*k);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);s.photo=cv.toDataURL('image/jpeg',.8);put('students',s);ov.close();stuView(id);toast('បានដាក់រូបថត')};im.src=fr.result};fr.readAsDataURL(f)};
+}
+
+/* ====================== payments ====================== */
+PG.pay={title:'ការបង់ប្រាក់',actions:()=>can('pay.add')?`<button class="btn pri" data-act="payNew">+ កត់ការបង់ប្រាក់</button>`:'',
+ html(){return `<div class="bar"><input type="search" placeholder="ស្វែងរក បង្កាន់ដៃ / លេខវិក្កយបត្រ / សិស្ស" value="${esc(V.pay.q)}" data-f="pay.q"></div><div id="list">${this.list()}</div>`},
+ list(){
+  const c=cache(),q=clean(V.pay.q).toLowerCase();
+  const rows=[...S.payments].sort((a,b)=>(b.date+b.id).localeCompare(a.date+a.id)).filter(p=>{const st=c.byId.get(p.sid);return!q||(p.id+' '+p.receipt+' '+p.sid+' '+(st?st.name+' '+st.en:'')).toLowerCase().includes(q)});
+  return `<div class="tbl"><table><thead><tr><th>ថ្ងៃ</th><th>បង្កាន់ដៃ</th><th>វិក្កយបត្រ</th><th>សិស្ស</th><th>កញ្ចប់</th><th class="r">ត្រូវបង់</th><th class="r">បានបង់</th><th class="r">នៅសល់</th><th>វិធី</th><th>ប្រភេទ</th><th></th></tr></thead><tbody>
+  ${rows.slice(0,V.pay.lim).map(p=>{const st=c.byId.get(p.sid),d=c.der.get(p.id);const set=p.pack===SETTLE;return`<tr><td>${fd(p.date)}</td><td><b>${p.receipt}</b></td><td>${p.id}</td><td>${p.sid} · ${esc(st?st.name:'?')}</td><td>${esc(p.pack)}${set?' → '+p.settles:''}</td><td class="r">${set?'—':money(p.due)}</td><td class="r">${money(p.paidAmt)}</td><td class="r">${set?money(d.after):d.remaining>0?`<b style="color:var(--bad)">${money(d.remaining)}</b>`:money(0)}</td><td>${esc(p.method)}</td><td><span class="pill acc">${d.kind}</span></td>
+  <td style="white-space:nowrap"><button class="btn sm pri" data-act="payReceipt" data-id="${p.id}">បង្កាន់ដៃ</button> ${can('pay.edit')?`<button class="btn sm" data-act="payEdit" data-id="${p.id}">កែ</button>`:voidBtn('payment',p.id)}</td></tr>`}).join('')||'<tr><td colspan="11" class="hint">មិនទាន់មានការបង់ប្រាក់</td></tr>'}</tbody></table></div>
+  ${rows.length>V.pay.lim?`<div style="text-align:center;margin-top:10px"><button class="btn" data-act="more" data-k="pay">បង្ហាញបន្ថែម</button></div>`:''}`;
+ }};
+ACT.payNew=d=>payForm({sid:d&&d.sid});
+ACT.payEdit=d=>payForm({edit:d.id});
+ACT.payReceipt=d=>{const p=S.payments.find(x=>x.id===d.id);const sale=p.saleInv?S.sales.find(s=>s.id===p.saleInv):null;docModal('បង្កាន់ដៃ '+p.receipt,receiptDoc(p,sale),{land:true,name:'Receipt-'+p.receipt})};
+function payForm({sid,edit}){
+  const ed=edit?S.payments.find(p=>p.id===edit):null;const c=cache();
+  const p=ed||{date:today(),sid:sid||'',pack:'1 ខែ',dtype:'',dval:'',dwhy:'',method:'សាច់ប្រាក់',note:'',settles:'',saleInv:''};
+  const stOpts=S.students.filter(s=>s.status!=='ឈប់រៀន'||s.id===p.sid||sInfo(s).owe>0).map(s=>`<option value="${esc(s.id+' · '+s.name)}">`).join('');
+  const cur=p.sid?c.byId.get(p.sid):null;
+  const ov=modal(`<h2>${ed?'កែប្រែការបង់ប្រាក់ '+ed.id:'កត់ការបង់ប្រាក់'}</h2><div class="f">
+  <label>ថ្ងៃបង់<input type="date" id="date" value="${p.date}"></label>
+  <label>សិស្ស (វាយឈ្មោះ ឬលេខ) *<input id="stu" list="stl" value="${cur?esc(cur.id+' · '+cur.name):''}" ${ed?'readonly':''} autocomplete="off"><datalist id="stl">${stOpts}</datalist></label>
+  <label>កញ្ចប់ *<select id="pack">${opts(S.settings.packages.map(x=>x.name),p.pack)}</select></label>
+  <label id="lbInv" hidden>សងវិក្កយបត្រលេខ *<select id="settles"></select></label>
+  <label class="g1">ប្រភេទបញ្ចុះតម្លៃ<select id="dtype">${opts(['ភាគរយ','សាច់ប្រាក់'],p.dtype,'គ្មាន')}</select></label>
+  <label class="g1">តម្លៃបញ្ចុះ (% ឬ $)<input type="number" min="0" step="any" id="dval" value="${p.dval??''}"></label>
+  <label class="g1">មូលហេតុបញ្ចុះតម្លៃ<input id="dwhy" value="${esc(p.dwhy)}"></label>
+  <label id="lbPaid">បានបង់ (USD) <span class="hint" id="paidHint">ទុកទទេ = បង់គ្រប់</span><input type="number" min="0" step="any" id="paid" value="${ed&&(ed.paidAmt!==ed.due||ed.pack===SETTLE)?ed.paidAmt:''}"></label>
+  <label>វិធីបង់<select id="method">${opts(METHODS,p.method)}</select></label>
+  <label>វិក្កយបត្រលក់ភ្ជាប់ (បើមាន)<select id="saleInv">${opts(S.sales.filter(s=>!s.sid||true).slice(-60).reverse().map(s=>({v:s.id,l:s.id+' · '+buyerName(s)+' · '+fd(s.date)})),p.saleInv,'គ្មាន')}</select></label>
+  <label class="wide">ចំណាំបន្ថែម<input id="note" value="${esc(p.note)}"></label></div>
+  ${ed?'':`<div id="saleSec"><h3 class="sec" style="margin:14px 0 4px">ទំនិញលក់ជាមួយ (ព្រីនក្នុងបង្កាន់ដៃតែមួយ)</h3><div class="hint" style="margin-bottom:6px">បើមានទិញឯកសណ្ឋាន សៀវភៅ សម្ភារៈ ជាមួយ សូមបន្ថែមទីនេះ។ ប្រព័ន្ធបង្កើតវិក្កយបត្រលក់ និងភ្ជាប់ឱ្យស្វ័យប្រវត្តិ។</div><div id="lines"></div><div class="bar" style="margin-top:8px;align-items:end"><button class="btn sm" type="button" id="addLine">+ បន្ថែមទំនិញ</button><label class="f" style="display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted)">បានបង់ថ្លៃទំនិញ (ទទេ = គ្រប់)<input type="number" min="0" step="any" id="sPaid" style="background:var(--input);width:170px"></label></div></div>`}
+  <div class="calcbox" id="calc"></div><div id="err"></div>
+  <div class="mfoot">${ed?'<button class="btn bad" id="dl" style="margin-right:auto">លុប</button>':''}<button class="btn" id="c">បោះបង់</button><button class="btn pri" id="ok">រក្សាទុក និងមើលបង្កាន់ដៃ</button></div>`,{wide:true,onMount(ov){
+    const upd=()=>{
+      const st=getStu(ov);const settle=val(ov,'pack')===SETTLE;
+      $('#lbInv',ov).hidden=!settle;for(const e of ov.querySelectorAll('.g1'))e.hidden=settle;
+      $('#paidHint',ov).textContent=settle?'(ចំនួនសង *)':'ទុកទទេ = បង់គ្រប់';
+      const box=$('#calc',ov);
+      const sl=ov._M?ov._M.L.filter(l=>l.code):[];const sk=sl.length?saleCalc({lines:sl.map(l=>({...l})),paidAmt:val(ov,'sPaid')===''?null:+val(ov,'sPaid')}):null;
+      const saleBox=sk?`<div><small>ទំនិញលក់ (ត្រូវបង់)</small><b>${money(sk.net)}</b></div><div><small>ទំនិញបានបង់</small><b>${money(sk.paid)}</b></div>`:'';
+      if(!st){box.innerHTML='<small>ជ្រើសសិស្សជាមុន</small>';return}
+      if(settle){
+        const debts=(c.pBy.get(st.id)||[]).filter(x=>x.pack!==SETTLE&&(c.der.get(x.id).remaining>0||x.id===p.settles));
+        const sel=$('#settles',ov);const keep=sel.value||p.settles;
+        sel.innerHTML=opts(debts.map(x=>({v:x.id,l:`${x.id} · ${fd(x.date)} · ជំពាក់ ${money(c.der.get(x.id).remaining+(ed&&ed.settles===x.id?ed.paidAmt:0))}`})),keep,'ជ្រើសវិក្កយបត្រ');
+        const o=c.pById.get(sel.value);const rem=o?round2(c.der.get(o.id).remaining+(ed&&ed.settles===o.id?ed.paidAmt:0)):0;
+        const amt=+val(ov,'paid')||0;
+        box.innerHTML=`<div><small>ជំពាក់វិក្កយបត្រនេះ</small><b>${money(rem)}</b></div><div><small>ចំនួនសង</small><b>${money(amt)}</b></div><div><small>ជំពាក់នៅសល់</small><b>${money(rem-amt)}</b></div>${saleBox}`;
+      }else{
+        const r=calcPay(st.level,val(ov,'pack'),val(ov,'dtype'),val(ov,'dval'),val(ov,'paid'));
+        box.innerHTML=`<div><small>ថ្លៃ ១ ខែ (${esc(st.level)})</small><b>${money(r.fee)}</b></div><div><small>ចំនួនខែ</small><b>${r.months}</b></div><div><small>ថ្លៃមុនបញ្ចុះ</small><b>${money(r.gross)}</b></div><div><small>បញ្ចុះតម្លៃ</small><b>${money(r.disc)}</b></div><div><small>ត្រូវបង់</small><b>${money(r.due)}</b></div><div><small>បានបង់</small><b>${money(r.paidAmt)}</b></div><div><small>នៅសល់</small><b style="color:${r.due-r.paidAmt>0?'var(--bad)':'inherit'}">${money(r.due-r.paidAmt)}</b></div>${saleBox}${sk?`<div><small>សរុបបង្កាន់ដៃ (បានបង់)</small><b>${money(r.paidAmt+sk.paid)}</b></div>`:''}`;
+      }
+    };
+    if(!ed){const M=mountLines(ov,$('#lines',ov),()=>upd());ov._M=M;$('#addLine',ov).onclick=M.add}
+    ov.addEventListener('input',upd);ov.addEventListener('change',upd);upd();
+  }});
+  function getStu(ov){const v=val(ov,'stu').split(' ')[0];return c.byId.get(v)}
+  $('#c',ov).onclick=()=>ov.close();
+  if(ed)$('#dl',ov).onclick=async()=>{
+    if(c.setl.get(ed.id)){$('#err',ov).innerHTML='<div class="err">មិនអាចលុបបាន៖ មានការសងបំណុលភ្ជាប់ជាមួយវិក្កយបត្រនេះ។ លុបការសងជាមុន។</div>';return}
+    ov.close();ACT.voidDirect({kind:'payment',id:ed.id});
+  };
+  $('#ok',ov).onclick=()=>{
+    const st=getStu(ov);const pack=val(ov,'pack');const settle=pack===SETTLE;let err='';
+    if(!st)err='សូមជ្រើសសិស្សពីបញ្ជី';
+    const r={...(ed||{}),id:ed?ed.id:nextId('payments','RC',4),date:val(ov,'date'),sid:st?st.id:'',pack,method:val(ov,'method'),note:val(ov,'note'),saleInv:val(ov,'saleInv')};
+    if(!r.date)err='សូមបំពេញថ្ងៃបង់';
+    if(!err){
+      if(settle){
+        const o=c.pById.get(val(ov,'settles'));const amt=+val(ov,'paid');
+        if(!o)err='សូមជ្រើសវិក្កយបត្រដែលសង';else if(!(amt>0))err='សូមវាយចំនួនសង';
+        else{const rem=round2(c.der.get(o.id).remaining+(ed&&ed.settles===o.id?ed.paidAmt:0));if(amt>rem)err='សងលើសចំនួនជំពាក់ ('+money(rem)+')'}
+        Object.assign(r,{settles:val(ov,'settles'),months:0,fee:0,gross:0,disc:0,due:0,paidAmt:amt,dtype:'',dval:'',dwhy:''});
+      }else{
+        const x=calcPay(st?st.level:'',pack,val(ov,'dtype'),val(ov,'dval'),val(ov,'paid'));
+        if(!err&&!x.fee)err='រកមិនឃើញថ្លៃសិក្សាសម្រាប់កម្រិតនេះ (មើល «ការកំណត់»)';
+        if(!err&&x.paidAmt<0)err='ចំនួនបានបង់មិនត្រឹមត្រូវ';
+        if(!err&&x.paidAmt>x.due)err='បានបង់ច្រើនជាងត្រូវបង់';
+        Object.assign(r,x,{settles:'',dtype:val(ov,'dtype'),dval:val(ov,'dval')===''?'':+val(ov,'dval'),dwhy:val(ov,'dwhy')});
+      }
+    }
+    if(err){$('#err',ov).innerHTML=`<div class="err">${err}</div>`;return}
+    const nl=ov._M?ov._M.L.filter(l=>l.code):[];
+    if(nl.length){
+      if(nl.some(l=>!(+l.qty>0))){$('#err',ov).innerHTML='<div class="err">សូមបំពេញចំនួនទំនិញ</div>';return}
+      const e2=stockCheck(nl);if(e2){$('#err',ov).innerHTML=`<div class="err">${e2}</div>`;return}
+      const sale={id:nextId('sales','SL',4),by:ME.id,byName:ME.name,date:r.date,sid:r.sid,other:'',lines:nl.map(l=>({code:l.code,qty:+l.qty,price:l.price,dtype:l.dtype,dval:l.dval})),method:r.method,paidAmt:val(ov,'sPaid')===''?null:+val(ov,'sPaid'),note:''};
+      sale.paidAmt=saleCalc(sale).paid;put('sales',sale);r.saleInv=sale.id;
+    }
+    if(!ed){r.receipt=nextReceipt(r.date);r.by=ME.id;r.byName=ME.name}
+    delete r.sample;put('payments',r);ov.close();render();
+    const sale=r.saleInv?S.sales.find(s=>s.id===r.saleInv):null;
+    docModal('បង្កាន់ដៃ '+r.receipt,receiptDoc(r,sale),{land:true,name:'Receipt-'+r.receipt});
+  };
+}
+
+/* ====================== item picker (Program → Category → Type → Name) ====================== */
+const pk=it=>it.prog||'∅';
+function bindPicker(ov,root,id,code,cb){
+  const g=s=>$('#'+id+s,root);const it=code?cache().itemById.get(code):null;
+  const cur={p:it?pk(it):'',c:it?it.cat:'',t:it?it.type:'',n:it?it.code:''};
+  const uniq=a=>[...new Set(a)];
+  const draw=()=>{
+    const I=S.items;
+    g('p').innerHTML=opts(uniq(I.map(pk)).map(x=>({v:x,l:x==='∅'?'ទូទៅ':x})),cur.p,'① Program');
+    g('c').innerHTML=opts(uniq(I.filter(i=>pk(i)===cur.p).map(i=>i.cat)),cur.c,'② Category');
+    g('t').innerHTML=opts(uniq(I.filter(i=>pk(i)===cur.p&&i.cat===cur.c).map(i=>i.type)),cur.t,'③ ប្រភេទ');
+    g('n').innerHTML=opts(I.filter(i=>pk(i)===cur.p&&i.cat===cur.c&&i.type===cur.t).map(i=>({v:i.code,l:i.name+(i.unit?', '+i.unit:'')+' · ស្តុក '+num(itemStock(i).left)})),cur.n,'④ ឈ្មោះទំនិញ');
+  };
+  draw();
+  g('p').onchange=e=>{cur.p=e.target.value;cur.c=cur.t=cur.n='';draw();cb(cur.n)};
+  g('c').onchange=e=>{cur.c=e.target.value;cur.t=cur.n='';draw();cb(cur.n)};
+  g('t').onchange=e=>{cur.t=e.target.value;cur.n='';draw();cb(cur.n)};
+  g('n').onchange=e=>{cur.n=e.target.value;cb(cur.n)};
+}
+const pickerHtml=id=>`<select id="${id}p"></select><select id="${id}c"></select><select id="${id}t"></select><select id="${id}n"></select>`;
+
+/* ====================== sales ====================== */
+PG.sales={title:'ការលក់ឯកសណ្ឋាន និងសម្ភារៈ',actions:()=>can('sale.add')?`<button class="btn pri" data-act="saleNew">+ វិក្កយបត្រលក់ថ្មី</button>`:'',
+ html(){return `<div class="bar"><input type="search" placeholder="ស្វែងរក វិក្កយបត្រ / អ្នកទិញ" value="${esc(V.sale.q)}" data-f="sale.q"></div><div id="list">${this.list()}</div>`},
+ list(){
+  const q=clean(V.sale.q).toLowerCase();
+  const rows=[...S.sales].sort((a,b)=>(b.date+b.id).localeCompare(a.date+a.id)).filter(s=>!q||(s.id+' '+buyerName(s)+' '+(s.sid||'')).toLowerCase().includes(q));
+  return `<div class="tbl"><table><thead><tr><th>ថ្ងៃ</th><th>វិក្កយបត្រ</th><th>អ្នកទិញ</th><th>ទំនិញ</th><th class="r">សរុប</th><th class="r">បានបង់</th><th class="r">នៅសល់</th><th>វិធី</th><th></th></tr></thead><tbody>
+  ${rows.slice(0,V.sale.lim).map(s=>{const k=saleCalc(s);return`<tr><td>${fd(s.date)}</td><td><b>${s.id}</b></td><td>${s.sid?s.sid+' · ':''}${esc(buyerName(s))}</td><td>${k.lines.map(l=>esc(l.name)+' ×'+l.qty).join('<br>')}</td><td class="r">${money(k.net)}</td><td class="r">${money(k.paid)}</td><td class="r">${k.left>0?`<b style="color:var(--bad)">${money(k.left)}</b>`:money(0)}</td><td>${esc(s.method)}</td><td style="white-space:nowrap"><button class="btn sm pri" data-act="saleView" data-id="${s.id}">វិក្កយបត្រ</button> ${voidBtn('sale',s.id)}</td></tr>`}).join('')||'<tr><td colspan="9" class="hint">មិនទាន់មានការលក់</td></tr>'}</tbody></table></div>
+  ${rows.length>V.sale.lim?`<div style="text-align:center;margin-top:10px"><button class="btn" data-act="more" data-k="sale">បង្ហាញបន្ថែម</button></div>`:''}`;
+ }};
+ACT.saleView=d=>{const s=S.sales.find(x=>x.id===d.id);docModal('វិក្កយបត្រលក់ '+s.id,receiptDoc(null,s),{land:true,name:'Invoice-'+s.id})};
+ACT.saleDel=async d=>{
+  if(S.payments.some(p=>p.saleInv===d.id)){toast('វិក្កយបត្រនេះភ្ជាប់ជាមួយបង្កាន់ដៃបង់ប្រាក់ លុបមិនបាន');return}
+  if(await ask('លុបវិក្កយបត្រលក់ '+d.id+' ? ស្តុកនឹងត្រឡប់មកវិញ។','លុប')){del('sales',d.id);render();toast('បានលុប')}
+};
+
+/* shared sale-line editor (used by sales form and payment form) */
+function mountLines(ov,box,onChange){
+  const L=[];const blank=()=>({code:'',qty:1,price:0,dtype:'',dval:''});
+  const prices=()=>L.forEach((l,i)=>{const e=$('#ln'+i,box);if(e){const it=cache().itemById.get(l.code);e.textContent=it?`${money(it.price)} × ${l.qty||0} = ${money((l.qty||0)*it.price)}`:''}});
+  const draw=()=>{
+    box.innerHTML=L.map((l,i)=>`<div class="card" style="padding:10px;margin-bottom:8px"><div class="f" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">${pickerHtml('i'+i)}</div>
+    <div class="f" style="margin-top:8px;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));align-items:end"><label>ចំនួន<input type="number" min="1" step="1" data-i="${i}" data-k="qty" value="${l.qty}"></label>
+    <label>បញ្ចុះ<select data-i="${i}" data-k="dtype">${opts(['ភាគរយ','សាច់ប្រាក់'],l.dtype,'គ្មាន')}</select></label><label>តម្លៃបញ្ចុះ<input type="number" min="0" step="any" data-i="${i}" data-k="dval" value="${l.dval}"></label><span class="hint" id="ln${i}"></span><button class="btn sm bad" type="button" data-i="${i}" data-k="rm">លុប</button></div></div>`).join('');
+    L.forEach((l,i)=>bindPicker(ov,box,'i'+i,l.code,code=>{l.code=code;const it=cache().itemById.get(code);l.price=it?it.price:0;prices();onChange()}));prices();onChange();
+  };
+  box.addEventListener('input',e=>{const t=e.target;if(t.dataset.k&&t.dataset.k!=='rm'){L[t.dataset.i][t.dataset.k]=t.dataset.k==='qty'||t.dataset.k==='dval'?(t.value===''?'':+t.value):t.value;prices();onChange()}});
+  box.addEventListener('click',e=>{const t=e.target;if(t.dataset.k==='rm'){L.splice(+t.dataset.i,1);draw()}});
+  return{L,start(){L.push(blank());draw()},add(){L.push(blank());draw()},clear(){L.length=0;draw()}};
+}
+function stockCheck(lines){
+  const need={};for(const l of lines)need[l.code]=(need[l.code]||0)+ +l.qty;
+  for(const code in need){const it=cache().itemById.get(code),k=itemStock(it);if(need[code]>k.left)return`ស្តុកមិនគ្រប់៖ ${it.name} (នៅសល់ ${num(k.left)})`}
+  return'';
+}
+ACT.saleNew=()=>{
+  const ov=modal(`<h2>វិក្កយបត្រលក់ថ្មី</h2><div class="f">
+  <label>ថ្ងៃលក់<input type="date" id="date" value="${today()}"></label>
+  <label>សិស្ស (វាយឈ្មោះ ឬលេខ)<input id="stu" list="stl2" autocomplete="off"><datalist id="stl2">${S.students.map(s=>`<option value="${esc(s.id+' · '+s.name)}">`).join('')}</datalist></label>
+  <label>អ្នកទិញផ្សេង (មិនមែនសិស្ស)<input id="other"></label>
+  <label>វិធីបង់<select id="method">${opts(METHODS,'សាច់ប្រាក់')}</select></label>
+  <label>បានបង់ (USD) <span class="hint">ទទេ = បង់គ្រប់</span><input type="number" min="0" step="any" id="paid"></label>
+  <label>ចំណាំ<input id="note"></label></div>
+  <h3 class="sec">ទំនិញ</h3><div id="lines"></div><button class="btn sm" id="add" style="margin-top:8px">+ បន្ថែមទំនិញ</button>
+  <div class="calcbox" id="calc"></div><div id="err"></div>
+  <div class="mfoot"><button class="btn" id="c">បោះបង់</button><button class="btn pri" id="ok">រក្សាទុក និងមើលវិក្កយបត្រ</button></div>`,{wide:true});
+  const box=$('#lines',ov);
+  const M=mountLines(ov,box,()=>totals());const L=M.L;
+  const totals=()=>{const k=saleCalc({lines:L.filter(l=>l.code).map(l=>({...l})),paidAmt:val(ov,'paid')===''?null:+val(ov,'paid')});$('#calc',ov).innerHTML=`<div><small>ថ្លៃមុនបញ្ចុះ</small><b>${money(k.gross)}</b></div><div><small>បញ្ចុះ</small><b>${money(k.disc)}</b></div><div><small>ត្រូវបង់</small><b>${money(k.net)}</b></div><div><small>បានបង់</small><b>${money(k.paid)}</b></div><div><small>នៅសល់</small><b>${money(k.left)}</b></div>`};
+  M.start();$('#add',ov).onclick=M.add;
+  ov.addEventListener('input',e=>{if(e.target.id==='paid')totals()});
+  $('#c',ov).onclick=()=>ov.close();
+  $('#ok',ov).onclick=()=>{
+    const sid=val(ov,'stu').split(' ')[0];const st=cache().byId.get(sid);const other=clean(val(ov,'other'));
+    const lines=L.filter(l=>l.code);const need={};let err='';
+    if(!st&&!other)err='សូមជ្រើសសិស្ស ឬវាយឈ្មោះអ្នកទិញ';
+    else if(!lines.length)err='សូមជ្រើសទំនិញយ៉ាងហោចណាស់ ១ មុខ';
+    else if(lines.some(l=>!(+l.qty>0)))err='សូមបំពេញចំនួនទំនិញ';
+    if(!err)err=stockCheck(lines);
+    if(err){$('#err',ov).innerHTML=`<div class="err">${err}</div>`;return}
+    const sale={id:nextId('sales','SL',4),by:ME.id,byName:ME.name,date:val(ov,'date'),sid:st?st.id:'',other:st?'':other,lines:lines.map(l=>({code:l.code,qty:+l.qty,price:l.price,dtype:l.dtype,dval:l.dval})),method:val(ov,'method'),paidAmt:val(ov,'paid')===''?null:+val(ov,'paid'),note:val(ov,'note')};
+    sale.paidAmt=saleCalc(sale).paid;
+    put('sales',sale);ov.close();render();docModal('វិក្កយបត្រលក់ '+sale.id,receiptDoc(null,sale),{land:true,name:'Invoice-'+sale.id});
+  };
+};
+
+/* ====================== items & stock ====================== */
+PG.items={title:'បញ្ជីទំនិញ និងស្តុក',actions:()=>can('stock.edit')?`<button class="btn pri" data-act="itemNew">+ ទំនិញថ្មី</button>`:'',
+ html(){const v=V.item;const cats=[...new Set(S.items.map(i=>i.cat))];return `<div class="bar"><input type="search" placeholder="ស្វែងរក ឈ្មោះ / កូដ" value="${esc(v.q)}" data-f="item.q">
+  <select data-f="item.prog">${opts([...new Set(S.items.map(pk))].map(x=>({v:x,l:x==='∅'?'ទូទៅ':x})),v.prog,'គ្រប់ Program')}</select>
+  <select data-f="item.st">${opts(['មាន','ជិតអស់','អស់ស្តុក','ស្តុកអវិជ្ជមាន'],v.st,'គ្រប់ស្ថានភាព')}</select></div><div id="list">${this.list()}</div>`},
+ list(){
+  const v=V.item,q=clean(v.q).toLowerCase();
+  const rows=S.items.map(it=>({it,k:itemStock(it)})).filter(({it,k})=>(!q||(it.code+' '+it.name+' '+it.type).toLowerCase().includes(q))&&(!v.prog||pk(it)===v.prog)&&(!v.st||k.st===v.st));
+  return `<div class="hint" style="margin-bottom:6px">${rows.length} មុខ · តម្លៃស្តុកសរុប ${money(sum(rows,x=>x.k.value))}</div><div class="tbl"><table><thead><tr><th>កូដ</th><th>Program</th><th>Category · ប្រភេទ</th><th>ឈ្មោះ</th><th class="r">តម្លៃលក់</th><th class="r">ស្តុកដើម</th><th class="r">បានលក់</th><th class="r">នៅសល់</th><th>ស្ថានភាព</th><th class="r">តម្លៃស្តុក</th><th></th></tr></thead><tbody>
+  ${rows.slice(0,v.lim).map(({it,k})=>`<tr><td>${it.code}</td><td>${esc(it.prog||'ទូទៅ')}</td><td>${esc(it.cat)}<div class="hint">${esc(it.type)}</div></td><td>${esc(it.name)}${it.unit?`<div class="hint">${esc(it.unit)}</div>`:''}</td><td class="r">${money(it.price)}</td><td class="r">${num(it.open)}</td><td class="r">${num(k.sold)}</td><td class="r"><b>${num(k.left)}</b></td><td><span class="pill ${stockPill(k.st)}">${k.st}</span></td><td class="r">${money(k.value)}</td><td>${can('stock.edit')?`<button class="btn sm" data-act="itemEdit" data-id="${it.code}">កែ</button>`:''}</td></tr>`).join('')||'<tr><td colspan="11" class="hint">គ្មានទំនិញ</td></tr>'}</tbody></table></div>
+  ${rows.length>v.lim?`<div style="text-align:center;margin-top:10px"><button class="btn" data-act="more" data-k="item">បង្ហាញបន្ថែម</button></div>`:''}`;
+ }};
+ACT.itemNew=()=>itemForm();ACT.itemEdit=d=>itemForm(d.id);
+function itemForm(code){
+  const ed=code?S.items.find(i=>i.code===code):null;const it=ed||{prog:'KGE',cat:'',type:'',name:'',unit:'',price:'',open:0,low:5};
+  const progs=S.settings.programs.map(p=>p.code);
+  const ov=modal(`<h2>${ed?'កែប្រែទំនិញ '+ed.code:'ទំនិញថ្មី'}</h2><div class="f">
+  <label>Program<select id="prog">${opts(progs,it.prog,'ទូទៅ (គ្មាន)')}</select></label>
+  <label>Category *<input id="cat" list="cl" value="${esc(it.cat)}"><datalist id="cl">${S.settings.cats.map(c=>`<option value="${esc(c.kh)}">`).join('')}</datalist></label>
+  <label>ប្រភេទ (Type) *<input id="type" value="${esc(it.type)}"></label><label>ឈ្មោះទំនិញ *<input id="name" value="${esc(it.name)}"></label>
+  <label>ឯកតា (ក្បាល/ឈុត/pcs)<input id="unit" value="${esc(it.unit)}"></label><label>តម្លៃលក់ (USD) *<input type="number" min="0" step="any" id="price" value="${it.price}"></label>
+  <label>ស្តុកដើម<input type="number" min="0" id="open" value="${it.open}"></label><label>កម្រិតរំលឹក (ជិតអស់)<input type="number" min="0" id="low" value="${it.low}"></label></div>
+  <div id="err"></div><div class="mfoot"><button class="btn" id="c">បោះបង់</button><button class="btn pri" id="ok">រក្សាទុក</button></div>`);
+  $('#c',ov).onclick=()=>ov.close();
+  $('#ok',ov).onclick=()=>{
+    const r={...(ed||{}),prog:val(ov,'prog'),cat:clean(val(ov,'cat')),type:clean(val(ov,'type')),name:clean(val(ov,'name')),unit:clean(val(ov,'unit')),price:+val(ov,'price'),open:+val(ov,'open')||0,low:+val(ov,'low')||0};
+    if(!r.cat||!r.type||!r.name||val(ov,'price')===''){$('#err',ov).innerHTML='<div class="err">សូមបំពេញ Category ប្រភេទ ឈ្មោះ និងតម្លៃ</div>';return}
+    if(!ed){r.code=nextId('items','IVTO-',3);r.id=r.code}
+    put('items',r);ov.close();render();toast('បានរក្សាទុក '+r.code);
+  };
+}
+PG.moves={title:'ចលនាស្តុក',actions:()=>can('stock.edit')?`<button class="btn pri" data-act="mvNew">+ កត់ចលនាស្តុក</button>`:'',
+ html(){return `<div class="bar"><input type="search" placeholder="ស្វែងរកទំនិញ" value="${esc(V.mv.q)}" data-f="mv.q"><select data-f="mv.type">${opts(MOVES,V.mv.type,'គ្រប់ប្រភេទ')}</select></div><div id="list">${this.list()}</div>`},
+ list(){
+  const q=clean(V.mv.q).toLowerCase(),c=cache();
+  const rows=[...S.moves].sort((a,b)=>(b.date+b.id).localeCompare(a.date+a.id)).filter(m=>{const it=c.itemById.get(m.code);return(!q||(m.code+' '+(it?it.name:'')).toLowerCase().includes(q))&&(!V.mv.type||m.type===V.mv.type)});
+  return `<div class="tbl"><table><thead><tr><th>ថ្ងៃ</th><th>លេខ</th><th>ទំនិញ</th><th>ប្រភេទចលនា</th><th class="r">ចំនួន</th><th class="r">តម្លៃទិញ</th><th>អ្នកផ្គត់ផ្គង់ / មូលហេតុ</th><th class="r">ស្តុកសល់</th><th></th></tr></thead><tbody>
+  ${rows.slice(0,V.mv.lim).map(m=>{const it=c.itemById.get(m.code);return`<tr><td>${fd(m.date)}</td><td>${m.id}</td><td>${esc(it?it.name:m.code)}<div class="hint">${m.code}</div></td><td>${esc(m.type)}</td><td class="r">${num(m.qty)}</td><td class="r">${m.cost?money(m.cost):''}</td><td>${esc(m.who)} ${esc(m.note)}</td><td class="r">${it?num(itemStock(it).left):''}</td><td>${can('stock.edit')?`<button class="btn sm bad" data-act="mvDel" data-id="${m.id}">លុប</button>`:''}</td></tr>`}).join('')||'<tr><td colspan="9" class="hint">មិនទាន់មានចលនាស្តុក</td></tr>'}</tbody></table></div>
+  ${rows.length>V.mv.lim?`<div style="text-align:center;margin-top:10px"><button class="btn" data-act="more" data-k="mv">បង្ហាញបន្ថែម</button></div>`:''}`;
+ }};
+ACT.mvDel=async d=>{if(await ask('លុបចលនាស្តុក '+d.id+' ?','លុប')){del('moves',d.id);render();toast('បានលុប')}};
+ACT.mvNew=()=>{
+  let code='';
+  const ov=modal(`<h2>កត់ចលនាស្តុក</h2><div class="f"><label>ថ្ងៃ<input type="date" id="date" value="${today()}"></label><label>ប្រភេទចលនា<select id="type">${opts(MOVES,MOVES[0])}</select></label></div>
+  <div class="f" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:10px">${pickerHtml('m')}</div><div id="cur" class="hint" style="margin:6px 0"></div>
+  <div class="f"><label>ចំនួន *<input type="number" min="1" step="any" id="qty"></label><label>តម្លៃទិញ ១ ឯកតា (USD)<input type="number" min="0" step="any" id="cost"></label><label>អ្នកផ្គត់ផ្គង់ / អ្នកទទួល / មូលហេតុ<input id="who"></label><label>ចំណាំ<input id="note"></label></div>
+  <div id="err"></div><div class="mfoot"><button class="btn" id="c">បោះបង់</button><button class="btn pri" id="ok">រក្សាទុក</button></div>`,{wide:true});
+  bindPicker(ov,ov,'m','',c=>{code=c;const it=cache().itemById.get(c);$('#cur',ov).textContent=it?`ស្តុកនៅសល់ឥឡូវ៖ ${num(itemStock(it).left)} · ${it.code}`:''});
+  $('#c',ov).onclick=()=>ov.close();
+  $('#ok',ov).onclick=()=>{
+    const it=cache().itemById.get(code),q=+val(ov,'qty'),t=val(ov,'type');let err='';
+    if(!it)err='សូមជ្រើសទំនិញ';else if(!(q>0))err='សូមបំពេញចំនួន';
+    else if(MOVE_SIGN[MOVES.indexOf(t)]<0&&q>itemStock(it).left)err='ស្តុកមិនគ្រប់ (នៅសល់ '+num(itemStock(it).left)+')';
+    if(err){$('#err',ov).innerHTML=`<div class="err">${err}</div>`;return}
+    put('moves',{id:nextId('moves','MV',4),date:val(ov,'date'),code,type:t,qty:q,cost:val(ov,'cost')===''?'':+val(ov,'cost'),who:val(ov,'who'),note:val(ov,'note')});
+    ov.close();render();toast('បានកត់ចលនាស្តុក');
+  };
+};
+
+/* ====================== teachers & classes ====================== */
+PG.teachers={title:'គ្រូបង្រៀន',actions:()=>can('teacher.edit')?`<button class="btn pri" data-act="tNew">+ គ្រូថ្មី</button>`:'',
+ html(){return `<div class="tbl"><table><thead><tr><th>លេខ</th><th>ឈ្មោះ</th><th>ភេទ</th><th>ទូរស័ព្ទ</th><th>កម្មវិធី/មុខវិជ្ជា</th><th>តួនាទី</th><th>ចូលបម្រើ</th><th>ស្ថានភាព</th><th class="r">ថ្នាក់</th><th class="r">សិស្ស</th><th></th></tr></thead><tbody>
+  ${scopeTeachers().map(t=>{const cl=S.classes.filter(k=>k.teacher===t.name);const n=sum(cl,k=>classStats(k).active);return`<tr><td>${t.id}</td><td><b>${esc(t.name)}</b><div class="hint">${esc(t.en)}</div></td><td>${esc(t.sex)}</td><td>${esc(t.phone)}</td><td>${esc(t.subject)}</td><td>${esc(t.role)}</td><td>${fd(t.join)}</td><td><span class="pill ${t.status==='កំពុងបង្រៀន'?'good':''}">${esc(t.status)}</span></td><td class="r">${cl.length}</td><td class="r">${n}</td><td>${can('teacher.edit')?`<button class="btn sm" data-act="tEdit" data-id="${t.id}">កែ</button>`:''}</td></tr>`}).join('')||'<tr><td colspan="11" class="hint">មិនទាន់មានគ្រូ</td></tr>'}</tbody></table></div>`}};
+ACT.tNew=()=>tForm();ACT.tEdit=d=>tForm(d.id);
+function tForm(id){
+  const ed=id?S.teachers.find(t=>t.id===id):null;const t=ed||{name:'',en:'',sex:'',phone:'',subject:'',role:'គ្រូបន្ទុកថ្នាក់',join:today(),status:'កំពុងបង្រៀន',addr:'',degree:'',phone2:'',dob:''};
+  const ov=modal(`<h2>${ed?'កែប្រែគ្រូ '+ed.id:'គ្រូថ្មី'}</h2><div class="f">
+  <label>ឈ្មោះគ្រូ *<input id="name" value="${esc(t.name)}"></label><label>ឈ្មោះអង់គ្លេស<input id="en" value="${esc(t.en)}"></label>
+  <label>ភេទ<select id="sex">${opts(['ប្រុស','ស្រី'],t.sex,'—')}</select></label><label>ថ្ងៃកំណើត<input type="date" id="dob" value="${t.dob||''}"></label>
+  <label>លេខទូរស័ព្ទ<input id="phone" value="${esc(t.phone)}"></label><label>ទូរស័ព្ទបន្ទាន់<input id="phone2" value="${esc(t.phone2||'')}"></label>
+  <label>កម្មវិធី / មុខវិជ្ជា<select id="subject">${opts(S.settings.programs.map(p=>p.kh),t.subject,'—')}</select></label><label>តួនាទី<select id="role">${opts(['គ្រូបន្ទុកថ្នាក់','គ្រូឯកទេស','គ្រូជំនួយ'],t.role)}</select></label>
+  <label>ថ្ងៃចូលបម្រើការងារ<input type="date" id="join" value="${t.join}"></label><label>ស្ថានភាព<select id="status">${opts(['កំពុងបង្រៀន','ឈប់បង្រៀន'],t.status)}</select></label>
+  <label>សញ្ញាបត្រ<input id="degree" value="${esc(t.degree||'')}"></label><label>អាសយដ្ឋាន<input id="addr" value="${esc(t.addr||'')}"></label></div>
+  <div id="err"></div><div class="mfoot"><button class="btn" id="c">បោះបង់</button><button class="btn pri" id="ok">រក្សាទុក</button></div>`,{wide:true});
+  $('#c',ov).onclick=()=>ov.close();
+  $('#ok',ov).onclick=()=>{
+    const r={...(ed||{}),id:ed?ed.id:nextId('teachers','T',3)};
+    for(const k of ['name','en','sex','dob','phone','phone2','subject','role','join','status','degree','addr'])r[k]=clean(val(ov,k));
+    if(!r.name){$('#err',ov).innerHTML='<div class="err">សូមបំពេញឈ្មោះគ្រូ</div>';return}
+    if(ed&&ed.name!==r.name)for(const k of S.classes.filter(k=>k.teacher===ed.name))put('classes',{...k,teacher:r.name});
+    delete r.sample;put('teachers',r);ov.close();render();toast('បានរក្សាទុក');
+  };
+}
+function classMatch(k){return S.students.filter(s=>s.prog===k.prog&&(!k.level||s.level===k.level)&&s.shift===k.shift&&String(s.room)===String(k.room))}
+function classStats(k){const l=classMatch(k);const act=l.filter(s=>s.status!=='ឈប់រៀន');const inf=l.map(sInfo);return{active:act.length,drop:l.length-act.length,due:sum(inf,i=>i.due),paid:sum(inf,i=>i.paid),owe:sum(inf,i=>i.owe)}}
+PG.classes={title:'ថ្នាក់រៀន',actions:()=>can('class.edit')?`<button class="btn pri" data-act="kNew">+ ថ្នាក់ថ្មី</button>`:'',
+ html(){return `<div class="tbl"><table><thead><tr><th>លេខ</th><th>ថ្នាក់</th><th>កម្មវិធី</th><th>គ្រូបន្ទុក</th><th class="r">សមត្ថភាព</th><th class="r">កំពុងរៀន</th><th class="r">ឈប់</th>${money_ok()?'<th class="r">ត្រូវបង់</th><th class="r">បានបង់</th><th class="r">ជំពាក់</th>':''}<th class="r">ទំនេរ</th><th></th></tr></thead><tbody>
+  ${scopeClasses().map(k=>{const s=classStats(k);const free=k.cap?k.cap-s.active:'';return`<tr><td>${k.id}</td><td><b>${esc(k.level||'(ទាំងអស់)')}</b> · ${esc(k.shift)} · បន្ទប់ ${esc(k.room)}</td><td>${esc(k.prog)}</td><td>${esc(k.teacher)}</td><td class="r">${k.cap||''}</td><td class="r">${s.active}</td><td class="r">${s.drop}</td>${money_ok()?`<td class="r">${money(s.due)}</td><td class="r">${money(s.paid)}</td><td class="r">${money(s.owe)}</td>`:''}<td class="r">${free!==''&&free<0?`<span class="pill bad">លើស ${-free}</span>`:free}</td><td>${can('class.edit')?`<button class="btn sm" data-act="kEdit" data-id="${k.id}">កែ</button>`:''}</td></tr>`}).join('')||'<tr><td colspan="12" class="hint">មិនទាន់មានថ្នាក់</td></tr>'}</tbody></table></div>`}};
+ACT.kNew=()=>kForm();ACT.kEdit=d=>kForm(d.id);
+function kForm(id){
+  const ed=id?S.classes.find(k=>k.id===id):null;const k=ed||{prog:'',level:'',shift:'',room:'',teacher:'',cap:30};
+  const ov=modal(`<h2>${ed?'កែប្រែថ្នាក់ '+ed.id:'ថ្នាក់ថ្មី'}</h2><div class="f"><label>កម្មវិធី *<select id="prog">${opts(S.settings.programs.map(p=>p.kh),k.prog,'ជ្រើសកម្មវិធី')}</select></label>
+  <label>កម្រិត / ថ្នាក់ (ទទេ = ទាំងអស់)<select id="level"></select></label><label>វេន *<select id="shift"></select></label><label>បន្ទប់ *<select id="room">${opts(S.settings.rooms,k.room,'—')}</select></label>
+  <label>គ្រូបន្ទុក<select id="teacher">${opts(S.teachers.map(t=>t.name),k.teacher,'—')}</select></label><label>សមត្ថភាព (សិស្ស)<input type="number" min="0" id="cap" value="${k.cap||''}"></label></div>
+  <div id="err"></div><div class="mfoot">${ed?'<button class="btn bad" id="dl" style="margin-right:auto">លុប</button>':''}<button class="btn" id="c">បោះបង់</button><button class="btn pri" id="ok">រក្សាទុក</button></div>`,{wide:true,onMount(ov){
+    const fill=(lv,sh)=>{const pr=val(ov,'prog');$('#level',ov).innerHTML=opts(stuLevels(pr),lv,'(ទាំងអស់)');const p=progByName(pr);$('#shift',ov).innerHTML=opts(p?[p.s1,p.s2]:[],sh,'ជ្រើសវេន')};
+    fill(k.level,k.shift);$('#prog',ov).onchange=()=>fill('','');}});
+  $('#c',ov).onclick=()=>ov.close();
+  if(ed)$('#dl',ov).onclick=async()=>{if(await ask('លុបថ្នាក់ '+ed.id+' ?','លុប')){del('classes',ed.id);ov.close();render()}};
+  $('#ok',ov).onclick=()=>{
+    const r={...(ed||{}),id:ed?ed.id:nextId('classes','C',3),prog:val(ov,'prog'),level:val(ov,'level'),shift:val(ov,'shift'),room:String(val(ov,'room')),teacher:val(ov,'teacher'),cap:+val(ov,'cap')||0};
+    if(!r.prog||!r.shift||!r.room){$('#err',ov).innerHTML='<div class="err">សូមជ្រើសកម្មវិធី វេន និងបន្ទប់</div>';return}
+    if(S.classes.some(x=>x.id!==r.id&&x.prog===r.prog&&x.level===r.level&&x.shift===r.shift&&String(x.room)===r.room)){$('#err',ov).innerHTML='<div class="err">ថ្នាក់ស្ទួន</div>';return}
+    delete r.sample;put('classes',r);ov.close();render();toast('បានរក្សាទុក');
+  };
+}
+PG.roster={title:'បញ្ជីសិស្សតាមថ្នាក់',
+ actions:()=>`${can('stu.edit')?'<button class="btn" data-act="rosterCards">ប័ណ្ណទាំងថ្នាក់</button>':''}<button class="btn pri" data-act="rosterExp">ទាញយក A5</button>`,
+ html(){const v=V.ros;const lv=v.prog?stuLevels(v.prog):[...new Set(S.settings.fees.map(f=>f.level))];const p=progByName(v.prog);
+  return `<div class="bar"><select data-f="ros.prog">${opts(S.settings.programs.map(p=>p.kh),v.prog,'គ្រប់កម្មវិធី')}</select><select data-f="ros.level">${opts(lv,v.level,'គ្រប់ថ្នាក់')}</select><select data-f="ros.shift">${opts(p?[p.s1,p.s2]:S.settings.shifts.map(s=>s.kh),v.shift,'គ្រប់វេន')}</select><select data-f="ros.room">${opts(S.settings.rooms,v.room,'គ្រប់បន្ទប់')}</select></div><div class="previewbox">${rosterDoc(v)}</div>`}};
+ACT.rosterExp=()=>docModal('បញ្ជីសិស្សតាមថ្នាក់',rosterDoc(V.ros),{land:false,name:'Roster-'+today()});
+
+/* ====================== reports ====================== */
+function repRange(){
+  const v=V.rep;
+  if(v.mode==='day')return{from:v.date,to:v.date,title:'របាយការណ៍ប្រចាំថ្ងៃ'};
+  if(v.mode==='month'){const f=v.y+'-'+pad(v.m)+'-01';return{from:f,to:v.y+'-'+pad(v.m)+'-'+pad(new Date(v.y,v.m,0).getDate()),title:'របាយការណ៍ប្រចាំខែ '+MONTHS_KH[v.m-1]+' '+v.y}}
+  return{from:v.y+'-01-01',to:v.y+'-12-31',title:'របាយការណ៍ប្រចាំឆ្នាំ '+v.y};
+}
+PG.rep={title:'របាយការណ៍',actions:()=>`<button class="btn pri" data-act="repExp">ទាញយក A5</button>`,
+ html(){const v=V.rep;const r=repRange();const tabs=money_ok()?`<select data-f="rep.tab">${opts([{v:'money',l:'ចំណូល (ថ្ងៃ/ខែ/ឆ្នាំ)'},{v:'people',l:'សិស្ស គ្រូ ថ្នាក់'}],v.tab)}</select>`:'';
+  if(v.tab==='people'||!money_ok())return `<div class="bar">${tabs}</div><div class="previewbox">${peopleDoc()}</div>`;
+  return `<div class="bar">${tabs}<select data-f="rep.mode">${opts([{v:'day',l:'ប្រចាំថ្ងៃ'},{v:'month',l:'ប្រចាំខែ'},{v:'year',l:'ប្រចាំឆ្នាំ'}],v.mode)}</select>
+  ${v.mode==='day'?`<input type="date" data-f="rep.date" value="${v.date}">`:`${v.mode==='month'?`<select data-f="rep.m">${opts(MONTHS_KH.map((m,i)=>({v:i+1,l:m})),v.m)}</select>`:''}<input type="number" data-f="rep.y" value="${v.y}" min="2000" max="2100" style="width:100px">`}</div>
+  ${ME.role==='clerk'&&STORE==='db'?'<div class="hint" style="margin-bottom:6px">របាយការណ៍នេះបង្ហាញតែវិក្កយបត្រដែលអ្នកបានចេញ។</div>':''}<div class="previewbox">${repDoc(v.mode,r.from,r.to,r.title)}</div>`}};
+ACT.repExp=()=>{if(V.rep.tab==='people'||!money_ok()){docModal('របាយការណ៍សិស្ស គ្រូ ថ្នាក់',peopleDoc(),{land:false,name:'People-'+today()});return}const r=repRange();docModal(r.title,repDoc(V.rep.mode,r.from,r.to,r.title),{land:false,name:'Report-'+r.from+(r.to!==r.from?'_'+r.to:'')})};
+document.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.f==='rep.y'||t.dataset&&t.dataset.f==='rep.m'){V.rep[t.dataset.f.split('.')[1]]=+t.value;render()}});
+
+/* ====================== settings ====================== */
+PG.settings={title:'ការកំណត់',
+ html(){const i=S.settings.info;
+  return `<div class="card"><h3 class="sec" style="margin-top:0">ព័ត៌មានសាលា និងវិក្កយបត្រ</h3><div class="f">
+  <label>ឈ្មោះសាលា (ខ្មែរ)<input id="s_nameKh" value="${esc(i.nameKh)}"></label><label>ឈ្មោះសាលា (English)<input id="s_nameEn" value="${esc(i.nameEn)}"></label><label>ឈ្មោះបន្ថែម (English)<input id="s_nameEn2" value="${esc(i.nameEn2)}"></label>
+  <label>អត្រា VAT (%)<input type="number" step="any" id="s_vat" value="${i.vat}"></label><label>អត្រាប្តូរប្រាក់ (៛ ក្នុង 1$)<input type="number" id="s_rate" value="${i.rate}"></label>
+  <label class="wide">អាសយដ្ឋានសាលា (បង្ហាញលើវិក្កយបត្រ)<input id="s_addr" value="${esc(i.addr)}" placeholder="សូមបំពេញអាសយដ្ឋាន"></label><label class="wide">លេខទាក់ទង (ទូរស័ព្ទ / Email)<input id="s_contact" value="${esc(i.contact)}" placeholder="សូមបំពេញលេខទាក់ទង"></label>
+  <label>សាខា (បង្ហាញលើប័ណ្ណសិស្ស)<input id="s_branch" value="${esc(i.branch)}"></label><label>ឆ្នាំសិក្សា (ឧ. 2026-2027)<input id="s_year" value="${esc(S.settings.year)}"></label><label>ពណ៌ប័ណ្ណសិស្ស<input type="color" id="s_color" value="${i.cardColor}"></label><label>តារាងកិត្តិយស៖ ចំនួនលេខ (Top)<input type="number" min="1" id="s_honor" value="${S.settings.honorTop}"></label><label class="wide">បញ្ជីការប្រឡង (ខណ្ឌដោយសញ្ញា ,)<input id="s_exams" value="${esc(S.settings.exams.join(', '))}"></label>
+  <label class="wide">ចំណាំលើវិក្កយបត្រ ១<input id="s_n1" value="${esc(i.n1)}"></label><label class="wide">ចំណាំ ២<input id="s_n2" value="${esc(i.n2)}"></label><label class="wide">ចំណាំ ៣<input id="s_n3" value="${esc(i.n3)}"></label></div>
+  <div class="bar" style="margin-top:12px"><label class="btn" style="cursor:pointer">ដាក់ឡូហ្គោសាលា<input type="file" id="logo" accept="image/*" hidden></label>${S.settings.logo?'<button class="btn bad" data-act="logoDel">លុបឡូហ្គោ</button>':''}<button class="btn pri" data-act="saveInfo" style="margin-left:auto">រក្សាទុកព័ត៌មាន</button></div></div>
+  <div class="top" style="margin-top:20px"><h3 class="sec" style="flex:1;margin:0">តារាងថ្លៃសិក្សា (១ ខែ · សម្រាប់ ១ វេន)</h3><button class="btn pri" data-act="feeNew">+ បន្ថែមថ្លៃ</button></div>
+  <div class="tbl"><table><thead><tr><th>កម្រិត / ថ្នាក់</th><th>កម្មវិធី</th><th class="r">ថ្លៃ ១ ខែ (USD)</th><th></th></tr></thead><tbody>${S.settings.fees.map((f,k)=>`<tr><td>${esc(f.level)}</td><td>${esc(f.program)}</td><td class="r">${money(f.fee)}</td><td><button class="btn sm" data-act="feeEdit" data-i="${k}">កែ</button></td></tr>`).join('')}</tbody></table></div>
+  <p class="hint">ការកែថ្លៃមិនប៉ះពាល់ការបង់ប្រាក់ដែលបានកត់ទុកហើយ (ថ្លៃត្រូវបានរក្សាទុកជាមួយបង្កាន់ដៃនីមួយៗ)។</p>
+  <div class="grid cols2" style="margin-top:16px"><div class="card"><h3 class="sec" style="margin-top:0">កម្មវិធី និងវេន</h3><table>${S.settings.programs.map(p=>`<tr><td>${esc(p.kh)}<div class="hint">${esc(p.en)}</div></td><td>${p.code}</td><td>${esc(p.s1)} / ${esc(p.s2)}</td></tr>`).join('')}</table></div>
+  <div class="card"><h3 class="sec" style="margin-top:0">កញ្ចប់បង់ប្រាក់</h3><table>${S.settings.packages.map(p=>`<tr><td>${esc(p.name)}</td><td class="r">${p.months?p.months+' ខែ':'សងបំណុល'}</td></tr>`).join('')}</table><div class="hint" style="margin-top:6px">បន្ទប់ ៖ ${S.settings.rooms.join(', ')}</div></div></div>
+  ${settingsExtra()}
+  <h3 class="sec">ទិន្នន័យ និងការបម្រុងទុក</h3><div class="card"><p class="hint" style="margin-top:0">ទិន្នន័យរក្សាទុកក្នុងប្រព័ន្ធដោយស្វ័យប្រវត្តិ (${STORE==='db'?'ទិន្នន័យចែករំលែក ជាប់រហូត':'ក្នុង browser នេះប៉ុណ្ណោះ'}) ។ ទាញយកច្បាប់ចម្លង (Backup) ជាប្រចាំ។</p>
+  <div class="bar"><button class="btn pri" data-act="backup">ទាញយក Backup (JSON)</button><label class="btn" style="cursor:pointer">ស្តារពី Backup<input type="file" id="restore" accept=".json" hidden></label>
+  <button class="btn" data-act="csv" data-k="students">CSV សិស្ស</button><button class="btn" data-act="csv" data-k="payments">CSV ការបង់ប្រាក់</button><button class="btn" data-act="csv" data-k="sales">CSV ការលក់</button><button class="btn" data-act="csv" data-k="items">CSV ទំនិញ</button></div></div>`},
+};
+document.addEventListener('change',e=>{
+  if((e.target.id==='logo'||e.target.id==='restore')&&!can('admin'))return;
+  if(e.target.id==='logo'){const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,240/Math.max(im.width,im.height)),cv=document.createElement('canvas');cv.width=Math.round(im.width*k);cv.height=Math.round(im.height*k);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);S.settings.logo=cv.toDataURL('image/png');putSettings();render();toast('បានដាក់ឡូហ្គោ')};im.src=fr.result};fr.readAsDataURL(f)}
+  if(e.target.id==='restore'){const f=e.target.files[0];if(!f)return;f.text().then(async t=>{try{const d=JSON.parse(t);if(!d.settings||!d.students)throw 0;if(!await ask('ស្តារពី Backup? ទិន្នន័យបច្ចុប្បន្ននឹងត្រូវជំនួស។','ស្តារ'))return;await wipeAll();S=d;bump();await writeAll();render();toast('បានស្តារ')}catch(x){toast('ឯកសារ Backup មិនត្រឹមត្រូវ')}})}
+});
+async function writeAll(){
+  if(STORE==='db'){const ops=[];for(const c of COLLS)for(const r of S[c])ops.push(()=>DB.collection(c).doc(r.id).set(r));ops.push(()=>DB.doc('meta/settings').set({v:S.settings}));for(let i=0;i<ops.length;i+=10)await Promise.all(ops.slice(i,i+10).map(f=>f()))}else lsSave();
+}
+ACT.logoDel=()=>{S.settings.logo='';putSettings();render()};
+ACT.saveInfo=()=>{const i=S.settings.info;for(const k of ['nameKh','nameEn','nameEn2','addr','contact','n1','n2','n3'])i[k]=val(document,'s_'+k);i.vat=+val(document,'s_vat')||0;i.rate=+val(document,'s_rate')||4100;i.branch=val(document,'s_branch');i.cardColor=val(document,'s_color')||'#2e8b57';S.settings.year=clean(val(document,'s_year'))||S.settings.year;S.settings.honorTop=+val(document,'s_honor')||3;S.settings.exams=val(document,'s_exams').split(',').map(clean).filter(Boolean);putSettings();render();toast('បានរក្សាទុក')};
+ACT.feeNew=()=>feeForm();ACT.feeEdit=d=>feeForm(+d.i);
+function feeForm(i){
+  const ed=i!=null?S.settings.fees[i]:null;const f=ed||{level:'',program:S.settings.programs[0].kh,fee:''};
+  const ov=modal(`<h2>${ed?'កែប្រែថ្លៃ':'បន្ថែមថ្លៃសិក្សា'}</h2><div class="f"><label>កម្រិត / ថ្នាក់ *<input id="level" value="${esc(f.level)}"></label><label>កម្មវិធី<select id="program">${opts(S.settings.programs.map(p=>p.kh),f.program)}</select></label><label>ថ្លៃ ១ ខែ (USD) *<input type="number" min="0" step="any" id="fee" value="${f.fee}"></label></div>
+  <div id="err"></div><div class="mfoot">${ed?'<button class="btn bad" id="dl" style="margin-right:auto">លុប</button>':''}<button class="btn" id="c">បោះបង់</button><button class="btn pri" id="ok">រក្សាទុក</button></div>`);
+  $('#c',ov).onclick=()=>ov.close();
+  if(ed)$('#dl',ov).onclick=async()=>{if(S.students.some(s=>s.level===ed.level)){$('#err',ov).innerHTML='<div class="err">មានសិស្សកំពុងប្រើកម្រិតនេះ លុបមិនបាន</div>';return}S.settings.fees.splice(i,1);putSettings();ov.close();render()};
+  $('#ok',ov).onclick=()=>{const r={level:clean(val(ov,'level')),program:val(ov,'program'),fee:+val(ov,'fee')};
+    if(!r.level||val(ov,'fee')===''){$('#err',ov).innerHTML='<div class="err">សូមបំពេញកម្រិត និងថ្លៃ</div>';return}
+    if(S.settings.fees.some((x,k)=>k!==i&&x.level===r.level)){$('#err',ov).innerHTML='<div class="err">មានកម្រិតនេះរួចហើយ</div>';return}
+    if(ed&&ed.level!==r.level)for(const s of S.students.filter(s=>s.level===ed.level))put('students',{...s,level:r.level});
+    if(ed)S.settings.fees[i]=r;else S.settings.fees.push(r);putSettings();ov.close();render();toast('បានរក្សាទុក')};
+}
+ACT.backup=()=>dl('ALE-backup-'+today()+'.json',JSON.stringify(S));
+ACT.csv=d=>{
+  const k=d.k;let rows;const c=cache();
+  if(k==='students')rows=[['ID','ឈ្មោះ','English','ភេទ','ថ្ងៃកំណើត','កម្មវិធី','ថ្នាក់','វេន','បន្ទប់','អាណាព្យាបាល','ទូរស័ព្ទ','ថ្ងៃចុះឈ្មោះ','ស្ថានភាព','ត្រូវបង់','បានបង់','ជំពាក់','ការបង់']].concat(S.students.map(s=>{const i=sInfo(s);return[s.id,s.name,s.en,s.sex,s.dob,s.prog,s.level,s.shift,s.room,s.guardian,s.phone,s.reg,s.status,i.due,i.paid,i.owe,i.st]}));
+  if(k==='payments')rows=[['វិក្កយបត្រ','បង្កាន់ដៃ','ថ្ងៃ','សិស្ស','ឈ្មោះ','កញ្ចប់','ខែ','ថ្លៃមុនបញ្ចុះ','បញ្ចុះ','ត្រូវបង់','បានបង់','វិធី','ប្រភេទ']].concat(S.payments.map(p=>{const st=c.byId.get(p.sid);return[p.id,p.receipt,p.date,p.sid,st?st.name:'',p.pack,p.months,p.gross,p.disc,p.due,p.paidAmt,p.method,c.der.get(p.id).kind]}));
+  if(k==='sales')rows=[['វិក្កយបត្រ','ថ្ងៃ','អ្នកទិញ','ទំនិញ','ចំនួន','តម្លៃ','សរុបវិក្កយបត្រ','បានបង់','វិធី']].concat(S.sales.flatMap(s=>{const q=saleCalc(s);return q.lines.map(l=>[s.id,s.date,buyerName(s),l.name,l.qty,l.price,q.net,q.paid,s.method])}));
+  if(k==='items')rows=[['កូដ','Program','Category','ប្រភេទ','ឈ្មោះ','ឯកតា','តម្លៃ','ស្តុកដើម','លក់','នៅសល់','ស្ថានភាព']].concat(S.items.map(it=>{const s=itemStock(it);return[it.code,it.prog,it.cat,it.type,it.name,it.unit,it.price,it.open,s.sold,s.left,s.st]}));
+  dl(k+'-'+today()+'.csv',csvOf(rows));
+};
+
+/* ====================== guide ====================== */
+PG.guide={title:'ណែនាំប្រើប្រាស់',html(){return `<div class="card" style="max-width:820px"><h3 style="margin-bottom:8px">ជំហានប្រចាំថ្ងៃ</h3><ol style="padding-left:20px;margin:0;display:grid;gap:6px">
+ <li><b>ព្រឹក៖</b> មើល «សង្ខេប» ដើម្បីឃើញសិស្សនៅជំពាក់ សិស្សត្រូវបន្តបង់ និងទំនិញជិតអស់។</li>
+ <li><b>សិស្សថ្មី៖</b> «សិស្ស» → ចុះឈ្មោះ → ចុច «បង់» → ទទួលបង្កាន់ដៃ (ទាញយក PDF ឬ HTML ដើម្បីព្រីន A5)។</li>
+ <li><b>បង់មិនគ្រប់៖</b> វាយចំនួនក្នុងប្រអប់ «បានបង់»។ ពេលសិស្សមកសង ជ្រើសកញ្ចប់ «សង» រួចជ្រើសវិក្កយបត្រដែលជំពាក់។</li>
+ <li><b>លក់ឯកសណ្ឋាន/សៀវភៅ៖</b> «ការលក់» → វិក្កយបត្រលក់ថ្មី → ជ្រើសទំនិញ ① → ④។ ស្តុកថយស្វ័យប្រវត្តិ។</li>
+ <li><b>ទំនិញមកដល់៖</b> «ចលនាស្តុក» → ទិញចូល (Stock In)។ បាត់ ឬខូច ជ្រើសប្រភេទ «បាត់» ឬ «ខូច»។</li>
+ <li><b>ល្ងាច៖</b> «របាយការណ៍» → ប្រចាំថ្ងៃ → ទាញយក A5 ដើម្បីផ្ទៀងលុយ។</li>
+ <li><b>សិស្សឈប់រៀន៖</b> កែប្រែសិស្ស → ស្ថានភាព «ឈប់រៀន» + ថ្ងៃ និងមូលហេតុ។</li>
+ <li><b>រូបថត និងប័ណ្ណ ID៖</b> «សិស្ស» → មើល → ដាក់រូបថត → ប័ណ្ណសិស្ស។</li></ol>
+ <h3 style="margin:16px 0 8px">ចំណាំ</h3><ul style="padding-left:20px;margin:0;display:grid;gap:6px"><li>លេខសម្គាល់សិស្ស បង្កាន់ដៃ (000001… ចាប់ផ្តើមឡើងវិញរៀងរាល់ ១ មករា) និងលេខវិក្កយបត្រ ចេញដោយស្វ័យប្រវត្តិ ហើយមិនប្តូរឡើយ។</li>
+ <li>ទាញយក Backup ក្នុង «ការកំណត់» ជាប្រចាំ។</li><li>ថ្លៃសិក្សា ១ ខែ គិតសម្រាប់ ១ វេន ។ កែនៅ «ការកំណត់»។</li></ul></div>`}};
+
+/* ====================== roles & access ====================== */
+let ROLES={assign:{}};
+let ME={id:null,name:'',role:'admin',teacherId:'',prog:''};
+const ALLR=['admin','director','head','clerk','teacher'];
+const ROLE_NAMES={admin:'អ្នកគ្រប់គ្រង (Admin)',director:'នាយកសាលា / នាយិកា',head:'ប្រធានកម្មវិធី',clerk:'អ្នកផ្តល់ព័ត៌មាន និងចុះឈ្មោះសិស្ស',teacher:'គ្រូបង្រៀន',none:'គ្មានសិទ្ធិ'};
+const PAGE_ROLES={dash:['admin','director'],students:ALLR,pay:['admin','director','clerk'],sales:['admin','director','clerk'],items:['admin','director'],moves:['admin','director'],teachers:['admin','director','head','clerk'],classes:['admin','director','head','teacher'],roster:ALLR,rep:['admin','director','head','clerk'],scores:['admin','director','head','teacher'],results:ALLR,leaves:['admin','director','head','teacher'],requests:['admin','director','clerk'],settings:['admin'],guide:ALLR};
+const ACTION_ROLES={'stu.edit':['admin','clerk'],'pay.add':['admin','clerk'],'pay.edit':['admin'],'sale.add':['admin','clerk'],'void.direct':['admin'],'void.request':['clerk'],'void.decide':['admin','director'],'stock.edit':['admin'],'teacher.edit':['admin'],'class.edit':['admin','head'],'score.edit':['admin','teacher'],'admin':['admin']};
+const GUARD={stuNew:'stu.edit',stuEdit:'stu.edit',stuImport:'stu.edit',rosterCards:'stu.edit',payNew:'pay.add',payEdit:'pay.edit',saleNew:'sale.add',saleDel:'void.direct',voidDirect:'void.direct',voidReq:'void.request',vrOk:'void.decide',vrNo:'void.decide',itemNew:'stock.edit',itemEdit:'stock.edit',mvNew:'stock.edit',mvDel:'stock.edit',tNew:'teacher.edit',tEdit:'teacher.edit',kNew:'class.edit',kEdit:'class.edit',scSave:'score.edit',clearSample:'admin',feeNew:'admin',feeEdit:'admin',saveInfo:'admin',logoDel:'admin',backup:'admin',csv:'admin',subNew:'admin',subEdit:'admin',userAdd:'admin',userEdit:'admin',userDel:'admin'};
+const can=a=>(ACTION_ROLES[a]||[]).includes(ME.role);
+const pageOk=p=>!!PAGE_ROLES[p]&&PAGE_ROLES[p].includes(ME.role);
+const money_ok=()=>['admin','director','clerk'].includes(ME.role);
+const homePage=()=>({admin:'dash',director:'dash',clerk:'pay',head:'students',teacher:'scores'})[ME.role]||'guide';
+const byName=(a,b)=>a.name.localeCompare(b.name,'km');
+function saveRoles(){persist(()=>DB.doc('meta/roles').set({v:ROLES}))}
+async function resolveMe(){
+  ME={id:null,name:'',role:'admin',teacherId:'',prog:''};
+  if(STORE!=='db')return;
+  try{
+    const u=await window.claude.use('user');
+    if(!u){ME.role='none';return}
+    const me=await u.me();ME.id=me.id;ME.name=me.name||'';
+    if(me.isOwner){ME.role='admin';return}
+    const a=ROLES.assign[me.id];
+    ME.role=a&&ROLE_NAMES[a.role]?a.role:'none';ME.teacherId=(a&&a.teacherId)||'';ME.prog=(a&&a.prog)||'';
+  }catch(e){ME.role='none'}
+}
+const myTeacher=()=>S.teachers.find(t=>t.id===ME.teacherId);
+const myClasses=()=>{const t=myTeacher();return t?S.classes.filter(k=>k.teacher===t.name):[]};
+function scopeStudents(){
+  if(ME.role==='teacher'){const set=new Set();for(const k of myClasses())for(const s of classMatch(k))set.add(s.id);return S.students.filter(s=>set.has(s.id))}
+  if(ME.role==='head'&&ME.prog)return S.students.filter(s=>s.prog===ME.prog);
+  return S.students;
+}
+const scopeClasses=()=>ME.role==='teacher'?myClasses():(ME.role==='head'&&ME.prog?S.classes.filter(k=>k.prog===ME.prog):S.classes);
+const scopeTeachers=()=>ME.role==='head'&&ME.prog?S.teachers.filter(t=>!t.subject||t.subject===ME.prog):S.teachers;
+const canEditClass=k=>can('score.edit')&&(ME.role!=='teacher'||myClasses().some(x=>x.id===k.id));
+
+function ensureDefaults(){
+  for(const c of COLLS)if(!Array.isArray(S[c]))S[c]=[];
+  const st=S.settings;if(!st)return;
+  const n=new Date(),y=n.getFullYear();
+  st.year=st.year||(n.getMonth()>=8?y+'-'+(y+1):(y-1)+'-'+y);
+  st.exams=st.exams||['ប្រឡងប្រចាំខែ ១','ប្រឡងប្រចាំខែ ២','ប្រឡងឆមាសទី ១','ប្រឡងប្រចាំខែ ៣','ប្រឡងប្រចាំខែ ៤','ប្រឡងឆមាសទី ២'];
+  st.honorTop=st.honorTop||3;
+  if(!st.subjects){
+    const kh=['ភាសាខ្មែរ','គណិតវិទ្យា','វិទ្យាសាស្ត្រ','សិក្សាសង្គម'],en=['Listening','Speaking','Reading','Writing'];
+    st.subjects=[];st.programs.forEach((p,i)=>(i===0?kh:en).forEach(name=>st.subjects.push({prog:p.kh,name,max:100})));
+  }
+  st.info.branch=st.info.branch||'';st.info.cardColor=st.info.cardColor||'#2e8b57';
+}
+
+/* ====================== void / delete requests ====================== */
+function voidBtn(kind,id){
+  if(can('void.direct'))return`<button class="btn sm bad" data-act="voidDirect" data-kind="${kind}" data-id="${id}">លុប</button>`;
+  if(can('void.request')){const p=S.voidreqs.some(r=>r.recId===id&&r.status==='pending');return p?'<span class="pill warn">រង់ចាំអនុញ្ញាតលុប</span>':`<button class="btn sm bad" data-act="voidReq" data-kind="${kind}" data-id="${id}">ស្នើលុប</button>`}
+  return'';
+}
+function reasonModal(title,cb){
+  const ov=modal(`<h2>${esc(title)}</h2><div class="f"><label class="wide">មូលហេតុ * (ឧ. វាយខុសសិស្ស ខុសចំនួនទឹកប្រាក់)<input id="why"></label></div><div id="err"></div><div class="mfoot"><button class="btn" id="c">បោះបង់</button><button class="btn pri" id="ok">បញ្ជាក់</button></div>`);
+  $('#c',ov).onclick=()=>ov.close();
+  $('#ok',ov).onclick=()=>{const w=clean(val(ov,'why'));if(!w){$('#err',ov).innerHTML='<div class="err">សូមបំពេញមូលហេតុ</div>';return}ov.close();cb(w)};
+}
+function voidRecord(kind,id,reason,reqBy){
+  const c=cache();
+  if(kind==='payment'){
+    const p=S.payments.find(x=>x.id===id);if(!p)return'រកមិនឃើញវិក្កយបត្រនេះទេ';
+    if(c.setl.get(id))return'មានការសងបំណុលភ្ជាប់ជាមួយ សូមលុបការសងជាមុន';
+    const mk=(k,rec,amt)=>put('voids',{id:nextId('voids','V',4),kind:k,recId:rec.id,rec,reason,reqBy:reqBy||ME.name,approvedBy:ME.name,at:today(),date:rec.date,amount:amt});
+    mk('payment',p,p.paidAmt);del('payments',id);
+    if(p.saleInv){const s=S.sales.find(x=>x.id===p.saleInv);if(s){mk('sale',s,saleCalc(s).paid);del('sales',s.id)}}
+    return'';
+  }
+  const s=S.sales.find(x=>x.id===id);if(!s)return'រកមិនឃើញវិក្កយបត្រនេះទេ';
+  if(S.payments.some(p=>p.saleInv===id))return'វិក្កយបត្រលក់នេះភ្ជាប់ជាមួយបង្កាន់ដៃបង់ប្រាក់ សូមលុបបង្កាន់ដៃនោះជំនួស';
+  put('voids',{id:nextId('voids','V',4),kind:'sale',recId:s.id,rec:s,reason,reqBy:reqBy||ME.name,approvedBy:ME.name,at:today(),date:s.date,amount:saleCalc(s).paid});del('sales',id);
+  return'';
+}
+ACT.voidReq=d=>reasonModal('ស្នើលុប '+d.id,why=>{put('voidreqs',{id:nextId('voidreqs','VR',4),kind:d.kind,recId:d.id,reason:why,by:ME.id,byName:ME.name,at:today(),status:'pending'});render();toast('បានផ្ញើសំណើទៅនាយក')});
+ACT.voidDirect=d=>reasonModal('លុប '+d.id+' (នៅតែបង្ហាញក្នុងរបាយការណ៍)',why=>{const e=voidRecord(d.kind,d.id,why,ME.name);if(e)toast(e);else{render();toast('បានលុប (រក្សាទុកក្នុងរបាយការណ៍)')}});
+ACT.saleDel=d=>ACT.voidDirect({kind:'sale',id:d.id});
+ACT.vrOk=d=>{const r=S.voidreqs.find(x=>x.id===d.id);const e=voidRecord(r.kind,r.recId,r.reason,r.byName);if(e){toast(e);return}put('voidreqs',{...r,status:'approved',decidedBy:ME.name,decidedAt:today()});render();toast('បានអនុញ្ញាតលុប')};
+ACT.vrNo=d=>{const r=S.voidreqs.find(x=>x.id===d.id);put('voidreqs',{...r,status:'rejected',decidedBy:ME.name,decidedAt:today()});render();toast('បានបដិសេធ')};
+PG.requests={title:'សំណើលុបវិក្កយបត្រ',
+ html(){
+  const c=cache();const who=r=>{if(r.kind==='payment'){const p=S.payments.find(x=>x.id===r.recId);if(!p)return'';const s=c.byId.get(p.sid);return`${p.receipt} · ${esc(s?s.name:p.sid)} · ${money(p.paidAmt)}`}const s=S.sales.find(x=>x.id===r.recId);return s?`${esc(buyerName(s))} · ${money(saleCalc(s).paid)}`:''};
+  const reqs=[...S.voidreqs].sort((a,b)=>(b.at+b.id).localeCompare(a.at+a.id));
+  const st={pending:['warn','រង់ចាំ'],approved:['good','អនុញ្ញាតហើយ'],rejected:['bad','បដិសេធ']};
+  return `<div class="note">វិក្កយបត្រដែលបានលុប នៅតែបង្ហាញក្នុងរបាយការណ៍ (ផ្នែក Void) ប៉ុន្តែមិនរាប់ក្នុងចំនួនសរុបទេ។</div>
+  <div class="tbl"><table><thead><tr><th>ថ្ងៃស្នើ</th><th>ប្រភេទ</th><th>វិក្កយបត្រ</th><th>សិស្ស / ចំនួន</th><th>មូលហេតុ</th><th>អ្នកស្នើ</th><th>ស្ថានភាព</th><th></th></tr></thead><tbody>
+  ${reqs.map(r=>`<tr><td>${fd(r.at)}</td><td>${r.kind==='payment'?'ថ្លៃសិក្សា':'ការលក់'}</td><td>${r.recId}</td><td>${who(r)}</td><td>${esc(r.reason)}</td><td>${esc(r.byName)}</td><td><span class="pill ${st[r.status][0]}">${st[r.status][1]}</span>${r.decidedBy?`<div class="hint">${esc(r.decidedBy)} · ${fd(r.decidedAt)}</div>`:''}</td><td style="white-space:nowrap">${r.status==='pending'&&can('void.decide')?`<button class="btn sm pri" data-act="vrOk" data-id="${r.id}">អនុញ្ញាត</button> <button class="btn sm bad" data-act="vrNo" data-id="${r.id}">បដិសេធ</button>`:''}</td></tr>`).join('')||'<tr><td colspan="8" class="hint">មិនទាន់មានសំណើ។ អ្នកចុះឈ្មោះស្នើលុបពីទំព័រ «ការបង់ប្រាក់» ឬ «ការលក់»។</td></tr>'}</tbody></table></div>
+  <h3 class="sec">វិក្កយបត្រដែលបានលុប (Void)</h3><div class="tbl"><table><thead><tr><th>ថ្ងៃលុប</th><th>វិក្កយបត្រ</th><th>ថ្ងៃវិក្កយបត្រ</th><th class="r">ចំនួន</th><th>មូលហេតុ</th><th>អ្នកស្នើ</th><th>អនុញ្ញាតដោយ</th></tr></thead><tbody>
+  ${[...S.voids].sort((a,b)=>(b.at+b.id).localeCompare(a.at+a.id)).map(v=>`<tr><td>${fd(v.at)}</td><td>${v.kind==='payment'?v.rec.receipt+' · ':''}${v.recId}</td><td>${fd(v.date)}</td><td class="r">${money(v.amount)}</td><td>${esc(v.reason)}</td><td>${esc(v.reqBy)}</td><td>${esc(v.approvedBy)}</td></tr>`).join('')||'<tr><td colspan="7" class="hint">គ្មាន</td></tr>'}</tbody></table></div>`;
+ }};
+
+/* ====================== leave requests ====================== */
+const inScopeStudent=id=>scopeStudents().some(s=>s.id===id);
+function leaveVisible(l){
+  if(l.who==='student')return inScopeStudent(l.ref);
+  if(ME.role==='teacher')return l.ref===ME.teacherId;
+  return scopeTeachers().some(t=>t.id===l.ref);
+}
+function canDecide(l){
+  if(ME.role==='admin')return true;
+  if(l.who==='student')return ME.role==='teacher'&&inScopeStudent(l.ref);
+  return ME.role==='head'&&scopeTeachers().some(t=>t.id===l.ref);
+}
+PG.leaves={title:'សុំច្បាប់',
+ actions:()=>[(ME.role==='admin'||ME.role==='teacher')?'<button class="btn pri" data-act="leaveNew" data-who="student">+ ច្បាប់សិស្ស</button>':'',['admin','head','teacher'].includes(ME.role)?'<button class="btn pri" data-act="leaveNew" data-who="teacher">+ ច្បាប់គ្រូ</button>':''].join(''),
+ html(){
+  const c=cache();const st={pending:['warn','រង់ចាំ'],approved:['good','អនុញ្ញាតហើយ'],rejected:['bad','បដិសេធ']};
+  const tbl=who=>{const rows=S.leaves.filter(l=>l.who===who&&leaveVisible(l)).sort((a,b)=>(b.from+b.id).localeCompare(a.from+a.id));
+   return `<div class="tbl"><table><thead><tr><th>${who==='student'?'សិស្ស':'គ្រូ'}</th><th>ពីថ្ងៃ</th><th>ដល់ថ្ងៃ</th><th>មូលហេតុ</th><th>ស្ថានភាព</th><th></th></tr></thead><tbody>${rows.map(l=>{const nm=who==='student'?(c.byId.get(l.ref)||{}).name:(S.teachers.find(t=>t.id===l.ref)||{}).name;return`<tr><td>${l.ref} · ${esc(nm||'')}</td><td>${fd(l.from)}</td><td>${fd(l.to)}</td><td>${esc(l.reason)}</td><td><span class="pill ${st[l.status][0]}">${st[l.status][1]}</span>${l.decidedBy?`<div class="hint">${esc(l.decidedBy)}</div>`:''}</td><td style="white-space:nowrap">${l.status==='pending'&&canDecide(l)?`<button class="btn sm pri" data-act="leaveOk" data-id="${l.id}">អនុញ្ញាត</button> <button class="btn sm bad" data-act="leaveNo" data-id="${l.id}">បដិសេធ</button>`:''}</td></tr>`}).join('')||'<tr><td colspan="6" class="hint">គ្មាន</td></tr>'}</tbody></table></div>`};
+  return `<h3 class="sec" style="margin-top:0">ច្បាប់សិស្ស</h3>${tbl('student')}<h3 class="sec">ច្បាប់គ្រូ</h3>${tbl('teacher')}<p class="hint">ច្បាប់សិស្សអនុញ្ញាតដោយគ្រូបន្ទុកថ្នាក់។ ច្បាប់គ្រូអនុញ្ញាតដោយប្រធានកម្មវិធី។</p>`;
+ }};
+ACT.leaveNew=d=>{
+  const who=d.who;
+  const list=who==='student'?scopeStudents().filter(s=>s.status!=='ឈប់រៀន').sort(byName).map(s=>({v:s.id,l:s.id+' · '+s.name})):(ME.role==='teacher'?(myTeacher()?[{v:ME.teacherId,l:myTeacher().id+' · '+myTeacher().name}]:[]):scopeTeachers().map(t=>({v:t.id,l:t.id+' · '+t.name})));
+  const ov=modal(`<h2>${who==='student'?'សុំច្បាប់សិស្ស':'សុំច្បាប់គ្រូ'}</h2><div class="f"><label class="wide">${who==='student'?'សិស្ស':'គ្រូ'} *<select id="ref">${opts(list,'','ជ្រើស')}</select></label><label>ពីថ្ងៃ<input type="date" id="from" value="${today()}"></label><label>ដល់ថ្ងៃ<input type="date" id="to" value="${today()}"></label><label class="wide">មូលហេតុ *<input id="why"></label></div><div id="err"></div><div class="mfoot"><button class="btn" id="c">បោះបង់</button><button class="btn pri" id="ok">រក្សាទុក</button></div>`);
+  $('#c',ov).onclick=()=>ov.close();
+  $('#ok',ov).onclick=()=>{const r=val(ov,'ref'),f=val(ov,'from'),t=val(ov,'to'),w=clean(val(ov,'why'));const err=!r?'សូមជ្រើស':!w?'សូមបំពេញមូលហេតុ':t<f?'ថ្ងៃដល់ មុនថ្ងៃចាប់ផ្តើម':'';if(err){$('#err',ov).innerHTML=`<div class="err">${err}</div>`;return}
+    put('leaves',{id:nextId('leaves','L',4),who,ref:r,from:f,to:t,reason:w,status:'pending',by:ME.name,at:today()});ov.close();render();toast('បានរក្សាទុក')};
+};
+ACT.leaveOk=d=>{const l=S.leaves.find(x=>x.id===d.id);if(!canDecide(l))return;put('leaves',{...l,status:'approved',decidedBy:ME.name});render()};
+ACT.leaveNo=d=>{const l=S.leaves.find(x=>x.id===d.id);if(!canDecide(l))return;put('leaves',{...l,status:'rejected',decidedBy:ME.name});render()};
+GUARD.leaveNew=null;
+
+/* ====================== scores ====================== */
+const hash=s=>{let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0;return h.toString(36)};
+const scoreId=(sid,yr,ex,sub)=>sid+'_'+hash(yr+'|'+ex+'|'+sub);
+V.sc={k:'',exam:'',subj:''};V.rs={k:'',exam:''};
+const subjectsOf=prog=>S.settings.subjects.filter(x=>x.prog===prog);
+const gradeOf=a=>a>=90?'A':a>=80?'B':a>=70?'C':a>=60?'D':a>=50?'E':'F';
+function classResults(k,exam){
+  const subs=subjectsOf(k.prog);const yr=S.settings.year;
+  const sc=new Map(S.scores.filter(x=>x.year===yr&&x.exam===exam).map(x=>[x.sid+'|'+x.subject,x.score]));
+  const rows=classMatch(k).filter(s=>s.status!=='ឈប់រៀន').sort(byName).map(s=>{
+    const vals=subs.map(b=>sc.has(s.id+'|'+b.name)?sc.get(s.id+'|'+b.name):null);
+    const entered=vals.filter(v=>v!==null);const complete=subs.length>0&&entered.length===subs.length;
+    const total=round2(entered.reduce((t,v)=>t+v,0)),mx=subs.reduce((t,b)=>t+b.max,0);
+    const avg=complete?round2(total/mx*100):null;
+    return{s,vals,total,complete,avg,grade:avg==null?'':gradeOf(avg),rank:null};
+  });
+  const done=rows.filter(r=>r.complete).sort((a,b)=>b.avg-a.avg);
+  done.forEach((r,i)=>{r.rank=i&&done[i-1].avg===r.avg?done[i-1].rank:i+1});
+  return{subs,rows,done};
+}
+PG.scores={title:'បញ្ចូលពិន្ទុ',
+ html(){
+  const cl=scopeClasses(),v=V.sc;const k=cl.find(x=>x.id===v.k);const subs=k?subjectsOf(k.prog):[];const sub=subs.find(x=>x.name===v.subj);
+  let tbl='';
+  if(k&&v.exam&&sub){
+    const edit=canEditClass(k);const yr=S.settings.year;
+    const cur=new Map(S.scores.filter(x=>x.year===yr&&x.exam===v.exam&&x.subject===sub.name).map(x=>[x.sid,x.score]));
+    const studs=classMatch(k).filter(s=>s.status!=='ឈប់រៀន').sort(byName);
+    tbl=`<div class="tbl"><table><thead><tr><th>ល.រ</th><th>លេខ</th><th>ឈ្មោះ</th><th>ភេទ</th><th class="r">ពិន្ទុ (ពេញ ${sub.max})</th></tr></thead><tbody>${studs.map((s,i)=>`<tr><td>${i+1}</td><td>${s.id}</td><td>${esc(s.name)}<div class="hint">${esc(s.en)}</div></td><td>${esc(s.sex)}</td><td class="r"><input class="scin" type="number" min="0" max="${sub.max}" step="any" data-sid="${s.id}" value="${cur.has(s.id)?cur.get(s.id):''}" style="width:90px;text-align:right;border:1px solid var(--line);background:var(--input);color:var(--ink);border-radius:6px;padding:4px 8px" ${edit?'':'disabled'}></td></tr>`).join('')||'<tr><td colspan="5" class="hint">គ្មានសិស្សក្នុងថ្នាក់នេះ</td></tr>'}</tbody></table></div>${edit?'<div class="mfoot"><button class="btn pri" data-act="scSave">រក្សាទុកពិន្ទុ</button></div>':'<p class="hint">មើលតែប៉ុណ្ណោះ</p>'}`;
+  }
+  return `<div class="bar"><select data-f="sc.k">${opts(cl.map(x=>({v:x.id,l:(x.level||'ទាំងអស់')+' · '+x.shift+' · បន្ទប់ '+x.room+' · '+x.prog})),v.k,'ជ្រើសថ្នាក់')}</select>
+  <select data-f="sc.exam">${opts(S.settings.exams,v.exam,'ជ្រើសការប្រឡង')}</select><select data-f="sc.subj">${opts(subs.map(x=>x.name),v.subj,'ជ្រើសមុខវិជ្ជា')}</select><span class="hint">ឆ្នាំសិក្សា ${esc(S.settings.year)}</span></div>
+  ${cl.length?tbl||'<div class="card hint">ជ្រើសថ្នាក់ ការប្រឡង និងមុខវិជ្ជា ដើម្បីបញ្ចូលពិន្ទុ។</div>':'<div class="note">មិនមានថ្នាក់សម្រាប់អ្នកទេ។ សូមឱ្យអ្នកគ្រប់គ្រងកំណត់ថ្នាក់ និងគ្រូបន្ទុក។</div>'}`;
+ }};
+ACT.scSave=()=>{
+  const k=S.classes.find(x=>x.id===V.sc.k);if(!k||!canEditClass(k))return;
+  const sub=subjectsOf(k.prog).find(x=>x.name===V.sc.subj);let bad=0,n=0;const yr=S.settings.year;
+  for(const e of document.querySelectorAll('.scin')){
+    const sid=e.dataset.sid,id=scoreId(sid,yr,V.sc.exam,sub.name);
+    if(e.value===''){if(S.scores.some(x=>x.id===id))del('scores',id);continue}
+    const v=+e.value;if(!(v>=0&&v<=sub.max)){bad++;e.style.outline='2px solid var(--bad)';continue}
+    put('scores',{id,sid,year:yr,exam:V.sc.exam,subject:sub.name,score:v,by:ME.name});n++;
+  }
+  toast(bad?bad+' ពិន្ទុមិនត្រឹមត្រូវ (លើសពេញ) មិនបានរក្សាទុក':'បានរក្សាទុក '+n+' ពិន្ទុ');
+};
+PG.results={title:'លទ្ធផល ចំណាត់ថ្នាក់ និងតារាងកិត្តិយស',
+ actions:()=>`<button class="btn pri" data-act="rsExp">ទាញយក A4/A5</button>`,
+ html(){
+  const cl=scopeClasses(),v=V.rs;const k=cl.find(x=>x.id===v.k);
+  return `<div class="bar"><select data-f="rs.k">${opts(cl.map(x=>({v:x.id,l:(x.level||'ទាំងអស់')+' · '+x.shift+' · បន្ទប់ '+x.room+' · '+x.prog})),v.k,'ជ្រើសថ្នាក់')}</select><select data-f="rs.exam">${opts(S.settings.exams,v.exam,'ជ្រើសការប្រឡង')}</select></div>
+  ${k&&v.exam?`<div class="previewbox">${resultsDoc(k,v.exam)}</div><h3 class="sec">របាយការណ៍សិស្សម្នាក់ៗ</h3><div class="bar">${classMatch(k).filter(s=>s.status!=='ឈប់រៀន').sort(byName).map(s=>`<button class="btn sm" data-act="stuReport" data-id="${s.id}">${esc(s.name)}</button>`).join('')}</div>`:'<div class="card hint">ជ្រើសថ្នាក់ និងការប្រឡង។</div>'}`;
+ }};
+ACT.rsExp=()=>{const k=S.classes.find(x=>x.id===V.rs.k);if(k&&V.rs.exam)docModal('លទ្ធផលថ្នាក់',resultsDoc(k,V.rs.exam),{land:true,name:'Results-'+k.id})};
+ACT.stuReport=d=>{const s=S.students.find(x=>x.id===d.id);docModal('របាយការណ៍សិស្ស '+s.name,studentReportDoc(s),{land:false,name:'Report-'+s.id})};
+GUARD.rsExp=null;
+function resultsDoc(k,exam){
+  const R=classResults(k,exam);const top=S.settings.honorTop;
+  return `<div class="doc land">${schoolHead('លទ្ធផលសិក្សា','RESULTS','')}<h3>${esc(k.level||'ទាំងអស់')} · ${esc(k.shift)} · បន្ទប់ ${esc(k.room)} · ${esc(k.prog)}</h3><div class="sub">${esc(exam)} · ឆ្នាំសិក្សា ${esc(S.settings.year)}${k.teacher?' · គ្រូបន្ទុក៖ '+esc(k.teacher):''}</div>
+  <table><thead><tr><th>ចំណាត់ថ្នាក់</th><th>លេខ</th><th>ឈ្មោះ</th>${R.subs.map(b=>`<th class="r">${esc(b.name)} (${b.max})</th>`).join('')}<th class="r">សរុប</th><th class="r">មធ្យមភាគ %</th><th>និទ្ទេស</th></tr></thead><tbody>
+  ${[...R.rows].sort((a,b)=>(a.rank??999)-(b.rank??999)||byName(a.s,b.s)).map(r=>`<tr><td>${r.rank??'—'}</td><td>${r.s.id}</td><td>${esc(r.s.name)}</td>${r.vals.map(x=>`<td class="r">${x==null?'':num(x)}</td>`).join('')}<td class="r">${num(r.total)}</td><td class="r">${r.avg==null?'<span style="color:#999">មិនទាន់គ្រប់</span>':r.avg.toFixed(2)}</td><td>${r.grade}</td></tr>`).join('')||`<tr><td colspan="${R.subs.length+6}">គ្មានសិស្ស</td></tr>`}</tbody></table>
+  <h4>តារាងកិត្តិយស (លេខ ១ - ${top})</h4><table><thead><tr><th>លេខ</th><th>ឈ្មោះ</th><th class="r">សរុប</th><th class="r">មធ្យមភាគ %</th><th>និទ្ទេស</th></tr></thead><tbody>${R.done.filter(r=>r.rank<=top).map(r=>`<tr><td><b>${r.rank}</b></td><td>${esc(r.s.name)}</td><td class="r">${num(r.total)}</td><td class="r">${r.avg.toFixed(2)}</td><td>${r.grade}</td></tr>`).join('')||'<tr><td colspan="5">មិនទាន់មានសិស្សបញ្ចូលពិន្ទុគ្រប់មុខវិជ្ជា</td></tr>'}</tbody></table>
+  <div class="rc-sign"><span>គ្រូបន្ទុកថ្នាក់ / Teacher</span><span>Printed: ${fd(today())}</span></div></div>`;
+}
+function studentReportDoc(s){
+  const k=S.classes.find(c=>classMatch(c).some(x=>x.id===s.id))||{prog:s.prog,level:s.level,shift:s.shift,room:s.room,teacher:''};
+  const subs=subjectsOf(s.prog);const top=S.settings.honorTop;
+  const rows=S.settings.exams.map(ex=>{const R=classResults(k,ex);const r=R.rows.find(x=>x.s.id===s.id);return{ex,r,N:R.done.length}}).filter(x=>x.r&&x.r.vals.some(v=>v!==null));
+  return `<div class="doc port">${schoolHead('របាយការណ៍សិស្ស','STUDENT REPORT','')}<h3>${esc(s.name)} <span style="font-weight:400">${esc(s.en)}</span></h3>
+  <div class="sub">${s.id} · ${esc(s.level)} · ${esc(s.shift)} · បន្ទប់ ${esc(s.room)} · ${esc(s.prog)} · ឆ្នាំសិក្សា ${esc(S.settings.year)}</div>
+  <table><thead><tr><th>ការប្រឡង</th>${subs.map(b=>`<th class="r">${esc(b.name)}</th>`).join('')}<th class="r">សរុប</th><th class="r">មធ្យម %</th><th>ចំណាត់ថ្នាក់</th><th>និទ្ទេស</th></tr></thead><tbody>
+  ${rows.map(({ex,r,N})=>`<tr><td>${esc(ex)}</td>${r.vals.map(x=>`<td class="r">${x==null?'':num(x)}</td>`).join('')}<td class="r">${num(r.total)}</td><td class="r">${r.avg==null?'':r.avg.toFixed(2)}</td><td>${r.rank?r.rank+' / '+N+(r.rank<=top?' ★':''):'—'}</td><td>${r.grade}</td></tr>`).join('')||`<tr><td colspan="${subs.length+5}">មិនទាន់មានពិន្ទុ</td></tr>`}</tbody></table>
+  <div class="hint" style="margin-top:6px;color:#444">★ = ស្ថិតក្នុងតារាងកិត្តិយស (លេខ ១ - ${top}) · និទ្ទេស A ≥ 90 · B ≥ 80 · C ≥ 70 · D ≥ 60 · E ≥ 50</div>
+  <div class="rc-sign"><span>គ្រូបន្ទុកថ្នាក់ / Teacher</span><span>អាណាព្យាបាល / Parent</span><span>Printed: ${fd(today())}</span></div></div>`;
+}
+
+/* ====================== student card (portrait) ====================== */
+function cardFront(s){
+  const inf=S.settings.info,col=inf.cardColor,lg=S.settings.logo;
+  return `<div class="idc" style="--cc:${col}"><div class="ch"><div class="cl">${lg?`<img src="${lg}" alt="">`:esc((inf.nameEn||'').split(' ').map(w=>w[0]).join('').slice(0,3))}</div><div class="cn"><b>${esc(inf.nameKh)}</b><span>${esc(inf.nameEn)}</span></div></div>
+  <div class="ct">បណ្ណសម្គាល់ខ្លួនសិស្ស</div><div class="cb">Student ID Card</div><div class="ci">ID: ${esc(s.id)}</div>
+  <div class="cp">${s.photo?`<img src="${s.photo}" alt="">`:'រូបថត 3×4'}</div>
+  <div class="cx"><div><span>ឈ្មោះសិស្ស :</span> <b>${esc(s.name)}</b></div><div>${esc(s.en)}</div><div>ថ្ងៃខែឆ្នាំកំណើត : ${fd(s.dob)}</div><div>កម្មវិធី : ${esc(s.prog)} (${esc(S.settings.year)})</div><div>${esc(s.level)} · ${esc(s.shift)}</div></div>
+  <div class="cf">${esc(inf.branch||inf.nameKh)}</div></div>`;
+}
+function cardBack(s){
+  const inf=S.settings.info;
+  return `<div class="idc" style="--cc:${inf.cardColor}"><div class="ch"><div class="cn" style="text-align:center;width:100%"><b>ព័ត៌មានទំនាក់ទំនង</b><span>Contact</span></div></div>
+  <div class="cx" style="margin-top:14px;text-align:left;padding:0 14px"><div>${esc(s.rel)} : <b>${esc(s.guardian)}</b></div><div>ទូរស័ព្ទ : ${esc(s.phone)}</div>${s.phone2?`<div>បន្ទាន់ : ${esc(s.phone2)}</div>`:''}<div>អាសយដ្ឋាន : ${esc(s.addr)}</div></div>
+  <div class="cx" style="margin-top:18px;font-size:7.5px;color:#555">កាតនេះជាកម្មសិទ្ធិរបស់សាលា។ បើរកឃើញ សូមប្រគល់មកសាលាវិញ។<br>${esc(inf.contact)}<br>If found, please return to the school.</div><div class="cf">${esc(inf.branch||inf.nameKh)}</div></div>`;
+}
+function idDoc(s){return `<div class="doc land" style="min-height:360px;text-align:center">${cardFront(s)}${cardBack(s)}</div>`}
+function cardsDoc(list){
+  const pages=[];for(let i=0;i<list.length;i+=4)pages.push(list.slice(i,i+4));
+  return `<div class="doc port cards">${pages.map(p=>`<div class="cpage">${p.map(cardFront).join('')}</div>`).join('')||'<div class="cpage">គ្មានសិស្ស</div>'}</div>`;
+}
+ACT.rosterCards=()=>docModal('ប័ណ្ណសិស្សទាំងថ្នាក់ (៤ ប័ណ្ណ/ទំព័រ A5)',cardsDoc(rosterList(V.ros)),{land:false,name:'Cards-'+today()});
+
+/* ====================== people report (students / teachers / classes) ====================== */
+function peopleDoc(){
+  const studs=scopeStudents(),act=studs.filter(s=>s.status!=='ឈប់រៀន');
+  const cnt=(arr,f)=>{const m={};for(const x of arr){const k=f(x)||'—';m[k]=(m[k]||0)+1}return Object.entries(m)};
+  const row=(a,b)=>`<tr><td>${esc(a)}</td><td class="r">${b}</td></tr>`;
+  return `<div class="doc port">${schoolHead('របាយការណ៍សិស្ស គ្រូ និងថ្នាក់','PEOPLE REPORT','')}<div class="sub">${ME.prog?esc(ME.prog)+' · ':''}${fd(today())}</div>
+  <h4>១. សិស្ស</h4><table>${row('សិស្សសរុប',studs.length)}${row('កំពុងរៀន',act.length)}${row('ឈប់រៀន',studs.length-act.length)}${row('ប្រុស / ស្រី (កំពុងរៀន)',act.filter(s=>s.sex==='ប្រុស').length+' / '+act.filter(s=>s.sex==='ស្រី').length)}</table>
+  <h4>២. សិស្សកំពុងរៀន តាមកម្មវិធី</h4><table>${cnt(act,s=>s.prog).map(([a,b])=>row(a,b)).join('')}</table>
+  <h4>៣. តាមកម្រិត / ថ្នាក់</h4><table>${cnt(act,s=>s.level).map(([a,b])=>row(a,b)).join('')}</table>
+  <h4>៤. តាមវេន</h4><table>${cnt(act,s=>s.shift).map(([a,b])=>row(a,b)).join('')}</table>
+  <h4>៥. គ្រូបង្រៀន</h4><table><tr><th>ឈ្មោះ</th><th>តួនាទី</th><th>ស្ថានភាព</th><th class="r">ថ្នាក់</th><th class="r">សិស្ស</th></tr>${scopeTeachers().map(t=>{const cl=S.classes.filter(k=>k.teacher===t.name);return`<tr><td>${esc(t.name)}</td><td>${esc(t.role)}</td><td>${esc(t.status)}</td><td class="r">${cl.length}</td><td class="r">${sum(cl,k=>classStats(k).active)}</td></tr>`}).join('')||'<tr><td colspan="5">គ្មាន</td></tr>'}</table>
+  <h4>៦. ថ្នាក់រៀន</h4><table><tr><th>ថ្នាក់</th><th>គ្រូ</th><th class="r">សមត្ថភាព</th><th class="r">សិស្ស</th><th class="r">ទំនេរ</th></tr>${scopeClasses().map(k=>{const s=classStats(k);return`<tr><td>${esc(k.level||'ទាំងអស់')} · ${esc(k.shift)} · ${esc(k.room)}</td><td>${esc(k.teacher)}</td><td class="r">${k.cap||''}</td><td class="r">${s.active}</td><td class="r">${k.cap?k.cap-s.active:''}</td></tr>`}).join('')||'<tr><td colspan="5">គ្មាន</td></tr>'}</table>
+  <div class="rc-sign"><span></span><span>Printed: ${fd(today())}</span></div></div>`;
+}
+
+/* ====================== settings extras: subjects & users ====================== */
+function settingsExtra(){
+  return `<div class="top" style="margin-top:20px"><h3 class="sec" style="flex:1;margin:0">មុខវិជ្ជា និងពិន្ទុពេញ</h3><button class="btn pri" data-act="subNew">+ មុខវិជ្ជា</button></div>
+  <div class="tbl"><table><thead><tr><th>កម្មវិធី</th><th>មុខវិជ្ជា</th><th class="r">ពិន្ទុពេញ</th><th></th></tr></thead><tbody>${S.settings.subjects.map((b,i)=>`<tr><td>${esc(b.prog)}</td><td>${esc(b.name)}</td><td class="r">${b.max}</td><td><button class="btn sm" data-act="subEdit" data-i="${i}">កែ</button></td></tr>`).join('')}</tbody></table></div>
+  <div class="top" style="margin-top:20px"><h3 class="sec" style="flex:1;margin:0">អ្នកប្រើ និងសិទ្ធិ</h3>${STORE==='db'?'<button class="btn pri" data-act="userAdd">+ បន្ថែមអ្នកប្រើ</button>':''}</div>
+  ${STORE==='db'?`<div class="note" style="margin-bottom:8px">១) ចុច <b>Share</b> របស់ទំព័រនេះ ហើយអញ្ជើញបុគ្គលិកដោយគណនី Claude ជាមួយសិទ្ធិ <b>Contributor</b> (ចាំបាច់ដើម្បីកត់ទិន្នន័យ)។ ២) បន្ទាប់មកបន្ថែមគេនៅទីនេះ ហើយកំណត់តួនាទី។ អ្នកដែលមិនទាន់កំណត់តួនាទី នឹងមិនឃើញទិន្នន័យទេ។ ម្ចាស់ទំព័រជា Admin ជានិច្ច។</div><div class="tbl"><table><thead><tr><th>ឈ្មោះ</th><th>តួនាទី</th><th>គ្រូ / កម្មវិធី</th><th></th></tr></thead><tbody id="usersBody"><tr><td colspan="4" class="hint">កំពុងផ្ទុក…</td></tr></tbody></table></div>`:'<p class="hint">មុខងារអ្នកប្រើ ប្រើបានតែពេលដំណើរការក្នុង Claude ជាមួយមូលដ្ឋានទិន្នន័យចែករំលែក។</p>'}`;
+}
+async function fillUsers(){
+  const body=$('#usersBody');if(!body)return;
+  const ids=Object.keys(ROLES.assign);let prof={};
+  try{const u=await window.claude.use('user');if(u&&ids.length)prof=await u.profiles(ids)}catch(e){}
+  if(!$('#usersBody'))return;
+  $('#usersBody').innerHTML=ids.map(id=>{const a=ROLES.assign[id],t=S.teachers.find(x=>x.id===a.teacherId);return`<tr><td>${esc((prof[id]&&prof[id].name)||id)}</td><td>${esc(ROLE_NAMES[a.role])}</td><td>${esc(t?t.name:'')} ${esc(a.prog||'')}</td><td style="white-space:nowrap"><button class="btn sm" data-act="userEdit" data-id="${esc(id)}">កែ</button> <button class="btn sm bad" data-act="userDel" data-id="${esc(id)}">ដក</button></td></tr>`}).join('')||'<tr><td colspan="4" class="hint">មិនទាន់មាន។ ចុច «+ បន្ថែមអ្នកប្រើ»។</td></tr>';
+}
+ACT.userAdd=()=>userForm();ACT.userEdit=d=>userForm(d.id);
+ACT.userDel=async d=>{if(await ask('ដកសិទ្ធិអ្នកប្រើនេះ?','ដក')){delete ROLES.assign[d.id];saveRoles();fillUsers();toast('បានដក')}};
+async function userForm(id){
+  const a=id?ROLES.assign[id]:{role:'clerk',teacherId:'',prog:''};let chosen=id||'';let chosenName='';
+  if(id){try{const u=await window.claude.use('user');const p=await u.profiles([id]);chosenName=(p[id]&&p[id].name)||id}catch(e){chosenName=id}}
+  const ov=modal(`<h2>${id?'កែសិទ្ធិអ្នកប្រើ':'បន្ថែមអ្នកប្រើ'}</h2><div class="f">
+  <label class="wide">អ្នកប្រើ<input id="sq" placeholder="វាយឈ្មោះដើម្បីស្វែងរក" value="${esc(chosenName)}" ${id?'readonly':''} autocomplete="off"></label><div class="wide" id="hits"></div>
+  <label>តួនាទី<select id="role">${opts(ALLR.map(r=>({v:r,l:ROLE_NAMES[r]})),a.role)}</select></label>
+  <label id="lbT">គ្រូ (សម្រាប់តួនាទីគ្រូបង្រៀន)<select id="tid">${opts(S.teachers.map(t=>({v:t.id,l:t.id+' · '+t.name})),a.teacherId,'—')}</select></label>
+  <label id="lbP">កម្មវិធី (សម្រាប់ប្រធានកម្មវិធី)<select id="prog">${opts(S.settings.programs.map(p=>p.kh),a.prog,'ទាំងអស់')}</select></label></div>
+  <div id="err"></div><div class="mfoot"><button class="btn" id="c">បោះបង់</button><button class="btn pri" id="ok">រក្សាទុក</button></div>`,{wide:true,onMount(ov){
+    const upd=()=>{$('#lbT',ov).hidden=val(ov,'role')!=='teacher';$('#lbP',ov).hidden=val(ov,'role')!=='head'};upd();$('#role',ov).onchange=upd;
+    if(!id){let tm;$('#sq',ov).oninput=e=>{clearTimeout(tm);tm=setTimeout(async()=>{try{const u=await window.claude.use('user');const r=await u.search(e.target.value);$('#hits',ov).innerHTML=r.filter(x=>!x.isMe).map(x=>`<button class="btn sm" type="button" data-uid="${esc(x.id)}" style="margin:2px">${esc(x.name||x.id)}</button>`).join('')||'<span class="hint">រកមិនឃើញ</span>'}catch(x){$('#hits',ov).innerHTML='<span class="hint">ស្វែងរកមិនបាន</span>'}},250)};
+      $('#hits',ov).onclick=e=>{const b=e.target.closest('[data-uid]');if(b){chosen=b.dataset.uid;$('#sq',ov).value=b.textContent;$('#hits',ov).innerHTML=`<span class="pill good">ជ្រើសរួច៖ ${esc(b.textContent)}</span>`}};}
+  }});
+  $('#c',ov).onclick=()=>ov.close();
+  $('#ok',ov).onclick=()=>{const role=val(ov,'role');const err=!chosen?'សូមជ្រើសអ្នកប្រើពីលទ្ធផលស្វែងរក':role==='teacher'&&!val(ov,'tid')?'សូមជ្រើសគ្រូ':'';if(err){$('#err',ov).innerHTML=`<div class="err">${err}</div>`;return}
+    ROLES.assign[chosen]={role,teacherId:role==='teacher'?val(ov,'tid'):'',prog:role==='head'?val(ov,'prog'):''};saveRoles();ov.close();fillUsers();toast('បានរក្សាទុក')};
+}
+ACT.subNew=()=>subForm();ACT.subEdit=d=>subForm(+d.i);
+function subForm(i){
+  const ed=i!=null?S.settings.subjects[i]:null;const b=ed||{prog:S.settings.programs[0].kh,name:'',max:100};
+  const ov=modal(`<h2>${ed?'កែមុខវិជ្ជា':'មុខវិជ្ជាថ្មី'}</h2><div class="f"><label>កម្មវិធី<select id="prog">${opts(S.settings.programs.map(p=>p.kh),b.prog)}</select></label><label>មុខវិជ្ជា *<input id="name" value="${esc(b.name)}"></label><label>ពិន្ទុពេញ<input type="number" min="1" id="max" value="${b.max}"></label></div><div id="err"></div>
+  <div class="mfoot">${ed?'<button class="btn bad" id="dl" style="margin-right:auto">លុប</button>':''}<button class="btn" id="c">បោះបង់</button><button class="btn pri" id="ok">រក្សាទុក</button></div>`);
+  $('#c',ov).onclick=()=>ov.close();
+  if(ed)$('#dl',ov).onclick=()=>{S.settings.subjects.splice(i,1);putSettings();ov.close();render()};
+  $('#ok',ov).onclick=()=>{const r={prog:val(ov,'prog'),name:clean(val(ov,'name')),max:+val(ov,'max')||100};if(!r.name){$('#err',ov).innerHTML='<div class="err">សូមបំពេញឈ្មោះមុខវិជ្ជា</div>';return}
+    if(ed)S.settings.subjects[i]=r;else S.settings.subjects.push(r);putSettings();ov.close();render()};
+}
+
+/* ====================== boot ====================== */
+function start(){
+  $('#boot').hidden=true;$('#app').hidden=false;
+  if(!pageOk(curPage())||!location.hash)location.hash='#'+homePage();
+  render();
+}
+function msgBoot(h,p){$('#boot').className='welcome card';$('#boot').innerHTML=`<h1>${h}</h1><p class="hint" style="font-size:14px">${p}</p>`}
+(async()=>{
+  const ok=await initStore();
+  await resolveMe();
+  if(ok){
+    if(ME.role==='none'){msgBoot('អ្នកមិនទាន់មានសិទ្ធិចូលប្រើ','សូមទាក់ទងអ្នកគ្រប់គ្រងសាលា ដើម្បីកំណត់តួនាទីរបស់អ្នក។');return}
+    start();return;
+  }
+  if(STORE==='db'&&ME.role!=='admin'){msgBoot('ប្រព័ន្ធមិនទាន់រៀបចំ','សូមឱ្យអ្នកគ្រប់គ្រង (ម្ចាស់ទំព័រ) បើកទំព័រនេះជាមុនសិន។');return}
+  $('#boot').className='welcome card';
+  $('#boot').innerHTML=`<h1>ស្វាគមន៍ មកកាន់ប្រព័ន្ធគ្រប់គ្រងសាលា</h1><p class="hint" style="font-size:14px">នាំចូលថ្លៃសិក្សា កម្មវិធី និងបញ្ជីទំនិញ ${SEED.items.length} មុខ ពីឯកសារ Excel របស់អ្នក។</p>
+  <div class="bar" style="justify-content:center"><button class="btn pri" id="go1">ចាប់ផ្តើម (មានទិន្នន័យគំរូ ៣ សិស្ស)</button><button class="btn" id="go2">ចាប់ផ្តើមទទេ (គ្មានសិស្ស)</button></div><p class="hint">ទិន្នន័យនឹងរក្សាទុក${STORE==='db'?'ក្នុងប្រព័ន្ធ (ចែករំលែក ជាប់រហូត)':'ក្នុង browser នេះ'}។</p>`;
+  const go=async clear=>{$('#boot').innerHTML='<h1>កំពុងរៀបចំទិន្នន័យ…</h1>';await seedAll();if(clear){for(const c of ['students','payments','sales','teachers','classes'])for(const r of [...S[c]])del(c,r.id)}start()};
+  $('#go1').onclick=()=>go(false);$('#go2').onclick=()=>go(true);
+})();
+</script>
+
+</body></html>
